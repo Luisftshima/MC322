@@ -1,25 +1,30 @@
 public class Maquina {
-    public String nome;
-    public boolean ligada;
-    public int capacidadeMaxima;
+    private String nome;
+    private boolean ligada = false;
+    private int capacidadeMaxima;
+
+    public Maquina(String n, int max){
+        nome = n;
+        capacidadeMaxima = max;
+    }
 
     public void ligar(){
-
+        ligada = true;
     }
 
     public void desligar(){
-
+        ligada = false;
     }
 
     public void processar(){
 
     }
 
-    public void getNome(){
-
+    public String getNome(){
+        return nome;
     }
 
-    public void estaLigada(){
-        
+    public boolean estaLigada(){
+        return ligada;
     }
 }

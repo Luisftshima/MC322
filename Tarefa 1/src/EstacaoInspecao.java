@@ -1,21 +1,21 @@
 public class EstacaoInspecao {
-    public boolean ativa;
-    public int produtosInspecionados;
+    private boolean ativa = false;
+    private int produtosInspecionados = 0;
 
-    public void ativar(){
-
+    public void ativar(EstacaoInspecao estacaoInspecao){
+        estacaoInspecao.ativa = true;
     }
 
-    public void desativar(){
-
+    public void desativar(EstacaoInspecao estacaoInspecao){
+        estacaoInspecao.ativa = false;
     }
 
     public void inspecionar(){
-
+        produtosInspecionados++;
     }
 
-    public void getTotalInspecionados(){
-
+    public int getTotalInspecionados(){
+        return produtosInspecionados;
     }
 
 }

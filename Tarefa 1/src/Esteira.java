@@ -1,25 +1,29 @@
 public class Esteira {
-    public String item;
-    public boolean emMovimento;
-    public float capacidadeMaxima;
+    private String item;
+    private boolean emMovimento = false;
+    private float capacidadeMaxima;
+
+    public Esteira(float max){
+        capacidadeMaxima = max;
+    }
 
     public void ligar(){
-
+        emMovimento = true;
     }
 
     public void desligar(){
-
+        emMovimento = false;
     }
 
-    public void adicionarItem(){
-
+    public void adicionarItem(String obj){
+        item = obj;
     }
 
     public void removerItem(){
-
+        item = "";
     }
 
-    public void verificarCapacidade(){
-        
+    public float verificarCapacidade(){
+        return capacidadeMaxima;
     }
 }

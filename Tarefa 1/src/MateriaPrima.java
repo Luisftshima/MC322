@@ -1,31 +1,44 @@
 public class MateriaPrima {
-    public int id;
-    public String nome;
-    public float quantidade;
-    public String unidade;
-    public float quantidadeMinima;
+    private static int proximoId = 1;
+    private int id;
+    private String nome;
+    private float quantidade;
+    private String unidade;
+    private float quantidadeMinima;
 
-    public void consumir(){
-
+    public MateriaPrima(String n, float quant,
+        String un, float min){
+        id = proximoId++;
+        nome = n;
+        quantidade = quant;
+        unidade = un;
+        quantidadeMinima = min;
     }
 
-    public void adicionarEstoque(){
-
+    public void consumir(int quant){
+        quantidade -= quant;
     }
 
-    public void verificarDisponibilidade(){
-
+    public void adicionarEstoque(int quant){
+        quantidade -= quant;
     }
 
-    public void getId(){
-
+    public boolean verificarDisponibilidade(int quant){
+        if (quant <= quantidade) {
+            return true;
+        }
+        return false;
     }
 
-    public void getNome(){
-
+    public int getId(){
+        return id;
     }
 
-    public void getQuantidade(){
+    public String getNome(){
+        return nome;
+    }
 
+    public float getQuantidade(){
+        return quantidade;
     }
 }

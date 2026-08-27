@@ -1,30 +1,37 @@
 public class Produto {
-    public int id;
-    public String nome;
-    public String status;
-    public float quantidadeMateriaPrimaNecessaria;
+    private static int proximoId = 1;
+    private int id;
+    private String nome;
+    private String status;
+    private float quantidadeMateriaPrimaNecessaria;
+
+    public Produto(String n, float quantidade){
+        id = proximoId++;
+        nome = n;
+        quantidadeMateriaPrimaNecessaria = quantidade;
+    }
 
     public void processar(){
 
     }
 
-    public void definirDemandaMateriaPrima(){
-
+    public void definirDemandaMateriaPrima(float quantidade){
+        quantidadeMateriaPrimaNecessaria = quantidade;
     }
 
-    public void getDemandaMateriaPrima(){
-
+    public float getDemandaMateriaPrima(){
+        return quantidadeMateriaPrimaNecessaria;
     }
 
-    public void getId(){
-
+    public int getId(){
+        return id;
     }
 
-    public void getNome(){
-
+    public String getNome(){
+        return nome;
     }
 
-    public void getStatus(){
-        
+    public String getStatus(){
+        return status;
     }
 }
