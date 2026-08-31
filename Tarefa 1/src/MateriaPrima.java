@@ -41,4 +41,8 @@ public class MateriaPrima {
     public float getQuantidade(){
         return quantidade;
     }
+
+    public String getUnidade(){
+        return unidade;
+    }
 }
