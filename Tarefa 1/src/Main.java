@@ -26,7 +26,6 @@ public class Main {
             +prod1.getDemandaMateriaPrima() + ")");
         
         leitura = entrada.nextInt();
-
     }
 
 

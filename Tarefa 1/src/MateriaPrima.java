@@ -20,7 +20,7 @@ public class MateriaPrima {
     }
 
     public void adicionarEstoque(int quant){
-        quantidade -= quant;
+        quantidade += quant;
     }
 
     public boolean verificarDisponibilidade(int quant){
