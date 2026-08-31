@@ -48,7 +48,7 @@ public class Main {
             int leitura;
             Scanner entrada = new Scanner(System.in);
             leitura = entrada.nextInt();
-
+            entrada.close();
             switch (leitura) {
                 case 1:
                     
