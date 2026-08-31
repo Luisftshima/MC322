@@ -8,7 +8,8 @@ public class Main {
             "Chocolate", 2000, "g", 
             0);
         System.out.println("--------------------|MATÉRIA PRIMA|--------------------");
-        System.out.println(String.format("%1$s: %2$.2f",matPrima1.getNome(), matPrima1.getQuantidade()));
+        System.out.println(String.format("%1$s: %2$.2f",
+            matPrima1.getNome(), matPrima1.getQuantidade()));
         
         Produto prod1 = new Produto("Ovo de pascoa",
         500);
@@ -29,7 +30,7 @@ public class Main {
         int leitura;
         Scanner entrada = new Scanner(System.in);
         leitura = entrada.nextInt();
+        System.out.println("O mais bonito é o Luís");
     }
-
 
 }
