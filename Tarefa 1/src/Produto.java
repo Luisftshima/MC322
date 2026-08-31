@@ -12,7 +12,7 @@ public class Produto {
     }
 
     public void processar(){
-        status = "Processado"
+        status = "Processado";
     }
 
     public void definirDemandaMateriaPrima(float quantidade){
