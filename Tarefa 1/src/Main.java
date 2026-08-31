@@ -30,6 +30,6 @@ public class Main {
         Scanner entrada = new Scanner(System.in);
         leitura = entrada.nextInt();
     }
-
+    //testando branches e merge
 
 }
