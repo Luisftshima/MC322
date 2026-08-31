@@ -5,6 +5,7 @@ public class Produto {
     private String status;
     private float quantidadeMateriaPrimaNecessaria;
     private MateriaPrima materiaPrima;
+    private static int estoque = 0;
 
     public Produto(String n, float quantidade){
         id = proximoId++;
@@ -38,5 +39,22 @@ public class Produto {
 
     public MateriaPrima getMateriaPrima(){
         return materiaPrima;
+    }
+
+    public int getEstoque(){
+        return estoque;
+    }
+
+    public void adicionarEstoque(int quant){
+        estoque += quant;
+    }
+
+    public void removerEstoque(int quant){
+        if(estoque >= quant){
+            estoque -= quant;
+        }
+        else{
+            System.out.println("Estoque insuficiente.");
+        }
     }
 }

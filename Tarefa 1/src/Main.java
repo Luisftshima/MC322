@@ -120,6 +120,9 @@ public class Main {
                     
                     break;
                 case 2:
+                    System.out.println("Informe o ");
+                    entrada = new Scanner(System.in);
+                    leitura = entrada.nextInt();
                     break;
                 case 3:
                     break menu;
