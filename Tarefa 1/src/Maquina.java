@@ -1,7 +1,7 @@
 public class Maquina {
     private String nome;
     private boolean ligada = false;
-    private int capacidadeMaxima;
+    private float capacidadeMaxima;
 
     public Maquina(String n, int max){
         nome = n;
@@ -32,7 +32,7 @@ public class Maquina {
         return ligada;
     }
 
-    public boolean temCapacidade(int quant){
+    public boolean temCapacidade(float quant){
         if(quant <= capacidadeMaxima){
             return true;
         }

@@ -5,12 +5,13 @@ public class Produto {
     private String status;
     private float quantidadeMateriaPrimaNecessaria;
     private MateriaPrima materiaPrima;
-    private static int estoque = 0;
+    private int estoque = 0;
 
-    public Produto(String n, float quantidade){
+    public Produto(String n, float quantidade, MateriaPrima mP){
         id = proximoId++;
         nome = n;
         quantidadeMateriaPrimaNecessaria = quantidade;
+        materiaPrima = mP;
     }
 
     public void processar(){

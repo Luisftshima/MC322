@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String linha = "=========================";
+        String linha = "======================================================";
         
         System.out.println(linha);
         System.out.println("BEM-VINDO À FANTÁSTICA FÁBRICA DE CHOCOLATE");
@@ -18,9 +18,9 @@ public class Main {
             matPrima1.getNome(), matPrima1.getQuantidade(), matPrima1.getUnidade()));
         
         Produto prod1 = new Produto("Ovo de pascoa",
-        500);
+        500, matPrima1);
         Produto prod2 = new Produto("Barra de chocolate",
-        300);
+        300, matPrima1);
         System.out.println(linha);
         System.out.println("PRODUTO");
         System.out.println(linha);
@@ -72,16 +72,19 @@ public class Main {
                     System.out.print(String.format("Informe a demanda de matéria-prima (%1$s): ", 
                         matPrima1.getUnidade()));
                     entrada = new Scanner(System.in);
-                    leitura = entrada.nextInt();
-                    if(!produto.getMateriaPrima().verificarDisponibilidade(leitura)){
-                        System.out.println(String.format("[ERRO] Verificando disponibilidade de %1ds", produto.getMateriaPrima().getNome()));
+                    float leitura2 = entrada.nextFloat();
+                    if(!produto.getMateriaPrima().verificarDisponibilidade(leitura2)){
+                        System.out.println(String.format("[ERRO] Verificando disponibilidade de %1$s", produto.getMateriaPrima().getNome()));
                     }
-                    else if(!maq1.temCapacidade(leitura) || esteira1.verificarCapacidade() < leitura){
-                        System.out.println(String.format("[ERRO] Demanda de %1$2.f %2$s não pode ser atendida", leitura, matPrima1.getUnidade()));
+                    else if(produto.getDemandaMateriaPrima()>leitura2){
+                        System.out.println(String.format("[ERRO] Demanda de %1$.2f %2$s insuficiente", leitura2, matPrima1.getUnidade()));
+                    }
+                    else if(!maq1.temCapacidade(leitura2) || esteira1.verificarCapacidade() < leitura){
+                        System.out.println(String.format("[ERRO] Demanda de %1$.2f %2$s não pode ser atendida", leitura2, matPrima1.getUnidade()));
                     }
                     else{
-                        System.out.println(String.format("[OK] Verificando disponibilidade de %1ds", produto.getMateriaPrima().getNome()));
-                        System.out.println(String.format("[OK] Demanda de %1$2.f %2$s não pode ser atendida", leitura, matPrima1.getUnidade()));
+                        System.out.println(String.format("[OK] Verificando disponibilidade de %1$s", produto.getMateriaPrima().getNome()));
+                        System.out.println(String.format("[OK] Demanda de %1$.2f %2$s pode ser atendida", leitura2, matPrima1.getUnidade()));
 
                         esteira1.ligar();
                         System.out.println("[OK] Esteira ligada.");
@@ -91,17 +94,17 @@ public class Main {
 
                         esteira1.adicionarItem(matPrima1.getNome());
                         matPrima1.consumir(leitura);
-                        System.out.println(String.format("[OK] Matéria-prima %1ds colocada na esteira.", matPrima1.getNome()));
+                        System.out.println(String.format("[OK] Matéria-prima %1$s colocada na esteira.", matPrima1.getNome()));
                         System.out.println("[OK] Matéria-prima transportada até a máquina.");
                         esteira1.removerItem();
 
                         maq1.processar(matPrima1, produto);
-                        System.out.println(String.format("[OK] Máquina processando %1$f %2$s de %3$s", leitura, matPrima1.getUnidade(), produto.getMateriaPrima().getNome()));
-                        System.out.println(String.format("[OK] Produto %1$i - %2$s criado.", produto.getId(), produto.getNome()));
+                        System.out.println(String.format("[OK] Máquina processando %1$.2f %2$s de %3$s", leitura2, matPrima1.getUnidade(), produto.getMateriaPrima().getNome()));
+                        System.out.println(String.format("[OK] Produto %1$d - %2$s criado.", produto.getId(), produto.getNome()));
                         maq1.desligar();
 
                         esteira1.adicionarItem(produto.getNome());
-                        System.out.println(String.format("[OK] Produto %1$i transportado para a inspeção.",produto.getId()));
+                        System.out.println(String.format("[OK] Produto %1$d transportado para a inspeção.",produto.getId()));
 
                         estInsp1.ativar(estInsp1);
                         esteira1.removerItem();
@@ -110,11 +113,11 @@ public class Main {
                         System.out.println(String.format("[OK] Produto %1$s aprovado na inspeção.", produto.getId()));
                         estInsp1.desativar(estInsp1);
 
-                        System.out.println("======================================================");
+                        System.out.println(linha);
                         System.out.println("PRODUÇÃO CONCLUÍDA COM SUCESSO, APROVEITE O CHOCOLATE!");
-                        System.out.println("======================================================");
+                        System.out.println(linha);
 
-                        System.out.println(String.format("Estoque restante de %1$s: %2$i %3$s", matPrima1.getNome(), matPrima1.getQuantidade(), matPrima1.getUnidade()));
+                        System.out.println(String.format("Estoque restante de %1$s: %2$.2f %3$s", matPrima1.getNome(), matPrima1.getQuantidade(), matPrima1.getUnidade()));
 
                     }
                     
