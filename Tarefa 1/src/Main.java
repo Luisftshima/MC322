@@ -32,9 +32,5 @@ public class Main {
         leitura = entrada.nextInt();
         System.out.println("O mais bonito é o Luís");
     }
-<<<<<<< HEAD
-=======
-    //testando branches e merge
->>>>>>> 839a596797c373051989c9b164d5575986d341ed
 
 }
