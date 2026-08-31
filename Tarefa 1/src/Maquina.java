@@ -31,4 +31,11 @@ public class Maquina {
     public boolean estaLigada(){
         return ligada;
     }
+
+    public boolean temCapacidade(int quant){
+        if(quant <= capacidadeMaxima){
+            return true;
+        }
+        return false;
+    }
 }

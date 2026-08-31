@@ -4,6 +4,7 @@ public class Produto {
     private String nome;
     private String status;
     private float quantidadeMateriaPrimaNecessaria;
+    private MateriaPrima materiaPrima;
 
     public Produto(String n, float quantidade){
         id = proximoId++;
@@ -33,5 +34,9 @@ public class Produto {
 
     public String getStatus(){
         return status;
+    }
+
+    public MateriaPrima getMateriaPrima(){
+        return materiaPrima;
     }
 }
