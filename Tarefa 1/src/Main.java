@@ -2,12 +2,18 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        System.out.println("-----|BEM-VINDO À FANTÁSTICA FÁBRICA DE CHOCOLATE|-----");
+        String linha = "=========================";
         
+        System.out.println(linha);
+        System.out.println("BEM-VINDO À FANTÁSTICA FÁBRICA DE CHOCOLATE");
+        System.out.println(linha);
+
         MateriaPrima matPrima1 = new MateriaPrima(
             "Chocolate", 2000, "g", 
             0);
-        System.out.println("--------------------|MATÉRIA PRIMA|--------------------");
+        System.out.println(linha);
+        System.out.println("MATÉRIA PRIMA");
+        System.out.println(linha);
         System.out.println(String.format("%1$s: %2$.2f",
             matPrima1.getNome(), matPrima1.getQuantidade()));
         
@@ -15,7 +21,9 @@ public class Main {
         500);
         Produto prod2 = new Produto("Barra de chocolate",
         300);
-        System.out.println("-----------------------|PRODUTO|-----------------------");
+        System.out.println(linha);
+        System.out.println("PRODUTO");
+        System.out.println(linha);
         System.out.println(String.format("%1$d - %2$s (demanda: %3$.2f)",
             prod1.getId(), prod1.getNome(), prod1.getDemandaMateriaPrima()));
         System.out.println(String.format("%1$d - %2$s (demanda: %3$.2f)",
@@ -30,7 +38,6 @@ public class Main {
         int leitura;
         Scanner entrada = new Scanner(System.in);
         leitura = entrada.nextInt();
-        System.out.println("O mais bonito é o Luís");
     }
 
 }
