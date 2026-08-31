@@ -16,8 +16,12 @@ public class Maquina {
         ligada = false;
     }
 
-    public void processar(){
-
+    public void processar(MateriaPrima m, Produto p){
+        if(ligada){
+            if(m.verificarDisponibilidade(p.getDemandaMateriaPrima())){
+                m.consumir(p.getDemandaMateriaPrima());
+            }
+        }
     }
 
     public String getNome(){

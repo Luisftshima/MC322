@@ -15,15 +15,15 @@ public class MateriaPrima {
         quantidadeMinima = min;
     }
 
-    public void consumir(int quant){
+    public void consumir(float quant){
         quantidade -= quant;
     }
 
-    public void adicionarEstoque(int quant){
+    public void adicionarEstoque(float quant){
         quantidade += quant;
     }
 
-    public boolean verificarDisponibilidade(int quant){
+    public boolean verificarDisponibilidade(float quant){
         if (quant <= quantidade) {
             return true;
         }
