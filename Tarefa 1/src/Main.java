@@ -142,10 +142,49 @@ public class Main {
                     
                     break;
                 case 2:
-                    System.out.println("Informe o ");
+                    System.out.println("Informe o que você gostaria de consultar:");
+                    System.out.println("1 - Matéria Prima");
+                    System.out.println("2 - Produtos");
                     entrada = new Scanner(System.in);
                     leitura = entrada.nextInt();
-                    break;
+                    switch (leitura){
+                        case 1:
+                            System.out.println("Informe a matéria prima:");
+                            System.out.println(String.format("%1$d - %2$s", matPrima1.getId(), matPrima1.getNome()));
+                            entrada = new Scanner(System.in);
+                            leitura = entrada.nextInt();
+                            switch (leitura) {
+                                case 1:
+                                    System.out.println(String.format("O estoque é de %1$.2f %2$s", matPrima1.getQuantidade(), matPrima1.getUnidade()));
+                                    break;
+                                default:
+                                    System.out.println("Escolha inválida!");
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            System.out.println("Informe o produto:");
+                            System.out.println(String.format("%1$d - %2$s", prod1.getId(), prod1.getNome()));
+                            System.out.println(String.format("%1$d - %2$s", prod2.getId(), prod2.getNome()));
+                            entrada = new Scanner(System.in);
+                            leitura = entrada.nextInt();
+                            switch (leitura) {
+                                case 1:
+                                    System.out.println(String.format("O estoque é de %1$d unidades", prod1.getEstoque()));
+                                    break;
+                                case 2:
+                                    System.out.println(String.format("O estoque é de %1$d unidades", prod2.getEstoque()));
+                                    break;
+                                default:
+                                    System.out.println("Escolha inválida!");
+                                    break;
+                            }
+                            break;
+                        default:
+                            System.out.println("Escolha inválida!");
+                            break;
+                    }
+                    continue menu;
                 case 3:
                     break menu;
                 default:
