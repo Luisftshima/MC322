@@ -47,6 +47,7 @@ public class Main {
         Esteira esteira2 = new Esteira(10000);
 
         EstacaoInspecao estInsp1 = new EstacaoInspecao();
+        Scanner entrada = new Scanner(System.in);
         
         menu: while (true){
             System.out.println(linha);
@@ -59,14 +60,12 @@ public class Main {
 
             System.out.print("Escolha: ");
             int leitura;
-            Scanner entrada = new Scanner(System.in);
             leitura = entrada.nextInt();
 
             
             switch (leitura) {
                 case 1:
                     System.out.print("Selecione o produto (1-2): ");
-                    entrada = new Scanner(System.in);
                     leitura = entrada.nextInt();
 
                     Produto produto;
@@ -83,7 +82,6 @@ public class Main {
                     }
                     System.out.print(String.format("Informe a demanda de matéria-prima (%1$s): ", 
                         matPrima1.getUnidade()));
-                    entrada = new Scanner(System.in);
                     float leitura2 = entrada.nextFloat();
 
                     //Caso não há matéria prima o suficiente
@@ -160,7 +158,6 @@ public class Main {
                     System.out.println("1 - Matéria Prima");
                     System.out.println("2 - Produtos");
                     System.out.println(linha);
-                    entrada = new Scanner(System.in);
                     leitura = entrada.nextInt();
                     switch (leitura){
 
@@ -169,7 +166,6 @@ public class Main {
                             System.out.println(linha);
                             System.out.println("Informe a matéria prima:");
                             System.out.println(String.format("%1$d - %2$s", matPrima1.getId(), matPrima1.getNome()));
-                            entrada = new Scanner(System.in);
                             System.out.println(linha);
                             leitura = entrada.nextInt();
                             switch (leitura) {
@@ -189,7 +185,6 @@ public class Main {
                             System.out.println(String.format("%1$d - %2$s", prod1.getId(), prod1.getNome()));
                             System.out.println(String.format("%1$d - %2$s", prod2.getId(), prod2.getNome()));
                             System.out.println(linha);
-                            entrada = new Scanner(System.in);
                             leitura = entrada.nextInt();
                             switch (leitura) {
                                 case 1:
@@ -214,6 +209,7 @@ public class Main {
                     break;
             }
         }
+        entrada.close();
     }
 
 }
