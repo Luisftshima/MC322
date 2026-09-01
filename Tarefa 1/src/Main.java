@@ -41,6 +41,7 @@ public class Main {
         Maquina maq1 = new Maquina("0001", 1000);
 
         Esteira esteira1 = new Esteira(10000);
+        Esteira esteira2 = new Esteira(10000);
 
         EstacaoInspecao estInsp1 = new EstacaoInspecao();
         
@@ -100,9 +101,9 @@ public class Main {
                         System.out.println(String.format("[OK] Verificando disponibilidade de %1$s.", produto.getMateriaPrima().getNome()));
                         System.out.println(String.format("[OK] Demanda de %1$.2f %2$s pode ser atendida.", leitura2, matPrima1.getUnidade()));
                         
-                        //ligando a esteira
+                        //ligando a esteira 1
                         esteira1.ligar();
-                        System.out.println("[VRUMM] Esteira ligada!");
+                        System.out.println("[VRUMM] Esteira 1 ligada!");
                         
                         //ligando a máquina
                         maq1.ligar();
@@ -114,6 +115,7 @@ public class Main {
                         System.out.println(String.format("[OK] Matéria-prima %1$s colocada na esteira.", matPrima1.getNome()));
                         System.out.println("[OK] Matéria-prima transportada até a máquina.");
                         esteira1.removerItem();
+                        esteira1.desligar();
 
                         //processando a matéria-prima
                         maq1.processar(matPrima1, produto);
@@ -121,17 +123,23 @@ public class Main {
                         System.out.println(String.format("[OK] Produto %1$d - %2$s criado.", produto.getId(), produto.getNome()));
                         maq1.desligar();
 
-                        //lenado o produto até a inspeção
-                        esteira1.adicionarItem(produto.getNome());
+                        //ligando a esteira 2
+                        esteira2.ligar();
+                        System.out.println("[VRUMM] Esteira 2 ligada!");
+
+                        //levando o produto até a inspeção
+                        esteira2.adicionarItem(produto.getNome());
                         System.out.println(String.format("[OK] Produto %1$d transportado para a inspeção.",produto.getId()));
 
+                        //inspecionando o item
                         estInsp1.ativar(estInsp1);
-                        esteira1.removerItem();
-                        esteira1.desligar();
+                        esteira2.removerItem();
+                        esteira2.desligar();
                         System.out.println("[OK] Estação de inspeção ativada.");
                         System.out.println(String.format("[OK] Produto %1$s aprovado na inspeção.", produto.getId()));
                         estInsp1.desativar(estInsp1);
 
+                        //concluindo a produção
                         System.out.println(linha);
                         System.out.println("PRODUÇÃO CONCLUÍDA COM SUCESSO, APROVEITE O CHOCOLATE!");
                         System.out.println(linha);
