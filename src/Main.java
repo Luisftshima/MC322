@@ -111,7 +111,7 @@ public class Main {
                         
                         //colocando a matéria prima na esteira e transportando até a máquina
                         esteira1.adicionarItem(matPrima1.getNome());
-                        System.out.println(String.format("[OK] Matéria-prima %1$s colocada na esteira.", matPrima1.getNome()));
+                        System.out.println(String.format("[OK] Matéria-prima %1$s colocada na esteira 1.", esteira1.getItemNaEsteira()));
                         System.out.println("[VRUMM] Matéria-prima transportada até a máquina.");
                         esteira1.removerItem();
                         esteira1.desligar();
@@ -128,11 +128,12 @@ public class Main {
 
                         //levando o produto até a inspeção
                         esteira2.adicionarItem(produto.getNome());
+                        System.out.println(String.format("[OK] Produto %1$s colocada na esteira 2.", esteira2.getItemNaEsteira()));
                         
                         //inspecionando o item
                         estInsp1.ativar(estInsp1);
-                        esteira1.removerItem();
-                        esteira1.desligar();
+                        esteira2.removerItem();
+                        esteira2.desligar();
                         System.out.println("[VRUMM] Estação de inspeção ativada.");
                         System.out.println(String.format("[VRUMM] Produto %1$s aprovado na inspeção.", produto.getId()));
                         estInsp1.desativar(estInsp1);
