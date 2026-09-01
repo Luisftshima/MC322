@@ -28,4 +28,8 @@ public class Esteira {
     public float verificarCapacidade(){
         return capacidadeMaxima;
     }
+
+    public String getItemNaEsteira(){
+        return item;
+    }
 }

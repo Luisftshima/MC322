@@ -24,7 +24,7 @@ public class MateriaPrima {
     }
 
     public boolean verificarDisponibilidade(float quant){
-        if (quant <= quantidade) {
+        if (quant <= quantidade && quant >= quantidadeMinima ) {
             return true;
         }
         return false;
