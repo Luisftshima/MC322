@@ -8,6 +8,10 @@ public class Main {
         System.out.println("BEM-VINDO À FANTÁSTICA FÁBRICA DE CHOCOLATE");
         System.out.println(linha);
 
+        System.out.println("Sejam muito bem-vindos a nossa fábrica de chocolates!");
+        System.out.println("Uma coisa é mais do que certa, a vida nunca foi tão doce!");
+        System.out.println("Confeiteiros: Alex Lei e Luis Shimamoto");
+
         MateriaPrima matPrima1 = new MateriaPrima(
             "Chocolate", 2000, "g", 
             0);
