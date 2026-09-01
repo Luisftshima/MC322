@@ -16,11 +16,13 @@ public class Esteira {
     }
 
     public void adicionarItem(String obj){
-        item = obj;
+        if (emMovimento){
+            item = obj;
+        }
     }
 
     public void removerItem(){
-        item = "";
+        item = null;
     }
 
     public float verificarCapacidade(){

@@ -65,7 +65,7 @@ public class Main {
             
             switch (leitura) {
                 case 1:
-                    System.out.print("Selecione o produto (1-n): ");
+                    System.out.print("Selecione o produto (1-2): ");
                     entrada = new Scanner(System.in);
                     leitura = entrada.nextInt();
 
@@ -113,14 +113,13 @@ public class Main {
                         
                         //colocando a matéria prima na esteira e transportando até a máquina
                         esteira1.adicionarItem(matPrima1.getNome());
-                        matPrima1.consumir(quantidade_produzida * produto.getDemandaMateriaPrima());
                         System.out.println(String.format("[OK] Matéria-prima %1$s colocada na esteira.", matPrima1.getNome()));
                         System.out.println("[VRUMM] Matéria-prima transportada até a máquina.");
                         esteira1.removerItem();
                         esteira1.desligar();
 
                         //processando a matéria prima
-                        maq1.processar(matPrima1, produto);
+                        maq1.processar(matPrima1, produto, quantidade_produzida);
                         System.out.println(String.format("[OK] Máquina processando %1$.2f %2$s de %3$s", leitura2, matPrima1.getUnidade(), produto.getMateriaPrima().getNome()));
                         System.out.println(String.format("[OK] Produto %1$d - %2$s criado.", produto.getId(), produto.getNome()));
                         maq1.desligar();

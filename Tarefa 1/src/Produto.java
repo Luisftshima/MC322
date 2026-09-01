@@ -49,13 +49,4 @@ public class Produto {
     public void adicionarEstoque(int quant){
         estoque += quant;
     }
-
-    public void removerEstoque(int quant){
-        if(estoque >= quant){
-            estoque -= quant;
-        }
-        else{
-            System.out.println("Estoque insuficiente.");
-        }
-    }
 }

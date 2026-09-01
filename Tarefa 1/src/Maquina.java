@@ -16,10 +16,10 @@ public class Maquina {
         ligada = false;
     }
 
-    public void processar(MateriaPrima m, Produto p){
+    public void processar(MateriaPrima m, Produto p, float quant){
         if(ligada){
-            if(m.verificarDisponibilidade(p.getDemandaMateriaPrima())){
-                m.consumir(p.getDemandaMateriaPrima());
+            if(m.verificarDisponibilidade(quant*p.getDemandaMateriaPrima())){
+                m.consumir(quant * p.getDemandaMateriaPrima());
             }
         }
     }

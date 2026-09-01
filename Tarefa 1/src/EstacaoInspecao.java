@@ -11,7 +11,9 @@ public class EstacaoInspecao {
     }
 
     public void inspecionar(){
-        produtosInspecionados++;
+        if (ativa){
+            produtosInspecionados++;
+        }
     }
 
     public int getTotalInspecionados(){
