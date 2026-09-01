@@ -26,7 +26,7 @@ public class Main {
         //Criando um produto, vamos ter ovo de páscoa e barra de chocolate  
         Produto prod1 = new Produto("Ovo de pascoa",
         500, matPrima1);
-        Produto prod2 = new Produto("Barra de chocolate",
+        Produto prod2 = new Produto("Barra de chocolate Wonka",
         300, matPrima1);
 
         System.out.println(linha);
@@ -149,17 +149,26 @@ public class Main {
                     }
                     
                     break;
+                
                 case 2:
+
+                    //consultar o estoque do produto ou matéria-prima
+                    System.out.println(linha);
                     System.out.println("Informe o que você gostaria de consultar:");
                     System.out.println("1 - Matéria Prima");
                     System.out.println("2 - Produtos");
+                    System.out.println(linha);
                     entrada = new Scanner(System.in);
                     leitura = entrada.nextInt();
                     switch (leitura){
+
+                        //se for matéria prima
                         case 1:
+                            System.out.println(linha);
                             System.out.println("Informe a matéria prima:");
                             System.out.println(String.format("%1$d - %2$s", matPrima1.getId(), matPrima1.getNome()));
                             entrada = new Scanner(System.in);
+                            System.out.println(linha);
                             leitura = entrada.nextInt();
                             switch (leitura) {
                                 case 1:
@@ -170,10 +179,14 @@ public class Main {
                                     break;
                             }
                             break;
+
+                        //se for produto
                         case 2:
+                            System.out.println(linha);
                             System.out.println("Informe o produto:");
                             System.out.println(String.format("%1$d - %2$s", prod1.getId(), prod1.getNome()));
                             System.out.println(String.format("%1$d - %2$s", prod2.getId(), prod2.getNome()));
+                            System.out.println(linha);
                             entrada = new Scanner(System.in);
                             leitura = entrada.nextInt();
                             switch (leitura) {
