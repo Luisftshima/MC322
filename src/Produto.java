@@ -1,32 +1,39 @@
+import java.util.Random; //para depois usar a aleatoriedade
+
 public abstract class Produto {
     private static int proximoId = 1;
+    private static int totalProdutosFabricados = 0;
+
     private int id;
     private String nome;
     private String status;
     private float quantidadeMateriaPrimaPorUnidade;
     private MateriaPrima materiaPrima;
-    private int estoque = 0;
-    private float qualidade;
-    private float probablidadeFalhaAcumulada;
-    private static totalProdutosFabricados;
+    private double qualidade; //de 0.0 a 1.0
+    private double probablidadeFalhaAcumulada = 0.0;
+    
 
     public Produto(String n, float quantidade, MateriaPrima mP){
-        id = proximoId++;
-        nome = n;
-        quantidadeMateriaPrimaPorUnidade= quantidade;
+        this.id = proximoId++;
+        this.nome = n;
+        this.quantidadeMateriaPrimaPorUnidade= quantidade;
         materiaPrima = mP;
+        totalProdutosFabricados++;
     }
-    /* 
-    public void processar(){
-        status = "Processado";
-    }*/
 
-    abstract void processar();
-    abstract void calcularTempoProducao();
-    abstract void getTipo();
+    public abstract void processar();
+    public abstract double calcularTempoProducao();
+    public abstract String getTipo();
 
     public void definirDemandaMateriaPrima(float quantidade){
         quantidadeMateriaPrimaPorUnidade = quantidade;
+    }
+
+    public void AumentarProbabilidadeFalha(double chance){
+        Random rand = new Random();
+        if(rand.nextDouble() < chance){
+            this.probablidadeFalhaAcumulada += 0.15; //incrementa a chance de falha
+        }
     }
 
     public float getDemandaMateriaPrima(){
@@ -53,15 +60,11 @@ public abstract class Produto {
         return quantidadeMateriaPrimaPorUnidade;
     }
 
-    public void AumentarProbabilidadeFalha(){
-        probablidadeFalhaAcumulada += rand
-    }
-
-    public float getQualidade(){
+    public double getQualidade(){
         return qualidade;
     }
-    public int getEstoque(){
-        return estoque;
+    public int getTotalProdutosFabricados(){
+        return totalProdutosFabricados;
     }
 
     public void adicionarEstoque(int quant){
