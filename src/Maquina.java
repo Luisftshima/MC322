@@ -4,23 +4,25 @@ public abstract class Maquina {
     private String nome;
     private boolean ligada = false;
     private float capacidadeMaxima;
-    private float probabilidadeFalha;
-    private float custoOperacao;
+    private double probabilidadeFalha; //numero entre 0.0 e 1.0
+    private double custoOperacao;
 
-    abstract void processar;
-    abstract void getTipo;
-
-    public Maquina(String n, int max){
-        nome = n;
-        capacidadeMaxima = max;
+    public Maquina(String nome, int max, double probabilidadeFalha, double custoOperacao){
+        this.nome = nome;
+        this.capacidadeMaxima = max;
+        this.probabilidadeFalha = probabilidadeFalha;
+        this.custoOperacao = custoOperacao;
     }
 
+    public abstract boolean processar(Produto produto);
+    public abstract String getTipo();
+
     public void ligar(){
-        ligada = true;
+        this.ligada = true;
     }
 
     public void desligar(){
-        ligada = false;
+        this.ligada = false;
     }
 
     public void processar(MateriaPrima m, Produto p, float quant){
@@ -46,17 +48,16 @@ public abstract class Maquina {
         return false;
     }
 
-    public String getName(){
-        return nome;
+    public float getCapacidadeMaxima(){
+        return capacidadeMaxima;
     }
-
-    public float getCustoOperacao(){
+    public double getCustoOperacao(){
         return custoOperacao;
     }
 
-    public int verificarFalha(){
+    protected boolean verificarFalha(){
         Random random = new Random();
 
-        boolean valorBoolean = random.nextBoolean();
+        return random.nextDouble() < probabilidadeFalha;
     }
 }

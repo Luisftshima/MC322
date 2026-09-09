@@ -4,6 +4,7 @@ public class MateriaPrima {
     private String nome;
     private float quantidade;
     private String unidade;
+    private double custoPorUnidade;
     private float quantidadeMinima;
 
     public MateriaPrima(String n, float quant,

@@ -10,6 +10,7 @@ public abstract class Produto {
     private float quantidadeMateriaPrimaPorUnidade;
     private MateriaPrima materiaPrima;
     private double qualidade; //de 0.0 a 1.0
+    private String tipo;
     private double probablidadeFalhaAcumulada = 0.0;
     
 
@@ -17,6 +18,7 @@ public abstract class Produto {
         this.id = proximoId++;
         this.nome = n;
         this.quantidadeMateriaPrimaPorUnidade= quantidade;
+        this.status = "Produto criado";
         materiaPrima = mP;
         totalProdutosFabricados++;
     }
@@ -48,7 +50,11 @@ public abstract class Produto {
         return nome;
     }
 
-    public String getStatus(){
+    public String setStatus(String status){
+        this.status = status;
+    }
+
+    public String getStatus(String status){
         return status;
     }
 
