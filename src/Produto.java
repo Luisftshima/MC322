@@ -54,7 +54,7 @@ public abstract class Produto {
         this.status = status;
     }
 
-    public String getStatus(String status){
+    public String getStatus(){
         return status;
     }
 

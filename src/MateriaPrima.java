@@ -46,4 +46,8 @@ public class MateriaPrima {
     public String getUnidade(){
         return unidade;
     }
+
+    public double getCustoPorUnidade(){
+        return custoPorUnidade;
+    }
 }
