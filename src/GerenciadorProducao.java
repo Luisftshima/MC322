@@ -14,39 +14,75 @@ public abstract class GerenciadorProducao {
         maquinas.add(new Misturador());
         maquinas.add(new Embaladora());
         maquinas.add(new EsteiraInspecao());
+
+        //cadastrando demandas de produtos de diversas qualidades
+        registrarDemanda("alta", 0);
+        registrarDemanda("media", 0);
+        registrarDemanda("baixa", 0);
     }
 
-    public void registrarDemanda(String tipoProduto, int qualidade){
+    public void registrarDemanda(String tipoProduto, int quantidade){
         demandas.add(new Demanda(tipoProduto, quantidade));
+    }
+
+    public void atualizarDemanda(String tipoProduto, int quantidade){
+        for(Demanda d : demandas){
+            if (d.getTipoProduto().equalsIgnoreCase(tipoProduto)){
+                d.atualizarQuantidade(quantidade);
+                return;
+            }
+        }
+        //se o tipo nao existe ainda
+        registrarDemanda(tipoProduto, quantidade);
     }
 
     public void comprarMateriaPrima(float quantidade){
         double custototal = quantidade * materiaPrima.getCustoPorUnidade();
+
+        //so compra materia prima se tiver verba
         if(budget >= custototal){
             budget -= custototal;
             materiaPrima.adicionarEstoque(quantidade);
-            System.out.println("[OBA!] Ingredientes comprados!. Novo saldo: R$" + budget);
+            System.out.println("[OBA!] Ingredientes comprados! Novo saldo: R$" + String.format("%.2f", budget));
         } else {
-            System.out.println("[ERRO] Dinheiro insuficiente!");
+            System.out.println("[ERRO] Dinheiro insuficiente para a compra!");
         }
     }
 
-    public void fabricarDemanda(int indexDemanda){
-        if(indexDemanda < 0 || indexDemanda >= demandas.size()) return;
-        Demanda d = demandas.get(indexDemanda);
+    public void fabricarDemanda(String tipoProduto){
 
-        for(int i = 0; i < d.getQuantidadeProdutos(); i++){
-            Produto p = criarProdutoPorTipo(d.getTipoProduto());
-            if (p == null) break;
+        Demanda alvo = null;
 
-            if(!materiaPrima.verificarDisponibilidade(p.getMateriaPrimaPorUnidade())){
-                System.out.println("[ERRO] Ingredientes insuficientes para produzir o chocolate!");
+        for(Demanda d : demandas){
+            if(getTipoProduto().equalsIgnoreCase(tipoProduto)){
+                alvo = d;
+                break;
+            }
+        }
+
+        if(alvo == null || alvo.getQuantidadeProdutos() <= 0){
+            System.out.println("[ERRO] Nao há demanda para este chocolate ainda!");
+            return;
+        }
+
+        int quantidadeDesejada = alvo.getQuantidadeProdutos();
+        int produzidos = 0;
+
+        for(int i = 0; i < quantidadeDesejada; i++){
+            Produto p = criarProdutoPorTipo(tipoProduto);
+
+            if (p == null){
                 break;
             }
 
-            double custoOperacaoLinha = calcularCustoProducao()
+            if(!materiaPrima.verificarDisponibilidade(p.getMateriaPrimaPorUnidade())){
+                System.out.println("[ERRO] Ingredientes insuficientes para produzir " + p.getNome() + "!");
+                break;
+            }
+
+            double custoOperacaoLinha = calcularCustoProducao();
             if(budget < custoOperacaoLinha){
-                System.out.println("[ERRO] Budget insuficiente para rodar as máquinas!");
+                System.out.println("[ERRO] Verba insuficiente para rodar as máquinas!");
                 break;
             }
 
@@ -64,11 +100,22 @@ public abstract class GerenciadorProducao {
 
             if(aprovado){
                 produtosFabricados.add(p);
+                produzidos++;
+                System.out.println("[OK] " + p.getNome() + " #" + p.getId() + " aprovado e guardado no armazém!");
             } else {
                 System.out.println("[ALERTA] Produto id #" + p.getId() + " falhou na linha e o chocolate foi destacado!");
             }
         }
-        d.atender();
+        /*desconta da fila so o que foi tentado
+        e marca como atendida quando nao sobrar
+        mais nada pendente desse tipo
+        */
+        alvo.atualizarQuantidade(-produzidos);
+        if(alvo.getQuantidadeProdutos() <= 0){
+            alvo.atender();
+        }
+
+          System.out.println("[YUMMY] Produção de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
     }
 
     //calcula o custo total das maquinas para produzir o chocolate
@@ -82,21 +129,37 @@ public abstract class GerenciadorProducao {
 
     private Produto criarProdutoPorTipo(String tipo){
         switch(tipo.toLowerCase()){
-            case "alta": return new TrufaArtesanal();
-            case "media": return new BarraChocolate();
-            case "baixa": return new GuardaChuvaChocolate();
+            case "alta": return new OvoArtesanal();
+            case "media": return new BombonsSortidos();
+            case "baixa": return new GuardaChuva();
             default: return null;
         }
     }
 
     public void exibirBudget(){
-        System.out.println("Caixa Atual: R$" + budget);
+        System.out.println("Caixa Atual: R$" + String.format("%.2f",budget);
     }
 
     public void exibirArmazem(){
         System.out.println("=====Armazém de chocolates prontos=====");
+
+        if(produtosFabricados.isEmpty()){
+            System.out.println("O mundo precisa dos nossos chocolates! Vamos fabricar!");
+        }
+
         for (Produto p : produtosFabricados){
             System.out.println("ID: " + p.getId() + " | " + p.getNome() + "| Status: " + p.getStatus());
+        }
+    }
+
+    public void exibirEstoqueMateriaPrima(){
+        System.out.println(materiaPrima.getNome() + " em estoque: " + materiaPrima.getQuantidade() + " " + materiaPrima.getUnidade());
+    }
+
+    public void exibirDemandas(){
+        System.out.println("=====DEMANDAS PENDENTES=====");
+        for(Demanda d : demandas){
+            System.out.println(d.getTipoProduto() + " -> " + d.getQuantidadeProdutos() + " unidade(s) (atendida: " + d.isAtendida() + ")");
         }
     }
 }

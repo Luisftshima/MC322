@@ -2,11 +2,10 @@
 
 public class BombonsSortidos extends Produto{
     public BombonsSortidos(){
-    super("Caixa de Bombons Wonka Sortidos", 30.0f);
-    this.qualidade = 0.7;
+    super("Caixa de Bombons Wonka Sortidos", 30.0f, 0.7);
     }
     @Override public void processar(){
-        setStatus("Bombons fabricados e na caixa");
+        setStatus("Bombons fabricados e na caixa!");
     }
 
     @Override public double calcularTempoProducao(){

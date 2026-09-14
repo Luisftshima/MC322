@@ -2,9 +2,13 @@ public class EsteiraInspecao extends Maquina{
     public EsteiraInspecao(){
         super("Sensor de controle de qualidade", 200f, 5.0, 10.0);
     }
+
     @Override 
     public boolean processar(Produto produto){
+
+        // é a única máquina que pode falahr por conta própria
         if(verificarFalha()){
+            produto.setStatus("Inspeção com defeito no sensor");
             return false;
         }
 

@@ -3,8 +3,8 @@ public abstract class Demanda {
     private int quantidadeProdutos;
     private boolean atendida; 
 
-    public Demanda(String nome, int quantidade, boolean atendida){
-        this.tipoProduto = nome;
+    public Demanda(String tipoProduto, int quantidade, boolean atendida){
+        this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidade;
         this.atendida = false;
     }
@@ -12,10 +12,14 @@ public abstract class Demanda {
     public void atualizarQuantidade(int quantidade){
         //quantidade pode ser tanto um numero negativo como um positivo
         this.quantidadeProdutos += quantidade;
+
+        if(this.quantidadeProdutos > 0){
+            this.atendida = false;
+        }
     }
 
-    public float calcularMateriaPrimaNecessaria(Produto produto, int quantidade){
-        return produto.getDemandaMateriaPrima() * quantidade;
+    public float calcularMateriaPrimaNecessaria(Produto produto){
+        return produto.getMateriaPrimaPorUnidade() * this.quantidadeProdutos;
     }
 
     public void atender(){

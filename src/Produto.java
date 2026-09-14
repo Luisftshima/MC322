@@ -8,18 +8,17 @@ public abstract class Produto {
     private String nome;
     private String status;
     private float quantidadeMateriaPrimaPorUnidade;
-    private MateriaPrima materiaPrima;
     private double qualidade; //de 0.0 a 1.0
-    private String tipo;
-    private double probablidadeFalhaAcumulada = 0.0;
+    private double probablidadeFalhaAcumulada; //aumenta a cada maquina que passa
     
 
-    public Produto(String n, float quantidade, MateriaPrima mP){
+    public Produto(String nome, float quantidadeMateriaPrimaPorUnidade, double qualidade){
         this.id = proximoId++;
-        this.nome = n;
-        this.quantidadeMateriaPrimaPorUnidade= quantidade;
-        this.status = "Produto criado";
-        materiaPrima = mP;
+        this.nome = nome;
+        this.quantidadeMateriaPrimaPorUnidade= quantidadeMateriaPrimaPorUnidade;
+        this.status = "Aguardando processamento...";
+        this.qualidade = qualidade;
+        this.probablidadeFalhaAcumulada = 0.0;
         totalProdutosFabricados++;
     }
 
@@ -27,19 +26,11 @@ public abstract class Produto {
     public abstract double calcularTempoProducao();
     public abstract String getTipo();
 
-    public void definirDemandaMateriaPrima(float quantidade){
-        quantidadeMateriaPrimaPorUnidade = quantidade;
-    }
-
     public void AumentarProbabilidadeFalha(double chance){
         Random rand = new Random();
         if(rand.nextDouble() < chance){
-            this.probablidadeFalhaAcumulada += 0.15; //incrementa a chance de falha
+            this.probablidadeFalhaAcumulada += chance; //incrementa a chance de falha
         }
-    }
-
-    public float getDemandaMateriaPrima(){
-        return quantidadeMateriaPrimaPorUnidade;
     }
 
     public int getId(){
@@ -50,16 +41,12 @@ public abstract class Produto {
         return nome;
     }
 
-    public String setStatus(String status){
-        this.status = status;
-    }
-
     public String getStatus(){
         return status;
     }
 
-    public MateriaPrima getMateriaPrima(){
-        return materiaPrima;
+    public void setStatus(String status){
+        this.status = status;
     }
 
     public float getMateriaPrimaPorUnidade(){
@@ -71,10 +58,6 @@ public abstract class Produto {
     }
     public int getTotalProdutosFabricados(){
         return totalProdutosFabricados;
-    }
-
-    public void adicionarEstoque(int quant){
-        estoque += quant;
     }
 
 }

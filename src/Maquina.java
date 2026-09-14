@@ -1,17 +1,18 @@
 import java.util.Random;
 
-public abstract class Maquina {
+public abstract class Maquina{
     private String nome;
-    private boolean ligada = false;
+    private boolean ligada;
     private float capacidadeMaxima;
     private double probabilidadeFalha; //numero entre 0.0 e 1.0
     private double custoOperacao;
 
-    public Maquina(String nome, int max, double probabilidadeFalha, double custoOperacao){
+    public Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao){
         this.nome = nome;
-        this.capacidadeMaxima = max;
+        this.capacidadeMaxima = capacidadeMaxima;
         this.probabilidadeFalha = probabilidadeFalha;
         this.custoOperacao = custoOperacao;
+        this.ligada = false;
     }
 
     public abstract boolean processar(Produto produto);
@@ -25,10 +26,14 @@ public abstract class Maquina {
         this.ligada = false;
     }
 
+    public boolean estaLigada(){
+        return ligada;
+    }
+
     public void processar(MateriaPrima m, Produto p, float quant){
         if(ligada){
-            if(m.verificarDisponibilidade(quant*p.getDemandaMateriaPrima())){
-                m.consumir(quant * p.getDemandaMateriaPrima());
+            if(m.verificarDisponibilidade(quant*p.quantidadeMateriaPrimaPorUnidade())){
+                m.consumir(quant * p.quantidadeMateriaPrimaPorUnidade());
             }
         }
     }
@@ -37,27 +42,16 @@ public abstract class Maquina {
         return nome;
     }
 
-    public boolean estaLigada(){
-        return ligada;
-    }
-
-    public boolean temCapacidade(float quant){
-        if(quant <= capacidadeMaxima){
-            return true;
-        }
-        return false;
-    }
-
     public float getCapacidadeMaxima(){
         return capacidadeMaxima;
     }
+
     public double getCustoOperacao(){
         return custoOperacao;
     }
 
     protected boolean verificarFalha(){
         Random random = new Random();
-
         return random.nextDouble() < probabilidadeFalha;
     }
 }

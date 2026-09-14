@@ -1,19 +1,19 @@
 public class MateriaPrima {
     private static int proximoId = 1;
+
     private int id;
     private String nome;
     private float quantidade;
     private String unidade;
     private double custoPorUnidade;
-    private float quantidadeMinima;
 
-    public MateriaPrima(String n, float quant,
-        String un, float min){
-        id = proximoId++;
-        nome = n;
-        quantidade = quant;
-        unidade = un;
-        quantidadeMinima = min;
+
+    public MateriaPrima(String nome, float quantidade, String unidade, double custoPorUnidade){
+        this.id = proximoId++;
+        this.nome = nome;
+        this.quantidade = quantidade;
+        this.unidade = unidade;
+        this.custoPorUnidade = custoPorUnidade;
     }
 
     public void consumir(float quant){
@@ -25,10 +25,7 @@ public class MateriaPrima {
     }
 
     public boolean verificarDisponibilidade(float quant){
-        if (quant <= quantidade && quant >= quantidadeMinima ) {
-            return true;
-        }
-        return false;
+        return quant <= quantidade;
     }
 
     public int getId(){
