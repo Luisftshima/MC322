@@ -30,14 +30,6 @@ public abstract class Maquina{
         return ligada;
     }
 
-    public void processar(MateriaPrima m, Produto p, float quant){
-        if(ligada){
-            if(m.verificarDisponibilidade(quant*p.quantidadeMateriaPrimaPorUnidade())){
-                m.consumir(quant * p.quantidadeMateriaPrimaPorUnidade());
-            }
-        }
-    }
-
     public String getNome(){
         return nome;
     }

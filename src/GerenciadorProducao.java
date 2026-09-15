@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public abstract class GerenciadorProducao {
+public class GerenciadorProducao {
     private ArrayList<Demanda> demandas = new ArrayList<>();
     private ArrayList<Produto> produtosFabricados = new ArrayList<>();
     private ArrayList<Maquina> maquinas = new ArrayList<>();
@@ -13,7 +13,7 @@ public abstract class GerenciadorProducao {
 
         maquinas.add(new Misturador());
         maquinas.add(new Embaladora());
-        maquinas.add(new EsteiraInspecao());
+        maquinas.add(new EstacaoInspecao());
 
         //cadastrando demandas de produtos de diversas qualidades
         registrarDemanda("alta", 0);
@@ -54,7 +54,7 @@ public abstract class GerenciadorProducao {
         Demanda alvo = null;
 
         for(Demanda d : demandas){
-            if(getTipoProduto().equalsIgnoreCase(tipoProduto)){
+            if(d.getTipoProduto().equalsIgnoreCase(tipoProduto)){
                 alvo = d;
                 break;
             }
@@ -137,7 +137,7 @@ public abstract class GerenciadorProducao {
     }
 
     public void exibirBudget(){
-        System.out.println("Caixa Atual: R$" + String.format("%.2f",budget);
+        System.out.println(String.format("Caixa Atual: R$%.2f",budget));
     }
 
     public void exibirArmazem(){

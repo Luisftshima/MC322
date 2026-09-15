@@ -1,12 +1,11 @@
-public abstract class Demanda {
+public class Demanda {
     private String tipoProduto;
     private int quantidadeProdutos;
-    private boolean atendida; 
+    private boolean atendida = false; 
 
-    public Demanda(String tipoProduto, int quantidade, boolean atendida){
+    public Demanda(String tipoProduto, int quantidade){
         this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidade;
-        this.atendida = false;
     }
 
     public void atualizarQuantidade(int quantidade){

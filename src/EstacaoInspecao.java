@@ -1,23 +1,29 @@
-public class EstacaoInspecao {
-    private boolean ativa = false;
-    private int produtosInspecionados = 0;
-
-    public void ativar(EstacaoInspecao estacaoInspecao){
-        estacaoInspecao.ativa = true;
+public class EstacaoInspecao extends Maquina{
+    public EstacaoInspecao(){
+        super("Sensor de controle de qualidade", 200, 5.0, 10.0);
     }
 
-    public void desativar(EstacaoInspecao estacaoInspecao){
-        estacaoInspecao.ativa = false;
-    }
+    @Override 
+    public boolean processar(Produto produto){
 
-    public void inspecionar(){
-        if (ativa){
-            produtosInspecionados++;
+        // é a única máquina que pode falahr por conta própria
+        if(verificarFalha()){
+            produto.setStatus("Inspeção com defeito no sensor");
+            return false;
         }
-    }
 
-    public int getTotalInspecionados(){
-        return produtosInspecionados;
-    }
+        double chanceDeRejeicao = produto.getProbabilidadeFalhaAcumulada() * produto.getQualidade();
 
+        java.util.Random rand = new java.util.Random();
+        if (rand.nextDouble() < chanceDeRejeicao){
+            produto.setStatus("Rejeitado na Inspeção.");
+            return false;
+        }
+
+        produto.setStatus("Aprovado!");
+        return true;
+    }
+    @Override public String getTipo(){
+        return "Inspeção";
+    }
 }

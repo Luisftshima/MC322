@@ -9,7 +9,7 @@ public abstract class Produto {
     private String status;
     private float quantidadeMateriaPrimaPorUnidade;
     private double qualidade; //de 0.0 a 1.0
-    private double probablidadeFalhaAcumulada; //aumenta a cada maquina que passa
+    private double probablidadeFalhaAcumulada = 0.0; //aumenta a cada maquina que passa
     
 
     public Produto(String nome, float quantidadeMateriaPrimaPorUnidade, double qualidade){
@@ -18,7 +18,6 @@ public abstract class Produto {
         this.quantidadeMateriaPrimaPorUnidade= quantidadeMateriaPrimaPorUnidade;
         this.status = "Aguardando processamento...";
         this.qualidade = qualidade;
-        this.probablidadeFalhaAcumulada = 0.0;
         totalProdutosFabricados++;
     }
 

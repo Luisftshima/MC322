@@ -13,6 +13,6 @@ public class BombonsSortidos extends Produto{
     }
 
     @Override public String getTipo(){
-        return "Qualidade média";
+        return "Média Qualidade";
     }
 }

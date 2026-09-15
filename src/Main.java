@@ -287,7 +287,7 @@ public class Main {
                     System.out.println("Entrada Inválida");
             }
         }
-        entrada.close()
+        entrada.close();
     }
 
     private static void atualizarDemanda(Scanner entrada, GerenciadorProducao fabrica, String tipo, String nome_produto){
