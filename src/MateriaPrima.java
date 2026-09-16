@@ -7,7 +7,6 @@ public class MateriaPrima {
     private String unidade;
     private double custoPorUnidade;
 
-
     public MateriaPrima(String nome, float quantidade, String unidade, double custoPorUnidade){
         this.id = proximoId++;
         this.nome = nome;

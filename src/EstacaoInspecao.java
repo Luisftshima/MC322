@@ -1,6 +1,6 @@
 public class EstacaoInspecao extends Maquina{
     public EstacaoInspecao(){
-        super("Sensor de controle de qualidade", 200, 5.0, 10.0);
+        super("Sensor de controle de qualidade", 200, 0.05, 0.5);
     }
 
     @Override 
@@ -12,11 +12,10 @@ public class EstacaoInspecao extends Maquina{
             return false;
         }
 
-        double chanceDeRejeicao = produto.getProbabilidadeFalhaAcumulada() * produto.getQualidade();
-
         java.util.Random rand = new java.util.Random();
-        if (rand.nextDouble() < chanceDeRejeicao){
+        if (rand.nextDouble() < produto.getProbabilidadeFalha()){
             produto.setStatus("Rejeitado na Inspeção.");
+            produto.ResetarProbabilidadeFalha();
             return false;
         }
 

@@ -1,10 +1,13 @@
 public class Embaladora extends Maquina{
     public Embaladora(){
-        super("Embaladora Wonka", 500f, 10.0, 15.0);
+        super("Embaladora Wonka", 500, 
+        0.1, 1.5);
     }
 
     @Override public boolean processar(Produto produto){
-        produto.AumentarProbabilidadeFalha(this.probabilidadeFalhaAcumulada);
+        if (verificarFalha()){
+            produto.AumentarProbabilidadeFalha();
+        }
         produto.setStatus("Embalado");
         return true;
     }

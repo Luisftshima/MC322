@@ -9,7 +9,7 @@ public abstract class Produto {
     private String status;
     private float quantidadeMateriaPrimaPorUnidade;
     private double qualidade; //de 0.0 a 1.0
-    private double probablidadeFalhaAcumulada = 0.0; //aumenta a cada maquina que passa
+    private double probablidadeFalhaAcumulada = 0.0; //chance de aumentar a cada maquina que passa
     
 
     public Produto(String nome, float quantidadeMateriaPrimaPorUnidade, double qualidade){
@@ -25,11 +25,16 @@ public abstract class Produto {
     public abstract double calcularTempoProducao();
     public abstract String getTipo();
 
-    public void AumentarProbabilidadeFalha(double chance){
-        Random rand = new Random();
-        if(rand.nextDouble() < chance){
-            this.probablidadeFalhaAcumulada += chance; //incrementa a chance de falha
-        }
+    public void AumentarProbabilidadeFalha(){
+        probablidadeFalhaAcumulada += qualidade * 0.1;
+    }
+
+    public double getProbabilidadeFalha(){
+        return probablidadeFalhaAcumulada;
+    }
+
+    public void ResetarProbabilidadeFalha(){
+        probablidadeFalhaAcumulada = 0.0;
     }
 
     public int getId(){

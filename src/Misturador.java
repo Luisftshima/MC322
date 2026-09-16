@@ -1,9 +1,11 @@
 public class Misturador extends Maquina{
     public Misturador(){
-        super("Super Misturador de Ingredientes", 1000f, 0.15, 25.0);
+        super("Super Misturador de Ingredientes", 1000, 0.15, 0.25);
     }
     @Override public boolean processar(Produto produto){
-        produto.aumentarProbabilidadeFalha(getProbabilidadeFalha);
+        if (verificarFalha()){
+            produto.AumentarProbabilidadeFalha();
+        }
         produto.processar();
         return true;
     }

@@ -1,7 +1,7 @@
 public class Demanda {
     private String tipoProduto;
     private int quantidadeProdutos;
-    private boolean atendida = false; 
+    private boolean atendida = true; 
 
     public Demanda(String tipoProduto, int quantidade){
         this.tipoProduto = tipoProduto;
