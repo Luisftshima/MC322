@@ -6,6 +6,7 @@ public class GerenciadorProducao {
     private ArrayList<Maquina> maquinas = new ArrayList<>();
     private MateriaPrima materiaPrima;
     private double budget;
+    private EstrategiaProducao estrategiaAtual;
 
     public GerenciadorProducao(MateriaPrima materiaPrima, double budgetInicial){
         this.materiaPrima = materiaPrima;
@@ -159,7 +160,20 @@ public class GerenciadorProducao {
     public void exibirDemandas(){
         System.out.println("=====DEMANDAS PENDENTES=====");
         for(Demanda d : demandas){
-            System.out.println(d.getTipoProduto() + " -> " + d.getQuantidadeProdutos() + " unidade(s) (atendida: " + d.isAtendida() + ")");
+            System.out.println(d.getTipoProduto() + " -> " + d.getQuantidadeProdutos() + " unidade(s) (atendida: " + d.getStatus() + ")");
         }
     }
+
+    public void atualizarEstrategia(EstrategiaProducao estrategia){
+        this.estrategiaAtual = estrategia;
+    }
+
+    public void executarProximaProducao(){
+        estrategiaAtual.selecionarDemanda(demandas, budget);
+    }
+
+    public void gerarAuditoriaGeral(){
+
+    }
+
 }

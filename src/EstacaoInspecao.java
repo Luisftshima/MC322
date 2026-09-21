@@ -1,6 +1,6 @@
 public class EstacaoInspecao extends Maquina{
     public EstacaoInspecao(){
-        super("Sensor de controle de qualidade", 200, 0.05, 0.5);
+        super("Sensor de controle de qualidade", 200, 0.05, 0.5, 100);
     }
 
     @Override 

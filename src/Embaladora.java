@@ -1,7 +1,6 @@
 public class Embaladora extends Maquina{
     public Embaladora(){
-        super("Embaladora Wonka", 500, 
-        0.1, 1.5);
+        super("Embaladora Wonka", 500, 0.1, 1.5, 100);
     }
 
     @Override public boolean processar(Produto produto){
