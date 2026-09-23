@@ -1,7 +1,7 @@
 public class Demanda {
     private String tipoProduto;
     private int quantidadeProdutos;
-    private StatusPedido status; 
+    private StatusDemanda status = StatusDemanda.CONCLUIDA; 
 
     public Demanda(String tipoProduto, int quantidade){
         this.tipoProduto = tipoProduto;
@@ -13,8 +13,9 @@ public class Demanda {
         this.quantidadeProdutos += quantidade;
 
         if(this.quantidadeProdutos > 0){
-            this.status = StatusPedido.PENDENTE;
+            this.status = StatusDemanda.PENDENTE;
         }
+        this.atender();
     }
 
     public float calcularMateriaPrimaNecessaria(Produto produto){
@@ -22,7 +23,7 @@ public class Demanda {
     }
 
     public void atender(){
-        status = StatusPedido.CONCLUIDA;
+        status = StatusDemanda.CONCLUIDA;
     }
 
     public String getTipoProduto(){
@@ -33,7 +34,7 @@ public class Demanda {
         return quantidadeProdutos;
     }
 
-    public StatusPedido getStatus(){
+    public StatusDemanda getStatus(){
         return status;
     }
 }

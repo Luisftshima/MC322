@@ -14,6 +14,7 @@ public abstract class Maquina implements Auditavel{
         this.probabilidadeFalha = probabilidadeFalha;
         this.custoOperacao = custoOperacao;
         this.ligada = false;
+        this.saude = saude;
     }
 
     public abstract boolean processar(Produto produto);
@@ -53,6 +54,10 @@ public abstract class Maquina implements Auditavel{
     }
 
     public boolean precisaManutencao(){
-        return true;
+        if (saude <= 30){
+            return true;
+        }
+        return false;
+        
     }
 }
