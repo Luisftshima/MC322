@@ -24,8 +24,28 @@ public class Main {
         
         //passando a materia prima e a verba inicial
 
-        GerenciadorProducao fabrica = new GerenciadorProducao(chocolate, 10000.0);
+        System.out.println("ESCOLHA O CENÁRIO DA OPERAÇÃO");
+        System.out.println("1 - Ideal (budget farto, poucas falhas, desgaste reduzido)");
+        System.out.println("2 - Apocalíptico (budget limitado, mais falhas, desgaste acelerado)");
+        System.out.print("Escolha: ");
 
+
+        Cenario cenario;
+        while (true) {
+            int opcao = lerInteiro(entrada);
+            if (opcao == 1) {
+                cenario = Cenario.IDEAL;
+                break;
+            }
+            if (opcao == 2) {
+                cenario = Cenario.APOCALIPTICO;
+                break;
+            }
+            System.out.print("[ERRO] Escolha 1 ou 2: ");
+        }
+
+        GerenciadorProducao fabrica = new GerenciadorProducao(chocolate, cenario);
+        
         boolean rodando_programa = true;
 
         while (rodando_programa){

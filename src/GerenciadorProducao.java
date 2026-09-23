@@ -7,14 +7,20 @@ public class GerenciadorProducao {
     private MateriaPrima materiaPrima;
     private double budget;
     private EstrategiaProducao estrategiaAtual;
+    private Cenario cenario;
 
-    public GerenciadorProducao(MateriaPrima materiaPrima, double budgetInicial){
+    public GerenciadorProducao(MateriaPrima materiaPrima, Cenario cenario){
         this.materiaPrima = materiaPrima;
-        this.budget = budgetInicial;
+        this.cenario = cenario;
+        this.budget = cenario.getOrcamentoInicial();
 
         maquinas.add(new Misturador());
         maquinas.add(new Embaladora());
         maquinas.add(new EstacaoInspecao());
+
+        for (Maquina maquina: maquinas){
+            maquina.atualizarCenario(cenario);
+        }
 
         //cadastrando demandas de produtos de diversas qualidades
         registrarDemanda("alta", 0);
