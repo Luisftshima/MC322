@@ -162,6 +162,10 @@ public class GerenciadorProducao {
         this.estrategiaAtual = estrategia;
     }
 
+    public EstrategiaProducao getEstrategia(){
+        return this.estrategiaAtual;
+    }
+
     public void executarProximaProducao(){
         Demanda alvo = estrategiaAtual.selecionarDemanda(demandas, budget);
         fabricarDemanda(alvo);

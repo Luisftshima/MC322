@@ -50,6 +50,9 @@ public class Main {
 
         while (rodando_programa){
             System.out.println();
+            System.out.println("FANTÁSTICA FÁBRICA DE CHOCOLATE");
+            System.out.println("Cenário:" + cenario.getNome());
+            System.out.println("Estratégia:" + fabrica.getEstrategia().getNomeEstrategia());
             fabrica.exibirBudget();
             System.out.println(linha);
             System.out.println("Atualizar Demandas");
