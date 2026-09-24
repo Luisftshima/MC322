@@ -1,6 +1,6 @@
 public class Embaladora extends Maquina{
-    public Embaladora(){
-        super("Embaladora Wonka", 500, 0.1, 1.5, 100);
+    public Embaladora(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude, Cenario cenario){
+        super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, cenario);
     }
 
     @Override public boolean processar(Produto produto){
@@ -14,4 +14,6 @@ public class Embaladora extends Maquina{
     @Override public String getTipo(){
         return "Embalagem";
     }
+
+
 }

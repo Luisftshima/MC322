@@ -1,6 +1,6 @@
 public class Misturador extends Maquina{
-    public Misturador(){
-        super("Super Misturador de Ingredientes", 1000, 0.15, 0.25, 100);
+    public Misturador(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude, Cenario cenario){
+        super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, cenario);
     }
     @Override public boolean processar(Produto produto){
         if (verificarFalha()){

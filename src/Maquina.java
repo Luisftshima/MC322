@@ -7,16 +7,16 @@ public abstract class Maquina implements Auditavel{
     private double probabilidadeFalha; //numero entre 0.0 e 1.0
     private double custoOperacao;
     private int saude;
-    private int totalOperacoes = 0;
-    private int totalFalhas = 0;
+    private Cenario cenario;
 
-    public Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude){
+    public Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude, Cenario cenario){
         this.nome = nome;
         this.capacidadeMaxima = capacidadeMaxima;
         this.probabilidadeFalha = probabilidadeFalha;
         this.custoOperacao = custoOperacao;
         this.ligada = false;
         this.saude = saude;
+        this.cenario = cenario;
     }
 
     public abstract boolean processar(Produto produto);
@@ -46,17 +46,15 @@ public abstract class Maquina implements Auditavel{
         return custoOperacao;
     }
 
-    protected boolean verificarFalha(double multiplicadorFalha){
-        Random random = new Random();
+    protected boolean verificarFalha(){
         if (saude <= 0) {
-            return 1.0;
+            return true;
         }
 
-        // Inversamente proporcional à saúde: com 50% de saúde, a chance dobra.
+        Random random = new Random();
         double fatorSaude = 100.0 / saude;
-        double prob = probabilidadeFalha * multiplicadorFalha * fatorSaude;
+        double prob = probabilidadeFalha * cenario.getMultiplicadorFalha() * fatorSaude;
         return random.nextDouble() < prob;
-    }
     }
 
     public String gerarRelatorioDiagnostico(){
@@ -69,5 +67,10 @@ public abstract class Maquina implements Auditavel{
         }
         return false;
         
+    }
+
+    public void deteriorarMaquina(){
+         Random random = new Random();
+         saude -= random.nextDouble(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo());
     }
 }

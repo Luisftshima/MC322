@@ -1,6 +1,6 @@
 public class EstacaoInspecao extends Maquina{
-    public EstacaoInspecao(){
-        super("Sensor de controle de qualidade", 200, 0.05, 0.5, 100);
+    public EstacaoInspecao(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude, Cenario cenario){
+        super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, cenario);
     }
 
     @Override 

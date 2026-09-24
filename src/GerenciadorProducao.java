@@ -15,12 +15,9 @@ public class GerenciadorProducao {
         this.budget = cenario.getOrcamentoInicial();
 
         maquinas.add(new Misturador());
-        maquinas.add(new Embaladora());
-        maquinas.add(new EstacaoInspecao());
+        maquinas.add(new Embaladora("Embaladora Wonka", 500, 0.1, 1.5, 100, cenario));
+        maquinas.add(new EstacaoInspecao("Sensor de controle de qualidade", 200, 0.05, 0.5, 100, cenario));
 
-        for (Maquina maquina: maquinas){
-            maquina.atualizarCenario(cenario);
-        }
 
         //cadastrando demandas de produtos de diversas qualidades
         registrarDemanda("alta", 0);
