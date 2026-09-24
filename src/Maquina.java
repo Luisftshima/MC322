@@ -58,7 +58,7 @@ public abstract class Maquina implements Auditavel{
     }
 
     public String gerarRelatorioDiagnostico(){
-        return "";
+        return this.nome + "| Saúde: " + this.saude +"| Manutenção Necessária: " + this.precisaManutencao();
     }
 
     public boolean precisaManutencao(){

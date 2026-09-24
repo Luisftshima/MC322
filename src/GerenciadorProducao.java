@@ -14,7 +14,7 @@ public class GerenciadorProducao {
         this.cenario = cenario;
         this.budget = cenario.getOrcamentoInicial();
 
-        maquinas.add(new Misturador());
+        maquinas.add(new Misturador("Super Misturador de Ingredientes", 1000, 0.15, 0.25, 100, cenario));
         maquinas.add(new Embaladora("Embaladora Wonka", 500, 0.1, 1.5, 100, cenario));
         maquinas.add(new EstacaoInspecao("Sensor de controle de qualidade", 200, 0.05, 0.5, 100, cenario));
 
@@ -53,16 +53,7 @@ public class GerenciadorProducao {
         }
     }
 
-    public void fabricarDemanda(String tipoProduto){
-
-        Demanda alvo = null;
-
-        for(Demanda d : demandas){
-            if(d.getTipoProduto().equalsIgnoreCase(tipoProduto)){
-                alvo = d;
-                break;
-            }
-        }
+    public void fabricarDemanda(Demanda alvo){
 
         if(alvo == null || alvo.getQuantidadeProdutos() <= 0){
             System.out.println("[ERRO] Nao há demanda para este chocolate ainda!");
@@ -73,7 +64,7 @@ public class GerenciadorProducao {
         int produzidos = 0;
 
         for(int i = 0; i < quantidadeDesejada; i++){
-            Produto p = criarProdutoPorTipo(tipoProduto);
+            Produto p = criarProdutoPorTipo(alvo.getTipoProduto());
 
             if (p == null){
                 break;
@@ -152,7 +143,7 @@ public class GerenciadorProducao {
         }
 
         for (Produto p : produtosFabricados){
-            System.out.println("ID: " + p.getId() + " | " + p.getNome() + "| Status: " + p.getStatus());
+            System.out.println("ID: " + p.getId() + " | " + p.getNome() + "| Status: " + p.getStatus() +"| Quantidade: " + p.getTotalProdutosFabricados());
         }
     }
 
@@ -172,11 +163,29 @@ public class GerenciadorProducao {
     }
 
     public void executarProximaProducao(){
-        estrategiaAtual.selecionarDemanda(demandas, budget);
+        Demanda alvo = estrategiaAtual.selecionarDemanda(demandas, budget);
+        fabricarDemanda(alvo);
+    }
+
+    public void fabricarPorTipo(String tipoProduto){
+        for (Demanda demanda: demandas){
+            if (demanda.getTipoProduto().equalsIgnoreCase(tipoProduto)){
+                fabricarDemanda(demanda);
+                break;
+            }
+        }
     }
 
     public void gerarAuditoriaGeral(){
-
+        System.out.println("RELATÓRIO GERAL");
+        System.out.println("MÁQUINAS");
+        for (Maquina maquina: maquinas){
+            maquina.gerarRelatorioDiagnostico();
+        }
+        System.out.println("PRODUTOS");
+        for (Produto produto: produtosFabricados){
+            produto.gerarRelatorioDiagnostico();
+        }
     }
 
 }

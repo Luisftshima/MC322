@@ -57,15 +57,22 @@ public class Main {
             System.out.println("2 - Atualizar demanda de Bombons Sortidos (Média)");
             System.out.println("3 - Atualizar demanda de Guarda-chuvas de Chocolate (Baixa)");
             System.out.println("Fabricar");
-            System.out.println("4 - Fabricar Ovo Artesanal");
-            System.out.println("5 - Fabricar Bombons Sortidos");
-            System.out.println("6 - Fabricar Guarda-chuva de Chocolate");
+            System.out.println("4 - Fabricar próxima demanda");
+            System.out.println("5 - Fabricar Ovo Artesanal");
+            System.out.println("6 - Fabricar Bombons Sortidos");
+            System.out.println("7 - Fabricar Guarda-chuva de Chocolate");
             System.out.println("Consultar");
-            System.out.println("7 - Ver armazém");
-            System.out.println("8 - Ver estoque de matéria-prima");
-            System.out.println("9 - Ver demandas pendentes");
+            System.out.println("8 - Ver armazém");
+            System.out.println("9 - Ver estoque de matéria-prima");
+            System.out.println("10 - Ver demandas pendentes");
             System.out.println("COMPRAR MATÉRIA-PRIMA");
-            System.out.println("10 - Comprar chocolate");
+            System.out.println("11 - Comprar chocolate");
+            System.out.println("ATUALIZAR ESTRATÉGIA");
+            System.out.println("12 - Estratégia de Chocolate mais Amado");
+            System.out.println("13 - Estratégia de Maior Produção");
+            System.out.println("14 - Estratégia de Quem Chegou Primeiro");
+            System.out.println("AUDITORIA");
+            System.out.println("15 - Gerar Relatório Auditoria");
             System.out.println("0 - SAIR");
             System.out.println(linha);
             System.out.print("Escolha: ");
@@ -83,27 +90,41 @@ public class Main {
                     atualizarDemanda(entrada, fabrica, "baixa", "Guarda-chuva de chocolate");
                     break;
                 case 4:
-                    fabrica.fabricarDemanda("alta");
-                    break;
+                    fabrica.executarProximaProducao();
                 case 5:
-                    fabrica.fabricarDemanda("media");
+                    fabrica.fabricarPorTipo("alta");
                     break;
                 case 6:
-                    fabrica.fabricarDemanda("baixa");
+                    fabrica.fabricarPorTipo("media");
                     break;
                 case 7:
-                    fabrica.exibirArmazem();
+                    fabrica.fabricarPorTipo("baixa");
                     break;
                 case 8:
-                    fabrica.exibirEstoqueMateriaPrima();
+                    fabrica.exibirArmazem();
                     break;
                 case 9:
-                    fabrica.exibirDemandas();
+                    fabrica.exibirEstoqueMateriaPrima();
                     break;
                 case 10:
+                    fabrica.exibirDemandas();
+                    break;
+                case 11:
                     System.out.println("Quantos gramas de chocolate quer comprar?");
                     float quant = lerFloat(entrada);
                     fabrica.comprarMateriaPrima(quant);
+                    break;
+                case 12:
+                    fabrica.atualizarEstrategia(new EstrategiaMaiorDemanda());
+                    break;
+                case 13:
+                    fabrica.atualizarEstrategia(new EstrategiaMaximoProdutos());
+                    break;
+                case 14:
+                    fabrica.atualizarEstrategia(new EstrategiaOrdemChegada());
+                    break;
+                case 15:
+                    fabrica.atualizarEstrategia(new EstrategiaOrdemChegada());
                     break;
                 default:
                     System.out.println("Entrada Inválida");

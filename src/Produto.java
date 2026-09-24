@@ -9,7 +9,7 @@ public abstract class Produto implements Auditavel{
     private String status;
     private float quantidadeMateriaPrimaPorUnidade;
     private double qualidade; //de 0.0 a 1.0
-    private double probablidadeFalhaAcumulada = 0.0; //chance de aumentar a cada maquina que passa
+    private double probabilidadeFalhaAcumulada = 0.0; //chance de aumentar a cada maquina que passa
     
 
     public Produto(String nome, float quantidadeMateriaPrimaPorUnidade, double qualidade){
@@ -26,15 +26,15 @@ public abstract class Produto implements Auditavel{
     public abstract String getTipo();
 
     public void AumentarProbabilidadeFalha(){
-        probablidadeFalhaAcumulada += qualidade * 0.1;
+        probabilidadeFalhaAcumulada += qualidade * 0.1;
     }
 
     public double getProbabilidadeFalha(){
-        return probablidadeFalhaAcumulada;
+        return probabilidadeFalhaAcumulada;
     }
 
     public void ResetarProbabilidadeFalha(){
-        probablidadeFalhaAcumulada = 0.0;
+        probabilidadeFalhaAcumulada = 0.0;
     }
 
     public int getId(){
@@ -65,11 +65,11 @@ public abstract class Produto implements Auditavel{
     }
 
     public String gerarRelatorioDiagnostico(){
-        return "";
+        return "ID: " + this.id + " | " + this.nome + "| Status: " + this.status + "| Quantidade: " + this.status + "| Manutenção Necessária: " + this.precisaManutencao();
     }
 
     public boolean precisaManutencao(){
-        return true;
+        return this.probabilidadeFalhaAcumulada > 0.5;
     }
     
 }
