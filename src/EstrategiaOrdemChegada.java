@@ -4,7 +4,9 @@ public class EstrategiaOrdemChegada implements EstrategiaProducao{
 
     public Demanda selecionarDemanda(List<Demanda> demandas, double orcamentoDisponivel) {
         for (Demanda demanda: demandas){
-            return demanda;
+            if (demanda.getStatus().equals(StatusDemanda.PENDENTE)){
+                return demanda;
+            }
         }
 		return null;
     }

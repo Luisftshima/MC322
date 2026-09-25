@@ -14,6 +14,7 @@ public class Demanda {
 
         if(this.quantidadeProdutos > 0){
             this.status = StatusDemanda.PENDENTE;
+            return;
         }
         this.atender();
     }
@@ -22,8 +23,16 @@ public class Demanda {
         return produto.getMateriaPrimaPorUnidade() * this.quantidadeProdutos;
     }
 
+    public void emProdução(){
+        this.status = StatusDemanda.EM_PRODUCAO;
+    }
+
     public void atender(){
-        status = StatusDemanda.CONCLUIDA;
+        this.status = StatusDemanda.CONCLUIDA;
+    }
+
+    public void cancelar(){
+        this.status = StatusDemanda.CANCELADA;
     }
 
     public String getTipoProduto(){

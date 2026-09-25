@@ -94,6 +94,7 @@ public class Main {
                     break;
                 case 4:
                     fabrica.executarProximaProducao();
+                    break;
                 case 5:
                     fabrica.fabricarPorTipo("alta");
                     break;
@@ -118,16 +119,19 @@ public class Main {
                     fabrica.comprarMateriaPrima(quant);
                     break;
                 case 12:
-                    fabrica.atualizarEstrategia(new EstrategiaMaiorDemanda());
+                    fabrica.setEstrategia(new EstrategiaMaiorDemanda());
                     break;
                 case 13:
-                    fabrica.atualizarEstrategia(new EstrategiaMaximoProdutos());
+                    fabrica.setEstrategia(new EstrategiaMaximoProdutos());
                     break;
                 case 14:
-                    fabrica.atualizarEstrategia(new EstrategiaOrdemChegada());
+                    fabrica.setEstrategia(new EstrategiaOrdemChegada());
                     break;
                 case 15:
-                    fabrica.atualizarEstrategia(new EstrategiaOrdemChegada());
+                    fabrica.gerarAuditoriaGeral();
+                    break;
+                case 0:
+                    rodando_programa = false;
                     break;
                 default:
                     System.out.println("Entrada Inválida");

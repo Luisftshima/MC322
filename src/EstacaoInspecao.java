@@ -11,6 +11,7 @@ public class EstacaoInspecao extends Maquina{
             produto.setStatus("Inspeção com defeito no sensor");
             return false;
         }
+        this.deteriorarMaquina();
 
         java.util.Random rand = new java.util.Random();
         if (rand.nextDouble() < produto.getProbabilidadeFalha()){

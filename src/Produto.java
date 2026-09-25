@@ -1,5 +1,3 @@
-import java.util.Random; //para depois usar a aleatoriedade
-
 public abstract class Produto implements Auditavel{
     private static int proximoId = 1;
     private static int totalProdutosFabricados = 0;
@@ -65,7 +63,7 @@ public abstract class Produto implements Auditavel{
     }
 
     public String gerarRelatorioDiagnostico(){
-        return "ID: " + this.id + " | " + this.nome + "| Status: " + this.status + "| Quantidade: " + this.status + "| Manutenção Necessária: " + this.precisaManutencao();
+        return "ID: " + this.id + " | " + this.nome + "| Status: " + this.status + "| Manutenção Necessária: " + this.precisaManutencao();
     }
 
     public boolean precisaManutencao(){

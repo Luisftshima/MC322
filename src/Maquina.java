@@ -47,8 +47,8 @@ public abstract class Maquina implements Auditavel{
     }
 
     protected boolean verificarFalha(){
-        if (saude <= 0) {
-            return true;
+        if (saude <= 0 || this.ligada == false) {
+            return false;
         }
 
         Random random = new Random();
@@ -71,6 +71,6 @@ public abstract class Maquina implements Auditavel{
 
     public void deteriorarMaquina(){
          Random random = new Random();
-         saude -= random.nextDouble(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo());
+         saude -= random.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo());
     }
 }

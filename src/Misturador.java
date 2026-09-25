@@ -7,6 +7,7 @@ public class Misturador extends Maquina{
             produto.AumentarProbabilidadeFalha();
         }
         produto.processar();
+        this.deteriorarMaquina();
         return true;
     }
 

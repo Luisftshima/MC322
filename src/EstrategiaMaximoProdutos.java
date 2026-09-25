@@ -1,6 +1,7 @@
 import java.util.List;
 
 public class EstrategiaMaximoProdutos implements EstrategiaProducao{
+    
     public Demanda selecionarDemanda(List<Demanda> demandas, double orcamentoDisponivel) {
         Demanda melhor = null;
 

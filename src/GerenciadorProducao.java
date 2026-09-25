@@ -13,6 +13,7 @@ public class GerenciadorProducao {
         this.materiaPrima = materiaPrima;
         this.cenario = cenario;
         this.budget = cenario.getOrcamentoInicial();
+        this.estrategiaAtual = new EstrategiaOrdemChegada();
 
         maquinas.add(new Misturador("Super Misturador de Ingredientes", 1000, 0.15, 0.25, 100, cenario));
         maquinas.add(new Embaladora("Embaladora Wonka", 500, 0.1, 1.5, 100, cenario));
@@ -23,6 +24,7 @@ public class GerenciadorProducao {
         registrarDemanda("alta", 0);
         registrarDemanda("media", 0);
         registrarDemanda("baixa", 0);
+
     }
 
     public void registrarDemanda(String tipoProduto, int quantidade){
@@ -59,6 +61,7 @@ public class GerenciadorProducao {
             System.out.println("[ERRO] Nao há demanda para este chocolate ainda!");
             return;
         }
+        alvo.emProdução();
 
         int quantidadeDesejada = alvo.getQuantidadeProdutos();
         int produzidos = 0;
@@ -72,12 +75,14 @@ public class GerenciadorProducao {
 
             if(!materiaPrima.verificarDisponibilidade(p.getMateriaPrimaPorUnidade())){
                 System.out.println("[ERRO] Ingredientes insuficientes para produzir " + p.getNome() + "!");
+                alvo.cancelar();
                 break;
             }
 
             double custoOperacaoLinha = calcularCustoProducao();
             if(budget < custoOperacaoLinha){
                 System.out.println("[ERRO] Verba insuficiente para rodar as máquinas!");
+                alvo.cancelar();
                 break;
             }
 
@@ -158,7 +163,7 @@ public class GerenciadorProducao {
         }
     }
 
-    public void atualizarEstrategia(EstrategiaProducao estrategia){
+    public void setEstrategia(EstrategiaProducao estrategia){
         this.estrategiaAtual = estrategia;
     }
 
@@ -184,11 +189,11 @@ public class GerenciadorProducao {
         System.out.println("RELATÓRIO GERAL");
         System.out.println("MÁQUINAS");
         for (Maquina maquina: maquinas){
-            maquina.gerarRelatorioDiagnostico();
+            System.out.println(maquina.gerarRelatorioDiagnostico());
         }
         System.out.println("PRODUTOS");
         for (Produto produto: produtosFabricados){
-            produto.gerarRelatorioDiagnostico();
+            System.out.println(produto.gerarRelatorioDiagnostico());
         }
     }
 
