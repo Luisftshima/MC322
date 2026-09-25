@@ -112,17 +112,15 @@ public class GerenciadorProducao {
                 System.out.println("[ALERTA] Produto id #" + p.getId() + " falhou na linha e o chocolate foi destacado!");
             }
         }
-        /*desconta da fila so o que foi tentado
-        e marca como atendida quando nao sobrar
-        mais nada pendente desse tipo
-        */
+       
         alvo.atualizarQuantidade(-produzidos);
-        if(alvo.getQuantidadeProdutos() <= 0){
-            alvo.atender();
-        }else{
-            alvo.pendente();
+        if(alvo.getStatus() != StatusDemanda.CANCELADA){
+            if(alvo.getQuantidadeProdutos() <= 0){
+                alvo.atender();
+            }else{
+                alvo.pendente();
+            }
         }
-
           System.out.println("[YUMMY] Produção de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
     }
 
