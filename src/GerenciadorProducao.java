@@ -32,9 +32,12 @@ public class GerenciadorProducao {
     }
 
     public void atualizarDemanda(String tipoProduto, int quantidade){
-        for(Demanda d : demandas){
-            if (d.getTipoProduto().equalsIgnoreCase(tipoProduto)){
-                d.atualizarQuantidade(quantidade);
+        for(Demanda demanda : demandas){
+            if (demanda.getTipoProduto().equalsIgnoreCase(tipoProduto)){
+                demanda.atualizarQuantidade(quantidade);
+                if (demanda.getQuantidadeProdutos() > 0){
+                    demanda.pendente();
+                }
                 return;
             }
         }
@@ -92,10 +95,13 @@ public class GerenciadorProducao {
 
             boolean aprovado = true;
             for (Maquina m:maquinas){
+                m.ligar();
                 if(!m.processar(p)){
                     aprovado = false;
+
                     break;
                 }
+                m.desligar();
             }
 
             if(aprovado){
@@ -113,6 +119,8 @@ public class GerenciadorProducao {
         alvo.atualizarQuantidade(-produzidos);
         if(alvo.getQuantidadeProdutos() <= 0){
             alvo.atender();
+        }else{
+            alvo.pendente();
         }
 
           System.out.println("[YUMMY] Produção de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
@@ -141,15 +149,36 @@ public class GerenciadorProducao {
     }
 
     public void exibirArmazem(){
-        System.out.println("=====Armazém de chocolates prontos=====");
+        System.out.println("===== ARMAZÉM DE CHOCOLATES =====");
 
-        if(produtosFabricados.isEmpty()){
+        if (produtosFabricados.isEmpty()) {
             System.out.println("O mundo precisa dos nossos chocolates! Vamos fabricar!");
+            return;
         }
 
-        for (Produto p : produtosFabricados){
-            System.out.println("ID: " + p.getId() + " | " + p.getNome() + "| Status: " + p.getStatus() +"| Quantidade: " + p.getTotalProdutosFabricados());
+        int ovos = 0;
+        int bombons = 0;
+        int guardaChuva = 0;
+
+        for (Produto p : produtosFabricados) {
+            switch (p.getTipo()) {
+                case "Alta Qualidade":
+                    ovos++;
+                    break;
+
+                case "Média Qualidade":
+                    bombons++;
+                    break;
+
+                case "Baixa Qualidade":
+                    guardaChuva++;
+                    break;
+            }
         }
+
+        System.out.println("Ovos Artesanais | Quantidade:" + ovos);
+        System.out.println("Bombons Sortidos | Quantidade:" + bombons);
+        System.out.println("Guarda-chuvas | Quantidade:" + guardaChuva);
     }
 
     public void exibirEstoqueMateriaPrima(){

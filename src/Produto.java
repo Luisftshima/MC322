@@ -62,9 +62,10 @@ public abstract class Produto implements Auditavel{
         return totalProdutosFabricados;
     }
 
-    public String gerarRelatorioDiagnostico(){
-        return "ID: " + this.id + " | " + this.nome + "| Status: " + this.status + "| Manutenção Necessária: " + this.precisaManutencao();
-    }
+    public String gerarRelatorioDiagnostico() {
+        return String.format("ID: %d | Produto: %s | Tipo: %s | Qualidade: %.0f%% | Falha acumulada: %.2f%% | Status: %s | Manutenção necessária: %s",
+            id, nome, getTipo(), qualidade * 100, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NÃO");
+}
 
     public boolean precisaManutencao(){
         return this.probabilidadeFalhaAcumulada > 0.5;

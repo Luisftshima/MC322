@@ -5,6 +5,10 @@ public class EstacaoInspecao extends Maquina{
 
     @Override 
     public boolean processar(Produto produto){
+        if (!this.estaLigada() || this.estaQuebrada()){
+            System.out.println("Maquina " + this.getNome() + "inválida");
+            return false;
+        }
 
         // é a única máquina que pode falahr por conta própria
         if(verificarFalha()){

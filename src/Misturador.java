@@ -3,6 +3,11 @@ public class Misturador extends Maquina{
         super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, cenario);
     }
     @Override public boolean processar(Produto produto){
+        if (!this.estaLigada() || this.estaQuebrada()){
+            System.out.println("Maquina " + this.getNome() + "inválida");
+            return false;
+        }
+
         if (verificarFalha()){
             produto.AumentarProbabilidadeFalha();
         }

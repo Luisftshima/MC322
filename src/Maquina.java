@@ -58,7 +58,8 @@ public abstract class Maquina implements Auditavel{
     }
 
     public String gerarRelatorioDiagnostico(){
-        return this.nome + "| Saúde: " + this.saude +"| Manutenção Necessária: " + this.precisaManutencao();
+        return  String.format("Máquina: %s | Tipo: %s | Saúde: %d%% | Manutenção necessária: %s",
+        getNome(), getTipo(), saude, precisaManutencao() ? "SIM" : "NÃO");
     }
 
     public boolean precisaManutencao(){
@@ -69,8 +70,13 @@ public abstract class Maquina implements Auditavel{
         
     }
 
+    public boolean estaQuebrada(){
+        return saude <= 0;
+    }
+
     public void deteriorarMaquina(){
          Random random = new Random();
-         saude -= random.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo());
+         int desgaste = random.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
+         this.saude = Math.max(0, saude - desgaste);
     }
 }
