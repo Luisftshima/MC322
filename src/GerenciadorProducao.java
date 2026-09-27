@@ -60,7 +60,6 @@ public class GerenciadorProducao {
     }
 
     public void fabricarDemanda(Demanda alvo){
-
         if(alvo == null || alvo.getQuantidadeProdutos() <= 0){
             System.out.println("[ERRO] Nao há demanda para este chocolate ainda!");
             return;
@@ -149,6 +148,10 @@ public class GerenciadorProducao {
         System.out.println(String.format("Caixa Atual: R$%.2f",budget));
     }
 
+    public double getBudget(){
+        return budget;
+    }
+
     public void exibirArmazem(){
         System.out.println("===== ARMAZÉM DE CHOCOLATES =====");
 
@@ -219,12 +222,24 @@ public class GerenciadorProducao {
 
     public void gerarAuditoriaGeral(){
         System.out.println("RELATÓRIO GERAL");
-        System.out.println("MÁQUINAS");
-        for (Maquina maquina: maquinas){
+        gerarRelatorioMaquinas();
+        gerarRelatorioProdutos();
+    }
+
+    public void gerarRelatorioMaquinas(){
+        System.out.println("===== DIAGNÓSTICO DAS MÁQUINAS =====");
+        for(Maquina maquina:maquinas){
             System.out.println(maquina.gerarRelatorioDiagnostico());
         }
-        System.out.println("PRODUTOS");
-        for (Produto produto: produtosFabricados){
+    }
+
+    public void gerarRelatorioProdutos(){
+        System.out.println("===== DIAGNÓSTICO DOS PRODUTOS =====");
+        if(produtosFabricados.isEmpty()){
+            System.out.println("Nenhum ChocoWonka fabricado ainda!");
+            return;
+        }
+        for(Produto produto:produtosFabricados){
             System.out.println(produto.gerarRelatorioDiagnostico());
         }
     }
