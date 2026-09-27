@@ -22,17 +22,18 @@ public class GerenciadorProducao {
 
 
         //cadastrando demandas de produtos de diversas qualidades
-        registrarDemanda(NivelQualidade.ALTA, 0);
-        registrarDemanda(NivelQualidade.MEDIA, 0);
-        registrarDemanda(NivelQualidade.BAIXA, 0);
+        registrarDemanda(TipoProduto.OVO_ARTESANAL, 0);
+        registrarDemanda(TipoProduto.BOMBONS_SORTIDOS, 0);
+        registrarDemanda(TipoProduto.GUARDA_CHUVA, 0);
+        registrarDemanda(TipoProduto.CHOCOTONE, 0);
 
     }
 
-    public void registrarDemanda(NivelQualidade tipoProduto, int quantidade){
+    public void registrarDemanda(TipoProduto tipoProduto, int quantidade){
         demandas.add(new Demanda(tipoProduto, quantidade));
     }
 
-    public void atualizarDemanda(NivelQualidade tipoProduto, int quantidade){
+    public void atualizarDemanda(TipoProduto tipoProduto, int quantidade){
         for(Demanda demanda : demandas){
             if (demanda.getTipoProduto() == tipoProduto){
                 demanda.atualizarQuantidade(quantidade);
@@ -71,7 +72,7 @@ public class GerenciadorProducao {
         int produzidos = 0;
 
         for(int i = 0; i < quantidadeDesejada; i++){
-            Produto p = criarProdutoPorTipo(alvo.getTipoProduto());
+            Produto p = Produto.criarPorTipo(alvo.getTipoProduto());
 
             if (p == null){
                 break;
@@ -133,15 +134,6 @@ public class GerenciadorProducao {
             total += m.getCustoOperacao();
         }
         return total;
-    }
-
-    private Produto criarProdutoPorTipo(NivelQualidade tipo){
-        switch(tipo){
-            case ALTA: return new OvoArtesanal();
-            case MEDIA: return new BombonsSortidos();
-            case BAIXA: return new GuardaChuva();
-            default: return null;
-        }
     }
 
     public void exibirBudget(){
@@ -211,7 +203,7 @@ public class GerenciadorProducao {
         fabricarDemanda(alvo);
     }
 
-    public void fabricarPorTipo(NivelQualidade tipoProduto){
+    public void fabricarPorTipo(TipoProduto tipoProduto){
         for (Demanda demanda: demandas){
             if (demanda.getTipoProduto() == tipoProduto){
                 fabricarDemanda(demanda);

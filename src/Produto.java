@@ -63,6 +63,16 @@ public abstract class Produto implements Auditavel{
         return totalProdutosFabricados;
     }
 
+    public static Produto criarPorTipo(TipoProduto tipo){
+        switch (tipo){
+            case OVO_ARTESANAL: return new OvoArtesanal();
+            case CHOCOTONE: return new Chocotone();
+            case BOMBONS_SORTIDOS: return new BombonsSortidos();
+            case GUARDA_CHUVA: return new GuardaChuva();
+            default: return null;
+        }
+    }
+    
     public String gerarRelatorioDiagnostico() {
         return String.format("ID: %d | Lote: #%d | Produto: %s | Tipo: %s | Qualidade: %.0f | Falha acumulada: %.2f%% | Status: %s | Manutenção necessária: %s",
             id, lote, nome, getTipo(), qualidade, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NÃO");

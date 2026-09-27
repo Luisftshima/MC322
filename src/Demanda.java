@@ -1,9 +1,9 @@
 public class Demanda {
-    private NivelQualidade tipoProduto;
+    private TipoProduto tipoProduto;
     private int quantidadeProdutos;
     private StatusDemanda status = StatusDemanda.PENDENTE; 
 
-    public Demanda(NivelQualidade tipoProduto, int quantidade){
+    public Demanda(TipoProduto tipoProduto, int quantidade){
         this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidade;
     }
@@ -22,7 +22,7 @@ public class Demanda {
     }
 
     public double calcularCustoEstimado() {
-        return quantidadeProdutos * tipoProduto.getCustoUnitario();
+        return quantidadeProdutos * tipoProduto.getNivelQualidade().getCustoUnitario();
     }
 
     public boolean isViavel(double orcamentoDisponivel){
@@ -48,7 +48,7 @@ public class Demanda {
         this.status = StatusDemanda.CANCELADA;
     }
 
-    public NivelQualidade getTipoProduto(){
+    public TipoProduto getTipoProduto(){
         return tipoProduto;
     }
 

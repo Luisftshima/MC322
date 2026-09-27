@@ -101,24 +101,26 @@ public class Main {
             System.out.println("[DEMANDAS]");
             System.out.println(LINHA_SIMPLES);
             System.out.println("1 - Atualizar demanda de Ovos Artesanais (Alta)");
-            System.out.println("2 - Atualizar demanda de Bombons Sortidos (Média)");
-            System.out.println("3 - Atualizar demanda de Guarda-chuvas de Chocolate (Baixa)");
-            System.out.println("4 - Listar demandas");
+            System.out.println("2 - Atualizar demanda de Ovos Artesanais (Alta)");
+            System.out.println("3 - Atualizar demanda de Bombons Sortidos (Média)");
+            System.out.println("4 - Atualizar demanda de Guarda-chuvas de Chocolate (Baixa)");
+            System.out.println("5 - Listar demandas");
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
             switch(lerInteiro(entrada)){
-                case 1: atualizarDemanda(entrada, fabrica, NivelQualidade.ALTA, "Ovo Artesanal"); break;
-                case 2: atualizarDemanda(entrada, fabrica, NivelQualidade.MEDIA, "Bombons Sortidos"); break;
-                case 3: atualizarDemanda(entrada, fabrica, NivelQualidade.BAIXA, "Guarda-chuva de Chocolate"); break;
-                case 4: fabrica.exibirDemandas(); break;
+                case 1: atualizarDemanda(entrada, fabrica, TipoProduto.OVO_ARTESANAL, "Ovo Artesanal"); break;
+                case 2: atualizarDemanda(entrada, fabrica, TipoProduto.CHOCOTONE, "Bombons Sortidos"); break;
+                case 3: atualizarDemanda(entrada, fabrica, TipoProduto.BOMBONS_SORTIDOS, "Guarda-chuva de Chocolate"); break;
+                case 4: atualizarDemanda(entrada, fabrica, TipoProduto.GUARDA_CHUVA, "Guarda-chuva de Chocolate"); break;
+                case 5: fabrica.exibirDemandas(); break;
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opção inválida.");
             }
         }
     }
 
-    private static void atualizarDemanda(Scanner entrada, GerenciadorProducao fabrica, NivelQualidade tipo, String nome_produto){
+    private static void atualizarDemanda(Scanner entrada, GerenciadorProducao fabrica, TipoProduto tipo, String nome_produto){
         System.out.println("Quantas unidades de " + nome_produto + " adicionar a demanda?");
         int quantidade = lerInteiro(entrada);
         fabrica.atualizarDemanda(tipo, quantidade);
@@ -136,16 +138,18 @@ public class Main {
                 + fabrica.getEstrategia().getNomeEstrategia() + ")"
             );
             System.out.println("2 - Fabricar Ovo Artesanal");
-            System.out.println("3 - Fabricar Bombons Sortidos");
-            System.out.println("4 - Fabricar Guarda-chuva de Chocolate");
+            System.out.println("3 - Fabricar Chocotone");
+            System.out.println("4 - Fabricar Bombons Sortidos");
+            System.out.println("5 - Fabricar Guarda-chuva de Chocolate");
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
             switch(lerInteiro(entrada)){
                 case 1: fabrica.executarProximaProducao(); break;
-                case 2: fabrica.fabricarPorTipo(NivelQualidade.ALTA);
-                case 3: fabrica.fabricarPorTipo(NivelQualidade.MEDIA);
-                case 4: fabrica.fabricarPorTipo(NivelQualidade.BAIXA);
+                case 2: fabrica.fabricarPorTipo(TipoProduto.OVO_ARTESANAL);
+                case 3: fabrica.fabricarPorTipo(TipoProduto.CHOCOTONE);
+                case 4: fabrica.fabricarPorTipo(TipoProduto.BOMBONS_SORTIDOS);
+                case 5: fabrica.fabricarPorTipo(TipoProduto.GUARDA_CHUVA);
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opção inválida");
             }
@@ -192,6 +196,7 @@ public class Main {
             System.out.println("1 - Chocofirst-In, Chocofirst-Out (Ordem de Chegada)");
             System.out.println("2 - ChocoWonka mais Pedido (Maior demanda)");
             System.out.println("3 - Maior Produção de ChocoWonka (Máximo de Produtos)");
+            System.out.println("4 - Ceia de Natal (prioriza os chocolates mais nobres)");
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
@@ -200,6 +205,7 @@ public class Main {
                 case 1: nova = new EstrategiaOrdemChegada(); break;
                 case 2: nova = new EstrategiaMaiorDemanda(); break;
                 case 3: nova = new EstrategiaMaximoProdutos(); break;
+                case 4: nova = new EstrategiaNatal(); break;
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opção Inválida.");
             }
