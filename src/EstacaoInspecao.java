@@ -19,8 +19,7 @@ public class EstacaoInspecao extends Maquina{
             return false;
         }
 
-        java.util.Random rand = new java.util.Random();
-        if (rand.nextDouble() < produto.getProbabilidadeFalha()){
+        if (RANDOM.nextDouble() < produto.getProbabilidadeFalha()){
             produto.setStatus("Rejeitado na Inspeção.");
             produto.ResetarProbabilidadeFalha();
             return false;

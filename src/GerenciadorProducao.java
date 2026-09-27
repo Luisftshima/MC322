@@ -22,19 +22,19 @@ public class GerenciadorProducao {
 
 
         //cadastrando demandas de produtos de diversas qualidades
-        registrarDemanda("alta", 0);
-        registrarDemanda("media", 0);
-        registrarDemanda("baixa", 0);
+        registrarDemanda(NivelQualidade.ALTA, 0);
+        registrarDemanda(NivelQualidade.MEDIA, 0);
+        registrarDemanda(NivelQualidade.BAIXA, 0);
 
     }
 
-    public void registrarDemanda(String tipoProduto, int quantidade){
+    public void registrarDemanda(NivelQualidade tipoProduto, int quantidade){
         demandas.add(new Demanda(tipoProduto, quantidade));
     }
 
-    public void atualizarDemanda(String tipoProduto, int quantidade){
+    public void atualizarDemanda(NivelQualidade tipoProduto, int quantidade){
         for(Demanda demanda : demandas){
-            if (demanda.getTipoProduto().equalsIgnoreCase(tipoProduto)){
+            if (demanda.getTipoProduto() == tipoProduto){
                 demanda.atualizarQuantidade(quantidade);
                 if (demanda.getQuantidadeProdutos() > 0){
                     demanda.pendente();
@@ -135,11 +135,11 @@ public class GerenciadorProducao {
         return total;
     }
 
-    private Produto criarProdutoPorTipo(String tipo){
-        switch(tipo.toLowerCase()){
-            case "alta": return new OvoArtesanal();
-            case "media": return new BombonsSortidos();
-            case "baixa": return new GuardaChuva();
+    private Produto criarProdutoPorTipo(NivelQualidade tipo){
+        switch(tipo){
+            case ALTA: return new OvoArtesanal();
+            case MEDIA: return new BombonsSortidos();
+            case BAIXA: return new GuardaChuva();
             default: return null;
         }
     }
@@ -211,9 +211,9 @@ public class GerenciadorProducao {
         fabricarDemanda(alvo);
     }
 
-    public void fabricarPorTipo(String tipoProduto){
+    public void fabricarPorTipo(NivelQualidade tipoProduto){
         for (Demanda demanda: demandas){
-            if (demanda.getTipoProduto().equalsIgnoreCase(tipoProduto)){
+            if (demanda.getTipoProduto() == tipoProduto){
                 fabricarDemanda(demanda);
                 break;
             }

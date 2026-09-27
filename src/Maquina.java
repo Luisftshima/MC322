@@ -1,6 +1,8 @@
 import java.util.Random;
 
 public abstract class Maquina implements Auditavel{
+
+    protected static Random RANDOM = new Random();
     private String nome;
     private boolean ligada;
     private float capacidadeMaxima;
@@ -17,6 +19,10 @@ public abstract class Maquina implements Auditavel{
         this.ligada = false;
         this.saude = saude;
         this.cenario = cenario;
+    }
+
+    public static void configurarSemente(long seed){
+        RANDOM = new Random(seed);
     }
 
     public abstract boolean processar(Produto produto);
@@ -51,10 +57,9 @@ public abstract class Maquina implements Auditavel{
             return false;
         }
 
-        Random random = new Random();
         double fatorSaude = 100.0 / saude;
         double prob = probabilidadeFalha * cenario.getMultiplicadorFalha() * fatorSaude;
-        return random.nextDouble() < prob;
+        return RANDOM.nextDouble() < prob;
     }
 
     public String gerarRelatorioDiagnostico(){
@@ -93,10 +98,9 @@ public abstract class Maquina implements Auditavel{
         StatusMaquina status = getStatusMaquina();
         return status == StatusMaquina.OPERACIONAL || status == StatusMaquina.MANUTENCAO;
     }
-    
+
     public void deteriorarMaquina(){
-         Random random = new Random();
-         int desgaste = random.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
+         int desgaste = RANDOM.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
          this.saude = Math.max(0, saude - desgaste);
     }
 }

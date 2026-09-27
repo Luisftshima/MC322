@@ -1,13 +1,13 @@
 public class Demanda {
-    private String tipoProduto;
+    private NivelQualidade tipoProduto;
     private int quantidadeProdutos;
     private StatusDemanda status = StatusDemanda.PENDENTE; 
 
-    public Demanda(String tipoProduto, int quantidade){
+    public Demanda(NivelQualidade tipoProduto, int quantidade){
         this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidade;
     }
-
+    
     public boolean isElegivel(){
         return this.status == StatusDemanda.PENDENTE && this.quantidadeProdutos > 0;
     }
@@ -22,16 +22,11 @@ public class Demanda {
     }
 
     public double calcularCustoEstimado() {
-        switch (tipoProduto.toLowerCase()) {
-            case "alta":
-                return quantidadeProdutos * 4.75;
-            case "media":
-                return quantidadeProdutos * 3.75;
-            case "baixa":
-                return quantidadeProdutos * 3.00;
-            default:
-                return 0;
-        }
+        return quantidadeProdutos * tipoProduto.getCustoUnitario();
+    }
+
+    public boolean isViavel(double orcamentoDisponivel){
+        return calcularCustoEstimado() <= orcamentoDisponivel;
     }
 
     public void emProdução(){
@@ -53,7 +48,7 @@ public class Demanda {
         this.status = StatusDemanda.CANCELADA;
     }
 
-    public String getTipoProduto(){
+    public NivelQualidade getTipoProduto(){
         return tipoProduto;
     }
 

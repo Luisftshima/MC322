@@ -108,9 +108,9 @@ public class Main {
             System.out.println("Escolha: ");
 
             switch(lerInteiro(entrada)){
-                case 1: atualizarDemanda(entrada, fabrica, "alta", "Ovo Artesanal"); break;
-                case 2: atualizarDemanda(entrada, fabrica, "media", "Bombons Sortidos"); break;
-                case 3: atualizarDemanda(entrada, fabrica, "baixa", "Guarda-chuva de Chocolate"); break;
+                case 1: atualizarDemanda(entrada, fabrica, NivelQualidade.ALTA, "Ovo Artesanal"); break;
+                case 2: atualizarDemanda(entrada, fabrica, NivelQualidade.MEDIA, "Bombons Sortidos"); break;
+                case 3: atualizarDemanda(entrada, fabrica, NivelQualidade.BAIXA, "Guarda-chuva de Chocolate"); break;
                 case 4: fabrica.exibirDemandas(); break;
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opção inválida.");
@@ -118,7 +118,7 @@ public class Main {
         }
     }
 
-    private static void atualizarDemanda(Scanner entrada, GerenciadorProducao fabrica, String tipo, String nome_produto){
+    private static void atualizarDemanda(Scanner entrada, GerenciadorProducao fabrica, NivelQualidade tipo, String nome_produto){
         System.out.println("Quantas unidades de " + nome_produto + " adicionar a demanda?");
         int quantidade = lerInteiro(entrada);
         fabrica.atualizarDemanda(tipo, quantidade);
@@ -143,9 +143,9 @@ public class Main {
 
             switch(lerInteiro(entrada)){
                 case 1: fabrica.executarProximaProducao(); break;
-                case 2: fabrica.fabricarPorTipo("alta");
-                case 3: fabrica.fabricarPorTipo("media");
-                case 4: fabrica.fabricarPorTipo("baixa");
+                case 2: fabrica.fabricarPorTipo(NivelQualidade.ALTA);
+                case 3: fabrica.fabricarPorTipo(NivelQualidade.MEDIA);
+                case 4: fabrica.fabricarPorTipo(NivelQualidade.BAIXA);
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opção inválida");
             }

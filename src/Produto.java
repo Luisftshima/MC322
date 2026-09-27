@@ -22,7 +22,7 @@ public abstract class Produto implements Auditavel{
 
     public abstract void processar();
     public abstract double calcularTempoProducao();
-    public abstract String getTipo();
+    public abstract NivelQualidade getTipo();
 
     public void AumentarProbabilidadeFalha(){
         probabilidadeFalhaAcumulada += qualidade * 0.1;

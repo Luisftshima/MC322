@@ -10,7 +10,7 @@ public class EstrategiaMaximoProdutos implements EstrategiaProducao {
                 continue;
             }
 
-            if (demanda.calcularCustoEstimado() > orcamentoDisponivel){
+            if (!demanda.isViavel(orcamentoDisponivel)){
                 continue;
             }
 

@@ -13,8 +13,8 @@ public class OvoArtesanal extends Produto{
         return 15.0;
     }
 
-    @Override public String getTipo(){
-        return "Alta Qualidade";
+    @Override public NivelQualidade getTipo(){
+        return NivelQualidade.ALTA;
     }
     
 }

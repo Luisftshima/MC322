@@ -11,7 +11,7 @@ public class GuardaChuva extends Produto{
         return 3.0;
     }
 
-    @Override public String getTipo(){
-        return "Baixa Qualidade";
+    @Override public NivelQualidade getTipo(){
+        return NivelQualidade.BAIXA;
     }
 }
