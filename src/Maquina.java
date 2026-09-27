@@ -74,6 +74,26 @@ public abstract class Maquina implements Auditavel{
         return saude <= 0;
     }
 
+    public StatusMaquina getStatusMaquina(){
+        if(estaQuebrada()){
+            return StatusMaquina.QUEBRADA;
+        }
+        if(precisaManutencao()){
+            return StatusMaquina.MANUTENCAO;
+        }
+        if(!estaLigada()){
+            return StatusMaquina.DESLIGADA;
+        }
+        
+        return StatusMaquina.OPERACIONAL;
+        
+    }
+
+    public boolean podeOperar(){
+        StatusMaquina status = getStatusMaquina();
+        return status == StatusMaquina.OPERACIONAL || status == StatusMaquina.MANUTENCAO;
+    }
+    
     public void deteriorarMaquina(){
          Random random = new Random();
          int desgaste = random.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);

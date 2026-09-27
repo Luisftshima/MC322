@@ -5,17 +5,19 @@ public class EstacaoInspecao extends Maquina{
 
     @Override 
     public boolean processar(Produto produto){
-        if (!this.estaLigada() || this.estaQuebrada()){
+        if (!this.podeOperar()){
             System.out.println("Maquina " + this.getNome() + "inválida");
             return false;
         }
 
-        // é a única máquina que pode falahr por conta própria
-        if(verificarFalha()){
+        // é a única máquina que pode falhar por conta própria
+        boolean falhouSensor = verificarFalha();
+        this.deteriorarMaquina();
+
+        if(falhouSensor){
             produto.setStatus("Inspeção com defeito no sensor");
             return false;
         }
-        this.deteriorarMaquina();
 
         java.util.Random rand = new java.util.Random();
         if (rand.nextDouble() < produto.getProbabilidadeFalha()){

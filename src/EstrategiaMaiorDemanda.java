@@ -7,7 +7,7 @@ public class EstrategiaMaiorDemanda implements EstrategiaProducao{
         Demanda melhor = null;
 
         for (Demanda demanda : demandas) {
-            if (demanda.getStatus() != StatusDemanda.PENDENTE) {
+            if (!demanda.isElegivel()) {
                 continue;
             }
 
@@ -20,6 +20,6 @@ public class EstrategiaMaiorDemanda implements EstrategiaProducao{
     }
 
     public String getNomeEstrategia(){
-        return "Estratégia de Chocolate mais Amado";
+        return "Estratégia do ChocoWonka mais Pedido";
     }
 }

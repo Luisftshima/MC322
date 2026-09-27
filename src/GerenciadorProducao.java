@@ -8,6 +8,7 @@ public class GerenciadorProducao {
     private double budget;
     private EstrategiaProducao estrategiaAtual;
     private Cenario cenario;
+    private int proximoLote = 1;
 
     public GerenciadorProducao(MateriaPrima materiaPrima, Cenario cenario){
         this.materiaPrima = materiaPrima;
@@ -66,6 +67,7 @@ public class GerenciadorProducao {
         }
         alvo.emProdução();
 
+        int loteAtual = proximoLote++;
         int quantidadeDesejada = alvo.getQuantidadeProdutos();
         int produzidos = 0;
 
@@ -75,6 +77,7 @@ public class GerenciadorProducao {
             if (p == null){
                 break;
             }
+            p.setLote(loteAtual);
 
             if(!materiaPrima.verificarDisponibilidade(p.getMateriaPrimaPorUnidade())){
                 System.out.println("[ERRO] Ingredientes insuficientes para produzir " + p.getNome() + "!");
@@ -96,12 +99,12 @@ public class GerenciadorProducao {
             boolean aprovado = true;
             for (Maquina m:maquinas){
                 m.ligar();
-                if(!m.processar(p)){
+                boolean ok = m.processar(p);
+                m.desligar();
+                if(!ok){
                     aprovado = false;
-
                     break;
                 }
-                m.desligar();
             }
 
             if(aprovado){
@@ -154,29 +157,31 @@ public class GerenciadorProducao {
             return;
         }
 
-        int ovos = 0;
-        int bombons = 0;
-        int guardaChuva = 0;
-
+        java.util.LinkedHashMap<String, java.util.List<Produto>> grupos = new java.util.LinkedHashMap<>();
         for (Produto p : produtosFabricados) {
-            switch (p.getTipo()) {
-                case "Alta Qualidade":
-                    ovos++;
-                    break;
-
-                case "Média Qualidade":
-                    bombons++;
-                    break;
-
-                case "Baixa Qualidade":
-                    guardaChuva++;
-                    break;
-            }
+            String chave = p.getNome() + "#" + p.getLote();
+            grupos.computeIfAbsent(chave, k -> new java.util.ArrayList<>()).add(p);
         }
 
-        System.out.println("Ovos Artesanais | Quantidade:" + ovos);
-        System.out.println("Bombons Sortidos | Quantidade:" + bombons);
-        System.out.println("Guarda-chuvas | Quantidade:" + guardaChuva);
+        System.out.printf("%-28s | %5s | %-10s | %-8s | %-6s | %s%n",
+            "Produto", "Qtd.", "Tipo", "Lote", "Qual.", "Risco");
+        System.out.println("-".repeat(85));
+
+        for (java.util.List<Produto> itens : grupos.values()) {
+            Produto amostra = itens.get(0);
+
+            int emRisco = 0;
+            for (Produto p : itens) {
+                if (p.precisaManutencao()) {
+                    emRisco++;
+                }
+            }
+            String risco = (emRisco == 0) ? "OK" : emRisco + " em risco";
+
+            System.out.printf("%-28s | %5d | %-10s | #%-7d | %5.0f%% | %s%n",
+                amostra.getNome(), itens.size(), amostra.getTipo(), amostra.getLote(),
+                amostra.getQualidade() * 100, risco);
+        }
     }
 
     public void exibirEstoqueMateriaPrima(){

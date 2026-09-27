@@ -3,7 +3,7 @@ public class Misturador extends Maquina{
         super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, cenario);
     }
     @Override public boolean processar(Produto produto){
-        if (!this.estaLigada() || this.estaQuebrada()){
+        if (!this.podeOperar()){
             System.out.println("Maquina " + this.getNome() + "inválida");
             return false;
         }

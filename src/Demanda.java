@@ -1,11 +1,15 @@
 public class Demanda {
     private String tipoProduto;
     private int quantidadeProdutos;
-    private StatusDemanda status = StatusDemanda.CONCLUIDA; 
+    private StatusDemanda status = StatusDemanda.PENDENTE; 
 
     public Demanda(String tipoProduto, int quantidade){
         this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidade;
+    }
+
+    public boolean isElegivel(){
+        return this.status == StatusDemanda.PENDENTE && this.quantidadeProdutos > 0;
     }
 
     public void atualizarQuantidade(int quantidade){
@@ -16,6 +20,7 @@ public class Demanda {
     public float calcularMateriaPrimaNecessaria(Produto produto){
         return produto.getMateriaPrimaPorUnidade() * this.quantidadeProdutos;
     }
+
     public double calcularCustoEstimado() {
         switch (tipoProduto.toLowerCase()) {
             case "alta":
@@ -38,6 +43,9 @@ public class Demanda {
     }
 
     public void atender(){
+        if (this.status == StatusDemanda.CANCELADA){
+            throw new IllegalStateException("Não é possível concluir uma demanda ChocoWonka cancelada");
+        }
         this.status = StatusDemanda.CONCLUIDA;
     }
 

@@ -6,7 +6,7 @@ public class EstrategiaMaximoProdutos implements EstrategiaProducao {
 
         Demanda melhor = null;
         for (Demanda demanda : demandas) {
-            if (demanda.getStatus() != StatusDemanda.PENDENTE) {
+            if (!demanda.isElegivel()) {
                 continue;
             }
 
@@ -22,6 +22,6 @@ public class EstrategiaMaximoProdutos implements EstrategiaProducao {
     }
 
     public String getNomeEstrategia() {
-        return "Estratégia de Maior Produção";
+        return "Estratégia de Maior Produção de ChocoWonka";
     }
 }

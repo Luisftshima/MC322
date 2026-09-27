@@ -1,19 +1,20 @@
 public abstract class Produto implements Auditavel{
     private static int proximoId = 1;
     private static int totalProdutosFabricados = 0;
-
+    
     private int id;
     private String nome;
     private String status;
     private float quantidadeMateriaPrimaPorUnidade;
     private double qualidade; //de 0.0 a 1.0
     private double probabilidadeFalhaAcumulada = 0.0; //chance de aumentar a cada maquina que passa
+    private int lote = -1; //nao tem nenhum lote no comeco
     
 
     public Produto(String nome, float quantidadeMateriaPrimaPorUnidade, double qualidade){
         this.id = proximoId++;
         this.nome = nome;
-        this.quantidadeMateriaPrimaPorUnidade= quantidadeMateriaPrimaPorUnidade;
+        this.quantidadeMateriaPrimaPorUnidade = quantidadeMateriaPrimaPorUnidade;
         this.status = "Aguardando processamento...";
         this.qualidade = qualidade;
         totalProdutosFabricados++;
@@ -63,12 +64,19 @@ public abstract class Produto implements Auditavel{
     }
 
     public String gerarRelatorioDiagnostico() {
-        return String.format("ID: %d | Produto: %s | Tipo: %s | Qualidade: %.0f | Falha acumulada: %.2f%% | Status: %s | Manutenção necessária: %s",
-            id, nome, getTipo(), qualidade, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NÃO");
+        return String.format("ID: %d | Lote: #%d | Produto: %s | Tipo: %s | Qualidade: %.0f | Falha acumulada: %.2f%% | Status: %s | Manutenção necessária: %s",
+            id, lote, nome, getTipo(), qualidade, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NÃO");
 }
 
     public boolean precisaManutencao(){
         return this.probabilidadeFalhaAcumulada > 0.5;
     }
     
+    public void setLote(int lote){
+        this.lote = lote;
+    }
+
+    public int getLote(){
+        return lote;
+    }
 }

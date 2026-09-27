@@ -4,7 +4,7 @@ public class EstrategiaOrdemChegada implements EstrategiaProducao{
 
     public Demanda selecionarDemanda(List<Demanda> demandas, double orcamentoDisponivel) {
         for (Demanda demanda: demandas){
-            if (demanda.getStatus() == StatusDemanda.PENDENTE){
+            if (demanda.isElegivel()){
                 return demanda;
             }
         }
@@ -12,6 +12,6 @@ public class EstrategiaOrdemChegada implements EstrategiaProducao{
     }
 
     public String getNomeEstrategia(){
-        return "Estratégia de Quem Chegou Primeiro";
+        return "Chocofirst-In, Chocofirst-Out";
     }
 }
