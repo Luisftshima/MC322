@@ -10,7 +10,7 @@ public class Embaladora extends Maquina{
         }
 
         if (verificarFalha()){
-            produto.AumentarProbabilidadeFalha();
+            produto.aumentarProbabilidadeFalha();
         }
         produto.setStatus("Embalado");
         this.deteriorarMaquina();

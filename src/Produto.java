@@ -24,7 +24,7 @@ public abstract class Produto implements Auditavel{
     public abstract double calcularTempoProducao();
     public abstract NivelQualidade getTipo();
 
-    public void AumentarProbabilidadeFalha(){
+    public void aumentarProbabilidadeFalha(){
         probabilidadeFalhaAcumulada += (1 - qualidade) * 0.1;
     }
 
@@ -32,7 +32,7 @@ public abstract class Produto implements Auditavel{
         return probabilidadeFalhaAcumulada;
     }
 
-    public void ResetarProbabilidadeFalha(){
+    public void resetarProbabilidadeFalha(){
         probabilidadeFalhaAcumulada = 0.0;
     }
 
