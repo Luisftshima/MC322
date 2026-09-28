@@ -25,7 +25,7 @@ public abstract class Produto implements Auditavel{
     public abstract NivelQualidade getTipo();
 
     public void AumentarProbabilidadeFalha(){
-        probabilidadeFalhaAcumulada += qualidade * 0.1;
+        probabilidadeFalhaAcumulada += (1 - qualidade) * 0.1;
     }
 
     public double getProbabilidadeFalha(){
@@ -59,7 +59,7 @@ public abstract class Produto implements Auditavel{
     public double getQualidade(){
         return qualidade;
     }
-    public int getTotalProdutosFabricados(){
+    public static int getTotalProdutosFabricados(){
         return totalProdutosFabricados;
     }
 
@@ -72,7 +72,7 @@ public abstract class Produto implements Auditavel{
             default: return null;
         }
     }
-    
+
     public String gerarRelatorioDiagnostico() {
         return String.format("ID: %d | Lote: #%d | Produto: %s | Tipo: %s | Qualidade: %.0f | Falha acumulada: %.2f%% | Status: %s | Manutenção necessária: %s",
             id, lote, nome, getTipo(), qualidade, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NÃO");

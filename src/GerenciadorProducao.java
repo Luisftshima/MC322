@@ -65,6 +65,12 @@ public class GerenciadorProducao {
             System.out.println("[ERRO] Nao há demanda para este chocolate ainda!");
             return;
         }
+
+        Maquina quebrada = primeiraMaquinaQuebrada();
+        if(quebrada != null){
+            System.out.println("[ERRO] " + quebrada.getNome() + " esta QUEBRADA. Faça a manutenção (menu 7) antes de produzir.");
+            return;
+        }
         alvo.emProdução();
 
         int loteAtual = proximoLote++;
@@ -72,6 +78,13 @@ public class GerenciadorProducao {
         int produzidos = 0;
 
         for(int i = 0; i < quantidadeDesejada; i++){
+
+            quebrada = primeiraMaquinaQuebrada();
+            if(quebrada != null){
+                System.out.println("[ALERTA] " + quebrada.getNome() + " quebrou durante a produção! Lote interrompido; faça a manutenção (menu 7).");
+                break;
+            }
+
             Produto p = Produto.criarPorTipo(alvo.getTipoProduto());
 
             if (p == null){
@@ -125,6 +138,70 @@ public class GerenciadorProducao {
             }
         }
           System.out.println("[YUMMY] Produção de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
+    }
+
+    private Maquina primeiraMaquinaQuebrada(){
+        for (Maquina m : maquinas){
+            if(!m.estaApta()){
+                return m;
+            }
+        }
+        return null;
+    }
+
+    public void exibirMaquinas(){
+        System.out.println("===== MÁQUINAS =====");
+        for (int i = 0; i < maquinas.size(); i++){
+            Maquina m = maquinas.get(i);
+            System.out.println(String.format("%d - %s | Saúde: %d/%d | Status: %s | Custo do reparo: R$ %.2f",
+                i + 1, m.getNome(), m.getSaude(), m.getSaudeMaxima(),
+                m.getStatusMaquina(), m.calcularCustoManutencao()));
+        }
+    }
+
+    public int getQuantidadeMaquinas(){
+        return maquinas.size();
+    }
+
+    public void realizarManutencao(int numeroMaquina){
+        if(numeroMaquina < 1 || numeroMaquina > maquinas.size()){
+            System.out.println("[ERRO] Máquina existente");
+            return;
+        }
+        reparar(maquinas.get(numeroMaquina - 1));
+    }
+
+    //quando a saude das maquinas estão abaixo de 30
+    public void realizarManutencaoGeral(){
+        boolean algumaPrecisava = false;
+
+        for (Maquina m : maquinas){
+            if (m.precisaManutencao()){
+                algumaPrecisava = true;
+                reparar(m);
+            }
+        }
+
+        if(!algumaPrecisava){
+            System.out.println("[OK] Nenhuma máquina precisa de manutenção urgente.");
+        }
+    }
+
+    private void reparar(Maquina m){
+        if(!m.precisaReparo()){
+            System.out.println("[OK] " + m.getNome() + " já está com a saúde máxima.");
+            return;
+        }
+        double custo = m.calcularCustoManutencao();
+        if(budget < custo){
+            System.out.println("[ERRO] Verba insuficiente para reparar " + m.getNome()
+                + " (custo R$ " + String.format("%.2f", custo) + ").");
+            return;
+        }
+        budget -= custo;
+        m.realizarManutencao();
+        System.out.println("[OBA!] " + m.getNome() + " reparada por R$ " + String.format("%.2f", custo)
+            + ". Novo saldo: R$" + String.format("%.2f", budget));
     }
 
     //calcula o custo total das maquinas para produzir o chocolate

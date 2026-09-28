@@ -9,7 +9,10 @@ public abstract class Maquina implements Auditavel{
     private double probabilidadeFalha; //numero entre 0.0 e 1.0
     private double custoOperacao;
     private int saude;
+    private final int saudeMaxima;
     private Cenario cenario;
+
+    private static final double CUSTO_MANUTENCAO_POR_PONTO = 0.5;
 
     public Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude, Cenario cenario){
         this.nome = nome;
@@ -18,6 +21,7 @@ public abstract class Maquina implements Auditavel{
         this.custoOperacao = custoOperacao;
         this.ligada = false;
         this.saude = saude;
+        this.saudeMaxima = saude;
         this.cenario = cenario;
     }
 
@@ -93,6 +97,20 @@ public abstract class Maquina implements Auditavel{
         return StatusMaquina.OPERACIONAL;
         
     }
+    public boolean estaApta(){
+        return !estaQuebrada();
+    }
+
+    public int getSaude(){
+        return saude;
+    }
+    public int getSaudeMaxima(){
+        return saudeMaxima;
+    }
+
+    public boolean precisaReparo(){
+        return saude < saudeMaxima;
+    }
 
     public boolean podeOperar(){
         StatusMaquina status = getStatusMaquina();
@@ -102,5 +120,13 @@ public abstract class Maquina implements Auditavel{
     public void deteriorarMaquina(){
          int desgaste = RANDOM.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
          this.saude = Math.max(0, saude - desgaste);
+    }
+
+    public double calcularCustoManutencao(){
+        return (saudeMaxima - saude) * CUSTO_MANUTENCAO_POR_PONTO;
+    }
+
+    public void realizarManutencao(){
+        this.saude = saudeMaxima;
     }
 }

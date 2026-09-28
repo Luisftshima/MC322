@@ -34,6 +34,7 @@ public class Main {
                 case 4: menuComprarMateriaPrima(entrada, fabrica); break;
                 case 5: menuEstrategia(entrada, fabrica); break;
                 case 6: menuAuditoria(entrada, fabrica); break;
+                case 7: menuManutencao(entrada, fabrica); break;
                 case 0:
                     rodando_programa = false;
                     System.out.println("Os confeiteiros e a fábrica precisam descansar...");
@@ -77,7 +78,7 @@ public class Main {
         System.out.println("FANTÁSTICA FÁBRICA DE CHOCOLATE");
         System.out.println("Estratégia atual: " + fabrica.getEstrategia().getNomeEstrategia());
         System.out.println("Cenário ativo: " + cenario.getNome());
-        System.out.println("Budget atual: R$ %.2d%n", fabrica.getBudget());
+        System.out.println(String.format("Budget: R$ %.2f", fabrica.getBudget()));
         System.out.println(LINHA_DUPLA);
     }
 
@@ -88,6 +89,7 @@ public class Main {
         System.out.println("4 - Comprar matéria-prima");
         System.out.println("5 - Gerenciar estratégia");
         System.out.println("6 - Auditoria");
+        System.out.println("7 - Manutenção das Máquinas");
         System.out.println("0 - Sair");
         System.out.println(LINHA_SIMPLES);
         System.out.println("Escolha: ");
@@ -101,7 +103,7 @@ public class Main {
             System.out.println("[DEMANDAS]");
             System.out.println(LINHA_SIMPLES);
             System.out.println("1 - Atualizar demanda de Ovos Artesanais (Alta)");
-            System.out.println("2 - Atualizar demanda de Ovos Artesanais (Alta)");
+            System.out.println("2 - Atualizar demanda de Chocotone (Alta)");
             System.out.println("3 - Atualizar demanda de Bombons Sortidos (Média)");
             System.out.println("4 - Atualizar demanda de Guarda-chuvas de Chocolate (Baixa)");
             System.out.println("5 - Listar demandas");
@@ -110,8 +112,8 @@ public class Main {
 
             switch(lerInteiro(entrada)){
                 case 1: atualizarDemanda(entrada, fabrica, TipoProduto.OVO_ARTESANAL, "Ovo Artesanal"); break;
-                case 2: atualizarDemanda(entrada, fabrica, TipoProduto.CHOCOTONE, "Bombons Sortidos"); break;
-                case 3: atualizarDemanda(entrada, fabrica, TipoProduto.BOMBONS_SORTIDOS, "Guarda-chuva de Chocolate"); break;
+                case 2: atualizarDemanda(entrada, fabrica, TipoProduto.CHOCOTONE, "Chocotone"); break;
+                case 3: atualizarDemanda(entrada, fabrica, TipoProduto.BOMBONS_SORTIDOS, "Bombons Sortidos"); break;
                 case 4: atualizarDemanda(entrada, fabrica, TipoProduto.GUARDA_CHUVA, "Guarda-chuva de Chocolate"); break;
                 case 5: fabrica.exibirDemandas(); break;
                 case 0: voltar = true; break;
@@ -146,10 +148,10 @@ public class Main {
 
             switch(lerInteiro(entrada)){
                 case 1: fabrica.executarProximaProducao(); break;
-                case 2: fabrica.fabricarPorTipo(TipoProduto.OVO_ARTESANAL);
-                case 3: fabrica.fabricarPorTipo(TipoProduto.CHOCOTONE);
-                case 4: fabrica.fabricarPorTipo(TipoProduto.BOMBONS_SORTIDOS);
-                case 5: fabrica.fabricarPorTipo(TipoProduto.GUARDA_CHUVA);
+                case 2: fabrica.fabricarPorTipo(TipoProduto.OVO_ARTESANAL); break;
+                case 3: fabrica.fabricarPorTipo(TipoProduto.CHOCOTONE); break;
+                case 4: fabrica.fabricarPorTipo(TipoProduto.BOMBONS_SORTIDOS); break;
+                case 5: fabrica.fabricarPorTipo(TipoProduto.GUARDA_CHUVA); break;
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opção inválida");
             }
@@ -196,7 +198,7 @@ public class Main {
             System.out.println("1 - Chocofirst-In, Chocofirst-Out (Ordem de Chegada)");
             System.out.println("2 - ChocoWonka mais Pedido (Maior demanda)");
             System.out.println("3 - Maior Produção de ChocoWonka (Máximo de Produtos)");
-            System.out.println("4 - Ceia de Natal (prioriza os chocolates mais nobres)");
+            System.out.println("4 - Ceia de Natal (prioriza os chocotones)");
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
@@ -234,6 +236,32 @@ public class Main {
                 case 1: fabrica.gerarAuditoriaGeral(); break;
                 case 2: fabrica.gerarRelatorioMaquinas(); break;
                 case 3: fabrica.gerarRelatorioProdutos(); break;
+                case 0: voltar = true; break;
+                default: System.out.println("[ERRO] Opção inválida.");
+            }
+        }
+    }
+
+    private static void menuManutencao(Scanner entrada, GerenciadorProducao fabrica){
+        boolean voltar = false;
+
+        while(!voltar){
+            System.out.println();
+            System.out.println("[MANUTENÇÃO]");
+            System.out.println(LINHA_SIMPLES);
+            fabrica.exibirMaquinas();
+            System.out.println(LINHA_SIMPLES);
+            System.out.println("1 - Reparar uma máquina");
+            System.out.println("2 - Reparar todas que precisam de manutenção (saúde <= 30%)");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha: ");
+ 
+            switch(lerInteiro(entrada)){
+                case 1:
+                    System.out.print("Número da máquina: ");
+                    fabrica.realizarManutencao(lerInteiro(entrada));
+                    break;
+                case 2: fabrica.realizarManutencaoGeral(); break;
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opção inválida.");
             }
