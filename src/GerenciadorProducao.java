@@ -313,4 +313,7 @@ public class GerenciadorProducao {
         }
     }
 
+    public Cenario getCenario(){
+        return this.cenario;
+    }
 }
