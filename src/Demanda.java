@@ -1,15 +1,11 @@
 public class Demanda {
     private TipoProduto tipoProduto;
     private int quantidadeProdutos;
-    private StatusDemanda status = StatusDemanda.PENDENTE; 
+    private StatusDemanda status = StatusDemanda.CONCLUIDA; 
 
     public Demanda(TipoProduto tipoProduto, int quantidade){
         this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidade;
-    }
-    
-    public boolean isElegivel(){
-        return this.status == StatusDemanda.PENDENTE && this.quantidadeProdutos > 0;
     }
 
     public void atualizarQuantidade(int quantidade){

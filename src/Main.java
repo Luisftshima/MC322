@@ -164,7 +164,7 @@ public class Main {
         while(!voltar){
             System.out.println();
             System.out.println("[CONSULTAR]");
-            System.out.println("1 - Ver armazém (produtos acabados");
+            System.out.println("1 - Ver armazém (produtos acabados)");
             System.out.println("2 - Ver estoque de matéria-prima");
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");

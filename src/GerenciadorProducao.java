@@ -62,13 +62,13 @@ public class GerenciadorProducao {
 
     public void fabricarDemanda(Demanda alvo){
         if(alvo == null || alvo.getQuantidadeProdutos() <= 0){
-            System.out.println("[ERRO] Nao há demanda para este chocolate ainda!");
+            System.out.println("[ERRO] Não há demanda para este chocolate ainda!");
             return;
         }
 
         Maquina quebrada = primeiraMaquinaQuebrada();
         if(quebrada != null){
-            System.out.println("[ERRO] " + quebrada.getNome() + " esta QUEBRADA. Faça a manutenção (menu 7) antes de produzir.");
+            System.out.println("[ERRO] " + quebrada.getNome() + " esta QUEBRADA. Faça a manutenção antes de produzir mais chocolates!.");
             return;
         }
         alvo.emProdução();
@@ -81,7 +81,7 @@ public class GerenciadorProducao {
 
             quebrada = primeiraMaquinaQuebrada();
             if(quebrada != null){
-                System.out.println("[ALERTA] " + quebrada.getNome() + " quebrou durante a produção! Lote interrompido; faça a manutenção (menu 7).");
+                System.out.println("[ALERTA] " + quebrada.getNome() + " quebrou durante a produção! Lote interrompido. Faça a manutenção.");
                 break;
             }
 
@@ -112,9 +112,9 @@ public class GerenciadorProducao {
             boolean aprovado = true;
             for (Maquina m:maquinas){
                 m.ligar();
-                boolean ok = m.processar(p);
+                boolean funcionando = m.processar(p);
                 m.desligar();
-                if(!ok){
+                if(!funcionando){
                     aprovado = false;
                     break;
                 }
@@ -137,9 +137,10 @@ public class GerenciadorProducao {
                 alvo.pendente();
             }
         }
-          System.out.println("[YUMMY] Produção de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
+        System.out.println("[YUMMY] Produção de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
     }
 
+    //Funções verificando as maquinas
     private Maquina primeiraMaquinaQuebrada(){
         for (Maquina m : maquinas){
             if(!m.estaApta()){

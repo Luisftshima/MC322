@@ -5,3 +5,12 @@ Além disso, podemos fazer produtos para diversas ocasiões, como Páscoa, apena
 Para o futuro, pretendemos melhorar o controle de estoque, e também ter uma opção de vendas.
 Por outro lado da linha de produção, queremos ter o controle também da compra de matéria-prima. 
 Também podemos fabricar produtos com brindes ou até produtos que não passam na inspeção, tudo de forma aleatória. 
+
+
+[TAREFA 3]
+
+Implementamos tudo que foi pedido na tarefa.
+Além disso, criamos mais um tipo de produto de alta qualidade (Chocotone) e criamos uma estratégia 
+de Natal. Aproveitamos para criar uma tipagem forte (com enum) para a qualidade dos produtos e tipo de produtos.
+Para o futuro, queremos documentar bem cada funcao e organizar os arquivos em pastas separadas, deixando um 
+visual mais limpo e mais fácil de achar cada arquivo.

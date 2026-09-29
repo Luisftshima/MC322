@@ -6,7 +6,7 @@ public class EstrategiaMaximoProdutos implements EstrategiaProducao {
 
         Demanda melhor = null;
         for (Demanda demanda : demandas) {
-            if (!demanda.isElegivel()) {
+            if (demanda.getStatus() != StatusDemanda.PENDENTE || demanda.getQuantidadeProdutos() <= 0) {
                 continue;
             }
 
