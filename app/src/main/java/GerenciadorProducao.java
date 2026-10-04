@@ -71,7 +71,7 @@ public class GerenciadorProducao {
             System.out.println("[ERRO] " + quebrada.getNome() + " esta QUEBRADA. Faça a manutenção antes de produzir mais chocolates!.");
             return;
         }
-        alvo.emProdução();
+        alvo.emProducao();
 
         int loteAtual = proximoLote++;
         int quantidadeDesejada = alvo.getQuantidadeProdutos();

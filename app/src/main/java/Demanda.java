@@ -25,7 +25,7 @@ public class Demanda {
         return calcularCustoEstimado() <= orcamentoDisponivel;
     }
 
-    public void emProdução(){
+    public void emProducao(){
         this.status = StatusDemanda.EM_PRODUCAO;
     }
 

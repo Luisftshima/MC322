@@ -34,10 +34,25 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.App"
+    mainClass = "Main"
 }
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+//para compilar em UTF 8
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+//para conectar ao teclado e resolver erros de formatacao
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+    jvmArgs(
+        "-Dfile.encoding=UTF-8", 
+        "-Dsun.stdout.encoding=UTF-8", 
+        "-Dsun.stderr.encoding=UTF-8"
+    )
 }
