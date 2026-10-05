@@ -66,9 +66,17 @@ public class Main {
 
         while(true){
             int opcao = lerInteiro(entrada);
+            try{
             if(opcao == 1) return Cenario.IDEAL;
             if(opcao == 2) return Cenario.APOCALIPTICO;
-            System.out.println("[ERRO] Escolha 1 ou 2: ");
+            
+            throw new OpcaoInvalidaException("Não existe essa opção. Escolha entre 1 ou 2.");
+
+            } catch (OpcaoInvalidaException e){
+                System.out.println("\n[ERRO]" + e.getMessage() + "\n");
+            } catch (Exception e){
+                System.out.println("[ERRO] A entrada deve ser um número.");
+            }
         }
     }
 
