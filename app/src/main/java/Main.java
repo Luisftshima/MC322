@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import excessoes.OpcaoInvalidaException;
+import excecoes.OpcaoInvalidaException;
 
 public class Main {
 
