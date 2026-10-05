@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import excessoes.OpcaoInvalidaException;
+
 public class Main {
 
     private static final String LINHA_DUPLA = "======================================================";
@@ -67,10 +69,10 @@ public class Main {
         while(true){
             int opcao = lerInteiro(entrada);
             try{
-            if(opcao == 1) return Cenario.IDEAL;
-            if(opcao == 2) return Cenario.APOCALIPTICO;
-            
-            throw new OpcaoInvalidaException("Não existe essa opção. Escolha entre 1 ou 2.");
+                if(opcao == 1) return Cenario.IDEAL;
+                if(opcao == 2) return Cenario.APOCALIPTICO;
+                
+                throw new OpcaoInvalidaException("Não existe essa opção. Escolha entre 1 ou 2.");
 
             } catch (OpcaoInvalidaException e){
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
@@ -118,14 +120,25 @@ public class Main {
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
-            switch(lerInteiro(entrada)){
+            try {
+                int opcao = lerInteiro(entrada);
+
+                if (opcao < 0 || opcao > 5){
+                    throw new OpcaoInvalidaException("Essa opção não existe no menu de demandas. Escolha um número entre 0 e 5. \n");
+                }
+
+                switch(opcao){
                 case 1: atualizarDemanda(entrada, fabrica, TipoProduto.OVO_ARTESANAL, "Ovo Artesanal"); break;
                 case 2: atualizarDemanda(entrada, fabrica, TipoProduto.CHOCOTONE, "Chocotone"); break;
                 case 3: atualizarDemanda(entrada, fabrica, TipoProduto.BOMBONS_SORTIDOS, "Bombons Sortidos"); break;
                 case 4: atualizarDemanda(entrada, fabrica, TipoProduto.GUARDA_CHUVA, "Guarda-chuva de Chocolate"); break;
                 case 5: fabrica.exibirDemandas(); break;
                 case 0: voltar = true; break;
-                default: System.out.println("[ERRO] Opção inválida.");
+                }
+            } catch (OpcaoInvalidaException e){
+                System.out.println("\n[ERRO]" + e.getMessage() + "\n");
+            } catch (Exception e){
+                System.out.println("A entrada deve ser um inteiro entre 0 e 5.");
             }
         }
     }
@@ -154,14 +167,25 @@ public class Main {
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
-            switch(lerInteiro(entrada)){
+            try{
+                int opcao = lerInteiro(entrada);
+
+                if (opcao < 0 || opcao > 5){
+                    throw new OpcaoInvalidaException("Essa opção não existe no menu de fabricação. Escolha um número entre 0 e 5. \n");
+                }
+
+                switch(opcao){
                 case 1: fabrica.executarProximaProducao(); break;
                 case 2: fabrica.fabricarPorTipo(TipoProduto.OVO_ARTESANAL); break;
                 case 3: fabrica.fabricarPorTipo(TipoProduto.CHOCOTONE); break;
                 case 4: fabrica.fabricarPorTipo(TipoProduto.BOMBONS_SORTIDOS); break;
                 case 5: fabrica.fabricarPorTipo(TipoProduto.GUARDA_CHUVA); break;
                 case 0: voltar = true; break;
-                default: System.out.println("[ERRO] Opção inválida");
+                }
+            } catch (OpcaoInvalidaException e){
+                System.out.println("\n[ERRO]" + e.getMessage() + "\n");
+            } catch (Exception e){
+                System.out.println("A entrada deve ser um inteiro entre 0 e 5.");
             }
         }
     }
@@ -177,11 +201,23 @@ public class Main {
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
-            switch(lerInteiro(entrada)){
+            try{
+                int opcao = lerInteiro(entrada);
+
+                if (opcao < 0 || opcao > 2){
+                    throw new OpcaoInvalidaException("Essa opção não existe no menu de consulta. Escolha um número entre 0 e 2. \n");
+                }
+
+                switch(lerInteiro(entrada)){
                 case 1: fabrica.exibirArmazem(); break;
                 case 2: fabrica.exibirEstoqueMateriaPrima(); break;
                 case 0: voltar = true; break;
-                default: System.out.println("[ERRO] Opção inválida");
+                }
+
+            } catch (OpcaoInvalidaException e){
+                System.out.println("\n[ERRO]" + e.getMessage() + "\n");
+            } catch (Exception e){
+                System.out.println("A entrada deve ser um inteiro entre 0 e 2.");
             }
         }
     }
@@ -211,13 +247,25 @@ public class Main {
             System.out.println("Escolha: ");
 
             EstrategiaProducao nova = null;
-            switch(lerInteiro(entrada)){
+
+            try{
+                int opcao = lerInteiro(entrada);
+
+                if (opcao < 0 || opcao > 4){
+                    throw new OpcaoInvalidaException("Essa opção não existe no menu de estratégia. Escolha um número entre 0 e 4. \n");
+                }
+
+                switch(opcao){
                 case 1: nova = new EstrategiaOrdemChegada(); break;
                 case 2: nova = new EstrategiaMaiorDemanda(); break;
                 case 3: nova = new EstrategiaMaximoProdutos(); break;
                 case 4: nova = new EstrategiaNatal(); break;
                 case 0: voltar = true; break;
-                default: System.out.println("[ERRO] Opção Inválida.");
+                }
+            } catch (OpcaoInvalidaException e){
+                System.out.println("\n[ERRO]" + e.getMessage() + "\n");
+            } catch (Exception e){
+                System.out.println("A entrada deve ser um inteiro entre 0 e 4.");
             }
 
             if(nova != null){
@@ -240,12 +288,24 @@ public class Main {
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
-            switch(lerInteiro(entrada)){
+            try {
+                int opcao = lerInteiro(entrada);
+
+                if (opcao < 0 || opcao > 3){
+                    throw new OpcaoInvalidaException("Essa opção não existe no menu de auditoria. Escolha um número entre 0 e 3. \n");
+                }
+
+                switch(lerInteiro(entrada)){
                 case 1: fabrica.gerarAuditoriaGeral(); break;
                 case 2: fabrica.gerarRelatorioMaquinas(); break;
                 case 3: fabrica.gerarRelatorioProdutos(); break;
                 case 0: voltar = true; break;
-                default: System.out.println("[ERRO] Opção inválida.");
+                }
+
+            } catch (OpcaoInvalidaException e){
+                System.out.println("\n[ERRO]" + e.getMessage() + "\n");
+            } catch (Exception e){
+                System.out.println("A entrada deve ser um inteiro entre 0 e 3.");
             }
         }
     }
@@ -263,8 +323,14 @@ public class Main {
             System.out.println("2 - Reparar todas que precisam de manutenção (saúde <= 30%)");
             System.out.println("0 - Voltar");
             System.out.print("Escolha: ");
- 
-            switch(lerInteiro(entrada)){
+            try{
+                int opcao = lerInteiro(entrada);
+
+                if (opcao < 0 || opcao > 2){
+                    throw new OpcaoInvalidaException("Essa opção não existe no menu de auditoria. Escolha um número entre 0 e 2. \n");
+                }
+
+                switch(opcao){
                 case 1:
                     System.out.print("Número da máquina: ");
                     fabrica.realizarManutencao(lerInteiro(entrada));
@@ -272,6 +338,11 @@ public class Main {
                 case 2: fabrica.realizarManutencaoGeral(); break;
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opção inválida.");
+                }
+            } catch (OpcaoInvalidaException e){
+                System.out.println("\n[ERRO]" + e.getMessage() + "\n");
+            } catch (Exception e){
+                System.out.println("A entrada deve ser um inteiro entre 0 e 2.");
             }
         }
     }

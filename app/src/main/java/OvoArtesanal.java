@@ -1,5 +1,4 @@
-// produto premium
-// o produto vai alem das vendas de Pascoa
+
 
 public class OvoArtesanal extends Produto{
     public OvoArtesanal(){

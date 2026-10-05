@@ -1,3 +1,5 @@
+
+
 public abstract class Produto implements Auditavel{
     private static int proximoId = 1;
     private static int totalProdutosFabricados = 0;

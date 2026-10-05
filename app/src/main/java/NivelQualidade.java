@@ -1,3 +1,4 @@
+
 public enum NivelQualidade {
     ALTA("Alta qualidade", 4.75),
     MEDIA("Média qualidade", 3.75),

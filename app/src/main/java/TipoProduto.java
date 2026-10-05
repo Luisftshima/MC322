@@ -1,3 +1,4 @@
+
 public enum TipoProduto {
     OVO_ARTESANAL("OvoArtesanal", NivelQualidade.ALTA),
     CHOCOTONE("Chocotone", NivelQualidade.ALTA),

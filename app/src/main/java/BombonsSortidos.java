@@ -1,4 +1,4 @@
-//produto de qualidade média
+
 
 public class BombonsSortidos extends Produto{
     public BombonsSortidos(){
