@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import excecoes.CompraInvalidaException;
 import excecoes.OpcaoInvalidaException;
 
 public class Main {
@@ -228,7 +229,12 @@ public class Main {
         System.out.println(LINHA_SIMPLES);
         System.out.println("Quantos gramas de chocolate quer comprar?");
         float quantidade = lerFloat(entrada);
-        fabrica.comprarMateriaPrima(quantidade);
+        try{
+            fabrica.comprarMateriaPrima(quantidade);
+            System.out.println("\n[OBA!] Ingredientes comprados com sucesso!");
+        } catch (CompraInvalidaException e){
+            System.out.println("\n[ERRO]" + e.getMessage());
+        }
     }
 
     private static void menuEstrategia(Scanner entrada, GerenciadorProducao fabrica){

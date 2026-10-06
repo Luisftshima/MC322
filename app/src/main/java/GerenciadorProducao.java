@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+import excecoes.DemandaInvalidaException;
+import excecoes.CompraInvalidaException;
+
 public class GerenciadorProducao {
     private ArrayList<Demanda> demandas = new ArrayList<>();
     private ArrayList<Produto> produtosFabricados = new ArrayList<>();
@@ -44,20 +47,28 @@ public class GerenciadorProducao {
             }
         }
         //se o tipo nao existe ainda
+
+        if (quantidade < 0){
+            throw new DemandaInvalidaException("Nao podemos iniciar uma demanda negativa para um novo tipo de produto.");
+        }
+
         registrarDemanda(tipoProduto, quantidade);
     }
 
     public void comprarMateriaPrima(float quantidade){
+
+        if (quantidade < 0){
+            throw new CompraInvalidaException("Entre com uma quantidade positiva para comprar materia-prima");
+        }
+
         double custototal = quantidade * materiaPrima.getCustoPorUnidade();
 
         //so compra materia prima se tiver verba
-        if(budget >= custototal){
-            budget -= custototal;
-            materiaPrima.adicionarEstoque(quantidade);
-            System.out.println("[OBA!] Ingredientes comprados! Novo saldo: R$" + String.format("%.2f", budget));
-        } else {
-            System.out.println("[ERRO] Dinheiro insuficiente para a compra!");
+        if(budget < custototal){
+            throw new CompraInvalidaException(" [ERRO] Nao ha verba suficiente para efetuar a compra.");
         }
+        budget -= custototal;
+        materiaPrima.adicionarEstoque(quantidade);
     }
 
     public void fabricarDemanda(Demanda alvo){

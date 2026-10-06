@@ -1,3 +1,5 @@
+import excecoes.RecursoInsuficienteException;
+
 public class Demanda {
     private TipoProduto tipoProduto;
     private int quantidadeProdutos;
@@ -10,6 +12,9 @@ public class Demanda {
 
     public void atualizarQuantidade(int quantidade){
         //quantidade pode ser tanto um numero negativo como um positivo
+        if (this.quantidadeProdutos + quantidade < 0){
+            throw new RecursoInsuficienteException("Materia-prima insuficiente.");
+        }
         this.quantidadeProdutos += quantidade;
     }
 
