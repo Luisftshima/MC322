@@ -3,10 +3,22 @@ import java.util.Scanner;
 import excecoes.CompraInvalidaException;
 import excecoes.OpcaoInvalidaException;
 
+/**
+ * Classe principal responsavel por iniciar e executar a interface de console da fabrica de chocolates
+ */
 public class Main {
-
+    /**
+     * Linhas de separacao utilizada na apresentação da interface.
+     */
     private static final String LINHA_DUPLA = "======================================================";
     private static final String LINHA_SIMPLES = "------------------------------------------------------";    
+    /**
+     * Inicia o programa da fabrica e executa o menu principal interativo
+     *
+     * <p>O metodo cria a materia-prima inicial, solicita ao usuario o cenario de operacao, cria o gerenciador da fabrica e mantem a interface em execucao ate que o usuario escolha sair</p>
+     *
+     * @param args argumentos fornecidos pela linha de comando
+     */
     public static void main(String[] args){
 
         Scanner entrada = new Scanner(System.in);
@@ -49,6 +61,9 @@ public class Main {
         entrada.close();
     }
 
+    /**
+     * Exibe a mensagem inicial e as informacoes de apresentacao da fabrica
+     */
     private static void exibirBoasVindas(){
         System.out.println(LINHA_DUPLA);
         System.out.println("BEM-VINDO À FANTÁSTICA FÁBRICA DE CHOCOLATE");
@@ -61,6 +76,14 @@ public class Main {
         System.out.println(LINHA_DUPLA);
     }
 
+    /**
+     * Solicita ao usuario a escolha do cenario operacional da fabrica
+     *
+     * <p>A leitura eh repetida ate que uma opcao valida seja informada</p>
+     *
+     * @param entrada scanner utilizado para ler a entrada do usuario
+     * @return cenario escolhido
+     */
     private static Cenario escolherCenario(Scanner entrada){
         System.out.println("ESCOLHA O CENÁRIO DA OPERAÇÃO");
         System.out.println("1 - Ideal (budget farto, poucas falhas, desgaste reduzido)");
@@ -83,6 +106,12 @@ public class Main {
         }
     }
 
+    /**
+     * Exibe o cabecalho da interface, incluindo a estrategia atual, o cenario ativo e o orcamento disponivel
+     *
+     * @param fabrica gerenciador da fabrica
+     * @param cenario cenario atualmente selecionado
+     */
     private static void exibirCabecalho(GerenciadorProducao fabrica, Cenario cenario){
         System.out.println();
         System.out.println(LINHA_DUPLA);
@@ -93,6 +122,9 @@ public class Main {
         System.out.println(LINHA_DUPLA);
     }
 
+    /**
+     * Exibe no console as opcoes disponiveis no menu principal
+     */
     private static void exibirMenuPrincipal(){
         System.out.println("1 - Demandas");
         System.out.println("2 - Fabricação");
@@ -106,6 +138,14 @@ public class Main {
         System.out.println("Escolha: ");
     }
 
+    /**
+     * Executa o menu de gerenciamento de demandas.
+     *
+     * <p>Permite adicionar ou remover unidades das demandas e consultar as demandas cadastradas</p>
+     *
+     * @param entrada scanner utilizado para ler as opcoes do usuario
+     * @param fabrica gerenciador da fabrica
+     */
     private static void menuDemandas(Scanner entrada, GerenciadorProducao fabrica){
         boolean voltar = false;
 
@@ -144,6 +184,14 @@ public class Main {
         }
     }
 
+    /**
+     * Solicita ao usuario uma quantidade e atualiza a demanda de um tipo especifico de produto
+     *
+     * @param entrada scanner utilizado para ler a quantidade
+     * @param fabrica gerenciador da fabrica
+     * @param tipo tipo de produto cuja demanda sera alterada
+     * @param nome_produto nome usado na mensagem apresentada ao usuario
+     */
     private static void atualizarDemanda(Scanner entrada, GerenciadorProducao fabrica, TipoProduto tipo, String nome_produto){
         System.out.println("Quantas unidades de " + nome_produto + " adicionar a demanda?");
         int quantidade = lerInteiro(entrada);
@@ -151,6 +199,14 @@ public class Main {
         System.out.println("[Legal!] Demanda de " + nome_produto + " atualizada");
     }
 
+    /**
+     * Executa o menu de fabricacao
+     *
+     * <p>Permite processar a proxima demanda utilizando a estrategia ativa ou fabricar diretamente um tipo especifico de produto</p>
+     *
+     * @param entrada scanner utilizado para ler as opcoes do usuario
+     * @param fabrica gerenciador da fabrica
+    */
     private static void menuFabricacao(Scanner entrada, GerenciadorProducao fabrica){
         boolean voltar = false;
 
@@ -191,6 +247,14 @@ public class Main {
         }
     }
 
+    /**
+     * Executa o menu de consulta de informacoes da fabrica
+     *
+     * <p>Permite consultar o armazem de produtos acabados e o estoque de materia-prima</p>
+     *
+     * @param entrada scanner utilizado para ler as opções do usuario
+     * @param fabrica gerenciador da fabrica
+     */
     private static void menuConsultar(Scanner entrada, GerenciadorProducao fabrica){
         boolean voltar = false;
 
@@ -223,6 +287,12 @@ public class Main {
         }
     }
 
+    /**
+     * Executa o fluxo de compra de materia-prima pela interface de console
+     *
+     * @param entrada scanner utilizado para ler a quantidade
+     * @param fabrica gerenciador da fabrica
+     */
     private static void menuComprarMateriaPrima(Scanner entrada, GerenciadorProducao fabrica){
         System.out.println();
         System.out.println("[COMPRAR MATÉRIA-PRIMA]");
@@ -237,6 +307,14 @@ public class Main {
         }
     }
 
+    /**
+     * Executa o menu de gerenciamento da estrategia de producao
+     *
+     * <p>Permite escolher entre as estrategias disponiveis e atualizar a estrategia ativa do gerenciador</p>
+     *
+     * @param entrada scanner utilizado para ler as opções do usuario
+     * @param fabrica gerenciador da fabrica
+     */
     private static void menuEstrategia(Scanner entrada, GerenciadorProducao fabrica){
         boolean voltar = false;
 
@@ -281,6 +359,14 @@ public class Main {
         }
     }
 
+    /**
+     * Executa o menu de auditoria da fabrica.
+     *
+     * <p>Permite gerar o relatorio geral ou consultar separadamente os diagnosticos das maquinas e dos produtos</p>
+     *
+     * @param entrada scanner utilizado para ler as opcoes do usuario
+     * @param fabrica gerenciador da fabrica
+     */
     private static void menuAuditoria(Scanner entrada, GerenciadorProducao fabrica){
         boolean voltar = false;
 
@@ -316,6 +402,14 @@ public class Main {
         }
     }
 
+    /**
+     * Executa o menu de manutenção das maquinas
+     *
+     * <p>Permite reparar uma maquina especifica ou realizar a manutencao geral das maquinas que necessitam de reparo</p>
+     *
+     * @param entrada scanner utilizado para ler as opcoes do usuario
+     * @param fabrica gerenciador da fabrica
+     */
     private static void menuManutencao(Scanner entrada, GerenciadorProducao fabrica){
         boolean voltar = false;
 
@@ -353,6 +447,12 @@ public class Main {
         }
     }
 
+    /**
+     * Le um numero inteiro do usuario, repetindo a leitura ate obter uma entrada valida
+     *
+     * @param entrada scanner utilizado para realizar a leitura
+     * @return valor inteiro informado pelo usuario
+     */
     private static int lerInteiro(Scanner entrada){
         while(true){
             String texto = entrada.nextLine().trim();
@@ -364,6 +464,12 @@ public class Main {
         }
     }
 
+    /**
+     * Le um numero decimal do usuario, repetindo a leitura ate obter uma entrada valida
+     *
+     * @param entrada scanner utilizado para realizar a leitura
+     * @return valor decimal informado pelo usuario
+     */
     private static float lerFloat(Scanner entrada){
         while(true){
             String texto = entrada.nextLine().trim();

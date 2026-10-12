@@ -3,16 +3,53 @@ import java.util.ArrayList;
 import excecoes.DemandaInvalidaException;
 import excecoes.CompraInvalidaException;
 
+/**
+ * Gerencia o funcionamento da fabrica de chocolates
+ *
+ * <p>Eh responsável por controlar demandas, produtos fabricados, maquinas, materia-prima, orcamento, cenario operacional e estrategia de producao</p>
+ */
 public class GerenciadorProducao {
+    /**
+     * Lista de demandas cadastradas na fabrica
+     */
     private ArrayList<Demanda> demandas = new ArrayList<>();
+    /**
+     * Lista de produtos aprovados e armazenados apos a fabricacao
+     */
     private ArrayList<Produto> produtosFabricados = new ArrayList<>();
+    /**
+     * Lista de maquinas que compoem a linha de producao
+     */
     private ArrayList<Maquina> maquinas = new ArrayList<>();
+    /**
+     * Materia-prima atualmente utilizada pela fabrica
+     */
     private MateriaPrima materiaPrima;
+    /**
+     * Orcamento atual disponivel para compras, producao e manutencao
+     */
     private double budget;
+    /**
+     * Estrategia atualmente utilizada para selecionar a proxima demanda
+     */
     private EstrategiaProducao estrategiaAtual;
+    /**
+     * Cenario operacional que define parametros financeiros e de falha da fabrica
+     */
     private Cenario cenario;
+    /**
+     * Numero que sera atribuido ao proximo lote produzido
+     */
     private int proximoLote = 1;
 
+    /**
+     * Cria um gerenciador de producao para a materia-prima e o cenario informados
+     *
+     * <p>O construtor inicializa o orcamento a partir do cenario, define a estrategia de producao como EstrategiaOrdemChegada, cria as maquinas da linha de producao e cadastra uma demanda inicial para cada tipo de produto</p>
+     *
+     * @param materiaPrima materia-prima utilizada pela fabrica
+     * @param cenario cenario operacional da fabrica
+     */
     public GerenciadorProducao(MateriaPrima materiaPrima, Cenario cenario){
         this.materiaPrima = materiaPrima;
         this.cenario = cenario;
@@ -31,11 +68,27 @@ public class GerenciadorProducao {
         registrarDemanda(TipoProduto.CHOCOTONE, 0);
 
     }
-
+    
+    /**
+     * Cadastra uma nova demanda na lista de demandas da fabrica
+     *
+     * @param tipoProduto tipo de produto solicitado
+     * @param quantidade quantidade de unidades solicitadas
+     */
     public void registrarDemanda(TipoProduto tipoProduto, int quantidade){
         demandas.add(new Demanda(tipoProduto, quantidade));
     }
 
+    /**
+     * Atualiza a quantidade de uma demanda existente.
+     *
+     * <p>Caso o tipo de produto ja esteja cadastrado, a quantidade eh atualizada e a demanda passa a ser pendente quando sua quantidade fica positiva. Caso o tipo ainda nao exista, uma nova demanda eh cadastrada, desde que a quantidade informada nao seja negativa</p>
+     *
+     * @param tipoProduto tipo de produto cuja demanda sera atualizada
+     * @param quantidade valor a ser adicionado a demanda
+     * @throws DemandaInvalidaException se o tipo ainda nao estiver cadastrado e a quantidade informada for negativa
+     * @throws RecursoInsuficienteException se a atualizacao de uma demanda existente resultar em quantidade negativa
+     */
     public void atualizarDemanda(TipoProduto tipoProduto, int quantidade){
         for(Demanda demanda : demandas){
             if (demanda.getTipoProduto() == tipoProduto){
@@ -55,6 +108,12 @@ public class GerenciadorProducao {
         registrarDemanda(tipoProduto, quantidade);
     }
 
+    /**
+     * Compra a quantidade informada de materia-prima e desconta seu custo do orcamento da fabrica
+     *
+     * @param quantidade quantidade de materia-prima a ser comprada
+     * @throws CompraInvalidaException se a quantidade for negativa ou se o orcamento disponivel for insuficiente para a compra
+     */
     public void comprarMateriaPrima(float quantidade){
 
         if (quantidade < 0){
@@ -71,6 +130,15 @@ public class GerenciadorProducao {
         materiaPrima.adicionarEstoque(quantidade);
     }
 
+    /**
+     * Executa a fabricacao da demanda informada
+     a
+     * <p>O metodo cria produtos individualmente, verifica materia-prima e orcamento disponiveis, executa cada produto por todas as maquinas da linha e armazena somente os produtos aprovados na inspecao. A demanda eh atualizada ao final de acordo com a quantidade efetivamente produzida</p>
+     *
+     * <p>A fabricação eh interrompida quando uma maquina esta quebrada, quando faltam ingredientes, quando falta orcamento para operar a linha ou quando nao eh possivel criar o produto correspondente</p>
+     *
+     * @param alvo demanda que sera produzida
+     */
     public void fabricarDemanda(Demanda alvo){
         if(alvo == null || alvo.getQuantidadeProdutos() <= 0){
             System.out.println("[ERRO] Não há demanda para este chocolate ainda!");
@@ -151,7 +219,11 @@ public class GerenciadorProducao {
         System.out.println("[YUMMY] Produção de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
     }
 
-    //Funções verificando as maquinas
+    /**
+     * Procura a primeira maquina da linha que nao esta apta a operar
+     *
+     * @return primeira maquina quebrada encontrada ou NULL se todas estiverem aptas
+     */
     private Maquina primeiraMaquinaQuebrada(){
         for (Maquina m : maquinas){
             if(!m.estaApta()){
@@ -161,6 +233,9 @@ public class GerenciadorProducao {
         return null;
     }
 
+    /**
+     * Exibe no console o estado atual de todas as maquinas da fabrica, incluindo saude, status e custo de manutencao
+     */
     public void exibirMaquinas(){
         System.out.println("===== MÁQUINAS =====");
         for (int i = 0; i < maquinas.size(); i++){
@@ -171,10 +246,22 @@ public class GerenciadorProducao {
         }
     }
 
+    /**
+     * Retorna a quantidade de maquinas presentes na linha de producao
+     *
+     * @return numero de maquinas cadastradas
+     */
     public int getQuantidadeMaquinas(){
         return maquinas.size();
     }
 
+    /**
+     * Solicita a manutencao de uma maquina especifica
+     *
+     * <p>O numero recebido eh tratado como uma posicao iniciada em 1, correspondente a numeracao exibida ao usuario</p>
+     *
+     * @param numeroMaquina numero da maquina a ser reparada
+     */
     public void realizarManutencao(int numeroMaquina){
         if(numeroMaquina < 1 || numeroMaquina > maquinas.size()){
             System.out.println("[ERRO] Máquina existente");
@@ -183,7 +270,11 @@ public class GerenciadorProducao {
         reparar(maquinas.get(numeroMaquina - 1));
     }
 
-    //quando a saude das maquinas estão abaixo de 30
+    /**
+     * Realiza a manutencao de todas as maquinas que estejam marcadas como necessitando de manutencao
+     *
+     * <p>O metodo tenta reparar cada maquina cuja saude seja menor ou igual a 30, respeitando o orcamento disponivel</p>
+     */
     public void realizarManutencaoGeral(){
         boolean algumaPrecisava = false;
 
@@ -199,6 +290,11 @@ public class GerenciadorProducao {
         }
     }
 
+    /**
+     * Repara uma maquina ate sua saude maxima, descontando do orcamento o custo correspondente ao desgaste acumulado
+     *
+     * @param m maquina que sera reparada
+     */
     private void reparar(Maquina m){
         if(!m.precisaReparo()){
             System.out.println("[OK] " + m.getNome() + " já está com a saúde máxima.");
@@ -216,7 +312,11 @@ public class GerenciadorProducao {
             + ". Novo saldo: R$" + String.format("%.2f", budget));
     }
 
-    //calcula o custo total das maquinas para produzir o chocolate
+    /**
+     * Calcula o custo de operacao de todas as maquinas da linha para produzir uma unidade de produto
+     *
+     * @return soma dos custos de operacao das maquinas
+     */
     private double calcularCustoProducao(){
         double total = 0;
         for (Maquina m : maquinas){
@@ -225,14 +325,27 @@ public class GerenciadorProducao {
         return total;
     }
 
+    /**
+     * Exibe no console o orcamento atual disponivel para a fabrica
+     */
     public void exibirBudget(){
         System.out.println(String.format("Caixa Atual: R$%.2f",budget));
     }
 
+    /**
+     * Retorna o orcamento atual disponivel
+     *
+     * @return saldo atual do orcamento
+     */
     public double getBudget(){
         return budget;
     }
 
+    /**
+     * Exibe no console os produtos aprovados e armazenados na fabrica
+     *
+     * <p>Os produtos sao agrupados por nome e lote e sao apresentados com quantidade, tipo, lote, qualidade e quantidade de itens em risco</p>
+     */
     public void exibirArmazem(){
         System.out.println("===== ARMAZÉM DE CHOCOLATES =====");
 
@@ -268,10 +381,16 @@ public class GerenciadorProducao {
         }
     }
 
+    /**
+     * Exibe no console a quantidade atualmente disponivel da materia-prima
+     */
     public void exibirEstoqueMateriaPrima(){
         System.out.println(materiaPrima.getNome() + " em estoque: " + materiaPrima.getQuantidade() + " " + materiaPrima.getUnidade());
     }
 
+    /**
+     * Exibe no console todas as demandas cadastradas, juntamente com suas quantidades e respectivos status
+     */
     public void exibirDemandas(){
         System.out.println("=====DEMANDAS PENDENTES=====");
         for(Demanda d : demandas){
@@ -279,19 +398,39 @@ public class GerenciadorProducao {
         }
     }
 
+    /**
+     * Define a estrategia que sera utilizada para selecionar a proxima demanda
+     *
+     * @param estrategia nova estrategia de producao
+     */
     public void setEstrategia(EstrategiaProducao estrategia){
         this.estrategiaAtual = estrategia;
     }
 
+    /**
+     * Retorna a estrategia de producao atualmente ativa
+    *
+    * @return estrategia atualmente configurada
+    */
     public EstrategiaProducao getEstrategia(){
         return this.estrategiaAtual;
     }
 
+    /**
+     * Seleciona a proxima demanda utilizando a estrategia ativa e solicita sua fabricacao
+     */
     public void executarProximaProducao(){
         Demanda alvo = estrategiaAtual.selecionarDemanda(demandas, budget);
         fabricarDemanda(alvo);
     }
 
+    /**
+     * Procura uma demanda do tipo informado e inicia sua fabricacao
+     *
+     * <p>Somente a primeira demanda encontrada para o tipo eh processada</p>
+     *
+     * @param tipoProduto tipo de produto cuja demanda deve ser fabricada
+     */
     public void fabricarPorTipo(TipoProduto tipoProduto){
         for (Demanda demanda: demandas){
             if (demanda.getTipoProduto() == tipoProduto){
@@ -301,12 +440,18 @@ public class GerenciadorProducao {
         }
     }
 
+    /**
+     * Gera no console um relatorio geral contendo o diagnostico das maquinas e o diagnostico dos produtos fabricados
+     */
     public void gerarAuditoriaGeral(){
         System.out.println("RELATÓRIO GERAL");
         gerarRelatorioMaquinas();
         gerarRelatorioProdutos();
     }
 
+    /**
+     * Gera no console o relatorio de diagnostico de todas as maquinas
+     */
     public void gerarRelatorioMaquinas(){
         System.out.println("===== DIAGNÓSTICO DAS MÁQUINAS =====");
         for(Maquina maquina:maquinas){
@@ -314,6 +459,9 @@ public class GerenciadorProducao {
         }
     }
 
+    /**
+     * Gera no console o relatorio de diagnostico de todos os produtos aprovados e armazenados
+     */
     public void gerarRelatorioProdutos(){
         System.out.println("===== DIAGNÓSTICO DOS PRODUTOS =====");
         if(produtosFabricados.isEmpty()){
@@ -325,6 +473,11 @@ public class GerenciadorProducao {
         }
     }
 
+    /**
+     * Retorna o cenario operacional atual da fabrica
+     *
+     * @return cenario configurado
+     */
     public Cenario getCenario(){
         return this.cenario;
     }
