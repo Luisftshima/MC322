@@ -7,7 +7,7 @@ public enum Cenario {
     /**
      * Cenario com orcamento inicial elevado, menor probabilidade de falha e baixo desgaste das maquinas
      */
-    IDEAL("Ideal", 10000.0, 0.5, 0, 1);
+    IDEAL("Ideal", 10000.0, 0.5, 0, 1),
     /**
      * Cenario com orcamento inicial limitado, maior probabilidade de falha e desgaste acelerado das maquinas
      */

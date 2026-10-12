@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 import excecoes.DemandaInvalidaException;
+import excecoes.MaquinaIndisponivelException;
+import excecoes.RecursoInsuficienteException;
 import excecoes.CompraInvalidaException;
 
 /**
@@ -138,23 +140,42 @@ public class GerenciadorProducao {
      * <p>A fabricacao eh interrompida quando uma maquina esta quebrada, quando faltam ingredientes, quando falta orcamento para operar a linha ou quando nao eh possivel criar o produto correspondente</p>
      *
      * @param alvo demanda que sera produzida
+     * 
+     * @throws DemandaInvalidaException nao ha demanda para o produto ainda
+     * @throws MaquinaIndisponivelException se a maquina esta quebrada
+     * @throws RecursoInsuficienteException nao ha recurso o suficiente para fabricar a demanda
      */
     public void fabricarDemanda(Demanda alvo){
         if(alvo == null || alvo.getQuantidadeProdutos() <= 0){
-            System.out.println("[ERRO] Nao ha demanda para este chocolate ainda!");
-            return;
+        throw new DemandaInvalidaException("Nao ha demanda para esse chocoWonka."); 
         }
 
         Maquina quebrada = primeiraMaquinaQuebrada();
         if(quebrada != null){
-            System.out.println("[ERRO] " + quebrada.getNome() + " esta QUEBRADA. Faca a manutencao antes de produzir mais chocolates!.");
-            return;
+            throw new MaquinaIndisponivelException(quebrada.getNome() + " esta quebrada. Faça a manutencao antes de produzir.");
         }
+
+        Produto p = Produto.criarPorTipo(alvo.getTipoProduto());
+        int quantidade = alvo.getQuantidadeProdutos();
+
+        float materiaPrimaTotal = p.getMateriaPrimaPorUnidade() * quantidade;
+        double custoOperacaoLinha = calcularCustoProducao() * quantidade;
+        
+        if (budget < custoOperacaoLinha){
+            throw new RecursoInsuficienteException("Verba insuficiente para produzir a demanda.");
+        }
+
+        if (!materiaPrima.verificarDisponibilidade(materiaPrimaTotal)){
+            throw new RecursoInsuficienteException("Nao ha ingredientes suficientes para a producao da demanda.");
+        }
+
         alvo.emProducao();
 
         int loteAtual = proximoLote++;
         int quantidadeDesejada = alvo.getQuantidadeProdutos();
         int produzidos = 0;
+
+        double custoUnitario = calcularCustoProducao();
 
         for(int i = 0; i < quantidadeDesejada; i++){
 
@@ -164,29 +185,15 @@ public class GerenciadorProducao {
                 break;
             }
 
-            Produto p = Produto.criarPorTipo(alvo.getTipoProduto());
-
             if (p == null){
                 break;
             }
+
             p.setLote(loteAtual);
-
-            if(!materiaPrima.verificarDisponibilidade(p.getMateriaPrimaPorUnidade())){
-                System.out.println("[ERRO] Ingredientes insuficientes para produzir " + p.getNome() + "!");
-                alvo.cancelar();
-                break;
-            }
-
-            double custoOperacaoLinha = calcularCustoProducao();
-            if(budget < custoOperacaoLinha){
-                System.out.println("[ERRO] Verba insuficiente para rodar as maquinas!");
-                alvo.cancelar();
-                break;
-            }
 
             //consumindo materia prima e dinheiro
             materiaPrima.consumir(p.getMateriaPrimaPorUnidade());
-            budget -= custoOperacaoLinha;
+            budget -= custoUnitario;
 
             boolean aprovado = true;
             for (Maquina m:maquinas){
@@ -216,6 +223,7 @@ public class GerenciadorProducao {
                 alvo.pendente();
             }
         }
+
         System.out.println("[YUMMY] Producao de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
     }
 
@@ -264,8 +272,7 @@ public class GerenciadorProducao {
      */
     public void realizarManutencao(int numeroMaquina){
         if(numeroMaquina < 1 || numeroMaquina > maquinas.size()){
-            System.out.println("[ERRO] Maquina existente");
-            return;
+            throw new MaquinaIndisponivelException("O numero da maquina nao existe.");
         }
         reparar(maquinas.get(numeroMaquina - 1));
     }
@@ -302,9 +309,8 @@ public class GerenciadorProducao {
         }
         double custo = m.calcularCustoManutencao();
         if(budget < custo){
-            System.out.println("[ERRO] Verba insuficiente para reparar " + m.getNome()
+            throw new RecursoInsuficienteException("[ERRO] Verba insuficiente para reparar " + m.getNome()
                 + " (custo R$ " + String.format("%.2f", custo) + ").");
-            return;
         }
         budget -= custo;
         m.realizarManutencao();

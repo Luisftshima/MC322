@@ -2,6 +2,9 @@ import java.util.Scanner;
 
 import excecoes.CompraInvalidaException;
 import excecoes.OpcaoInvalidaException;
+import excecoes.DemandaInvalidaException;
+import excecoes.MaquinaIndisponivelException;
+import excecoes.RecursoInsuficienteException;
 
 /**
  * Classe principal responsavel por iniciar e executar a interface de console da fabrica de chocolates
@@ -239,7 +242,7 @@ public class Main {
                 case 5: fabrica.fabricarPorTipo(TipoProduto.GUARDA_CHUVA); break;
                 case 0: voltar = true; break;
                 }
-            } catch (OpcaoInvalidaException e){
+            } catch (OpcaoInvalidaException | DemandaInvalidaException | MaquinaIndisponivelException| RecursoInsuficienteException e){
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
             } catch (Exception e){
                 System.out.println("A entrada deve ser um inteiro entre 0 e 5.");
@@ -273,7 +276,7 @@ public class Main {
                     throw new OpcaoInvalidaException("Essa opcao nao existe no menu de consulta. Escolha um numero entre 0 e 2. \n");
                 }
 
-                switch(lerInteiro(entrada)){
+                switch(opcao){
                 case 1: fabrica.exibirArmazem(); break;
                 case 2: fabrica.exibirEstoqueMateriaPrima(); break;
                 case 0: voltar = true; break;
@@ -387,7 +390,7 @@ public class Main {
                     throw new OpcaoInvalidaException("Essa opcao nao existe no menu de auditoria. Escolha um numero entre 0 e 3. \n");
                 }
 
-                switch(lerInteiro(entrada)){
+                switch(opcao){
                 case 1: fabrica.gerarAuditoriaGeral(); break;
                 case 2: fabrica.gerarRelatorioMaquinas(); break;
                 case 3: fabrica.gerarRelatorioProdutos(); break;
@@ -439,7 +442,7 @@ public class Main {
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opcao invalida.");
                 }
-            } catch (OpcaoInvalidaException e){
+            } catch (OpcaoInvalidaException | MaquinaIndisponivelException | RecursoInsuficienteException e){
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
             } catch (Exception e){
                 System.out.println("A entrada deve ser um inteiro entre 0 e 2.");
