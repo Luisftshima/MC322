@@ -1,3 +1,5 @@
+import excecoes.MaquinaInoperanteException;
+
 /**
  * Representa uma maquina responsavel pela etapa de embalagem dos produtos
  *
@@ -24,12 +26,12 @@ public class Embaladora extends Maquina{
      * <p>A maquina precisa estar apta a operar. Caso uma falha ocorra, a probabilidade acumulada de falha do produto eh aumentada. Ao final, a saude da maquina eh deteriorada e o produto recebe o status "Embalado"</p>
      *
      * @param produto produto que sera embalado
+     * @throws MaquinaInoperanteException avisa se a maquina esta inoperante
      * @return se o processamento pode ser realizado
      */
     @Override public boolean processar(Produto produto){
         if (!this.podeOperar()){
-            System.out.println("Maquina " + this.getNome() + "invalida");
-            return false;
+            throw new MaquinaInoperanteException("Maquina " + this.getNome() + " invalida");
         }
 
         if (verificarFalha()){
