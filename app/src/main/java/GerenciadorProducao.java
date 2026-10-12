@@ -6,7 +6,7 @@ import excecoes.CompraInvalidaException;
 /**
  * Gerencia o funcionamento da fabrica de chocolates
  *
- * <p>Eh responsável por controlar demandas, produtos fabricados, maquinas, materia-prima, orcamento, cenario operacional e estrategia de producao</p>
+ * <p>Eh responsavel por controlar demandas, produtos fabricados, maquinas, materia-prima, orcamento, cenario operacional e estrategia de producao</p>
  */
 public class GerenciadorProducao {
     /**
@@ -135,19 +135,19 @@ public class GerenciadorProducao {
      a
      * <p>O metodo cria produtos individualmente, verifica materia-prima e orcamento disponiveis, executa cada produto por todas as maquinas da linha e armazena somente os produtos aprovados na inspecao. A demanda eh atualizada ao final de acordo com a quantidade efetivamente produzida</p>
      *
-     * <p>A fabricação eh interrompida quando uma maquina esta quebrada, quando faltam ingredientes, quando falta orcamento para operar a linha ou quando nao eh possivel criar o produto correspondente</p>
+     * <p>A fabricacao eh interrompida quando uma maquina esta quebrada, quando faltam ingredientes, quando falta orcamento para operar a linha ou quando nao eh possivel criar o produto correspondente</p>
      *
      * @param alvo demanda que sera produzida
      */
     public void fabricarDemanda(Demanda alvo){
         if(alvo == null || alvo.getQuantidadeProdutos() <= 0){
-            System.out.println("[ERRO] Não há demanda para este chocolate ainda!");
+            System.out.println("[ERRO] Nao ha demanda para este chocolate ainda!");
             return;
         }
 
         Maquina quebrada = primeiraMaquinaQuebrada();
         if(quebrada != null){
-            System.out.println("[ERRO] " + quebrada.getNome() + " esta QUEBRADA. Faça a manutenção antes de produzir mais chocolates!.");
+            System.out.println("[ERRO] " + quebrada.getNome() + " esta QUEBRADA. Faca a manutencao antes de produzir mais chocolates!.");
             return;
         }
         alvo.emProducao();
@@ -160,7 +160,7 @@ public class GerenciadorProducao {
 
             quebrada = primeiraMaquinaQuebrada();
             if(quebrada != null){
-                System.out.println("[ALERTA] " + quebrada.getNome() + " quebrou durante a produção! Lote interrompido. Faça a manutenção.");
+                System.out.println("[ALERTA] " + quebrada.getNome() + " quebrou durante a producao! Lote interrompido. Faca a manutencao.");
                 break;
             }
 
@@ -179,7 +179,7 @@ public class GerenciadorProducao {
 
             double custoOperacaoLinha = calcularCustoProducao();
             if(budget < custoOperacaoLinha){
-                System.out.println("[ERRO] Verba insuficiente para rodar as máquinas!");
+                System.out.println("[ERRO] Verba insuficiente para rodar as maquinas!");
                 alvo.cancelar();
                 break;
             }
@@ -202,7 +202,7 @@ public class GerenciadorProducao {
             if(aprovado){
                 produtosFabricados.add(p);
                 produzidos++;
-                System.out.println("[OK] " + p.getNome() + " #" + p.getId() + " aprovado e guardado no armazém!");
+                System.out.println("[OK] " + p.getNome() + " #" + p.getId() + " aprovado e guardado no armazem!");
             } else {
                 System.out.println("[ALERTA] Produto id #" + p.getId() + " falhou na linha e o chocolate foi destacado!");
             }
@@ -216,7 +216,7 @@ public class GerenciadorProducao {
                 alvo.pendente();
             }
         }
-        System.out.println("[YUMMY] Produção de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
+        System.out.println("[YUMMY] Producao de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
     }
 
     /**
@@ -237,10 +237,10 @@ public class GerenciadorProducao {
      * Exibe no console o estado atual de todas as maquinas da fabrica, incluindo saude, status e custo de manutencao
      */
     public void exibirMaquinas(){
-        System.out.println("===== MÁQUINAS =====");
+        System.out.println("===== MAQUINAS =====");
         for (int i = 0; i < maquinas.size(); i++){
             Maquina m = maquinas.get(i);
-            System.out.println(String.format("%d - %s | Saúde: %d/%d | Status: %s | Custo do reparo: R$ %.2f",
+            System.out.println(String.format("%d - %s | Saude: %d/%d | Status: %s | Custo do reparo: R$ %.2f",
                 i + 1, m.getNome(), m.getSaude(), m.getSaudeMaxima(),
                 m.getStatusMaquina(), m.calcularCustoManutencao()));
         }
@@ -264,7 +264,7 @@ public class GerenciadorProducao {
      */
     public void realizarManutencao(int numeroMaquina){
         if(numeroMaquina < 1 || numeroMaquina > maquinas.size()){
-            System.out.println("[ERRO] Máquina existente");
+            System.out.println("[ERRO] Maquina existente");
             return;
         }
         reparar(maquinas.get(numeroMaquina - 1));
@@ -286,7 +286,7 @@ public class GerenciadorProducao {
         }
 
         if(!algumaPrecisava){
-            System.out.println("[OK] Nenhuma máquina precisa de manutenção urgente.");
+            System.out.println("[OK] Nenhuma maquina precisa de manutencao urgente.");
         }
     }
 
@@ -297,7 +297,7 @@ public class GerenciadorProducao {
      */
     private void reparar(Maquina m){
         if(!m.precisaReparo()){
-            System.out.println("[OK] " + m.getNome() + " já está com a saúde máxima.");
+            System.out.println("[OK] " + m.getNome() + " ja esta com a saude maxima.");
             return;
         }
         double custo = m.calcularCustoManutencao();
@@ -347,7 +347,7 @@ public class GerenciadorProducao {
      * <p>Os produtos sao agrupados por nome e lote e sao apresentados com quantidade, tipo, lote, qualidade e quantidade de itens em risco</p>
      */
     public void exibirArmazem(){
-        System.out.println("===== ARMAZÉM DE CHOCOLATES =====");
+        System.out.println("===== ARMAZEM DE CHOCOLATES =====");
 
         if (produtosFabricados.isEmpty()) {
             System.out.println("O mundo precisa dos nossos chocolates! Vamos fabricar!");
@@ -444,7 +444,7 @@ public class GerenciadorProducao {
      * Gera no console um relatorio geral contendo o diagnostico das maquinas e o diagnostico dos produtos fabricados
      */
     public void gerarAuditoriaGeral(){
-        System.out.println("RELATÓRIO GERAL");
+        System.out.println("RELATORIO GERAL");
         gerarRelatorioMaquinas();
         gerarRelatorioProdutos();
     }
@@ -453,7 +453,7 @@ public class GerenciadorProducao {
      * Gera no console o relatorio de diagnostico de todas as maquinas
      */
     public void gerarRelatorioMaquinas(){
-        System.out.println("===== DIAGNÓSTICO DAS MÁQUINAS =====");
+        System.out.println("===== DIAGNOSTICO DAS MAQUINAS =====");
         for(Maquina maquina:maquinas){
             System.out.println(maquina.gerarRelatorioDiagnostico());
         }
@@ -463,7 +463,7 @@ public class GerenciadorProducao {
      * Gera no console o relatorio de diagnostico de todos os produtos aprovados e armazenados
      */
     public void gerarRelatorioProdutos(){
-        System.out.println("===== DIAGNÓSTICO DOS PRODUTOS =====");
+        System.out.println("===== DIAGNOSTICO DOS PRODUTOS =====");
         if(produtosFabricados.isEmpty()){
             System.out.println("Nenhum ChocoWonka fabricado ainda!");
             return;

@@ -10,7 +10,7 @@ public class EstrategiaNatal implements EstrategiaProducao{
     /**
      * Seleciona a demanda a ser produzida dando prioridade aos chocotones
      *
-     * <p>O orçamento disponivel nao eh utilizado diretamente na selecao</p>
+     * <p>O orcamento disponivel nao eh utilizado diretamente na selecao</p>
      *
      * @param demandas lista de demandas disponiveis
      * @param orcamentoDisponivel orcamento atualmente disponivel para producao
@@ -71,6 +71,6 @@ public class EstrategiaNatal implements EstrategiaProducao{
      * @return nome da estrategia
      */
     public String getNomeEstrategia(){
-        return "Estratégia da Ceia de Natal";
+        return "Estrategia da Ceia de Natal";
     }
 }

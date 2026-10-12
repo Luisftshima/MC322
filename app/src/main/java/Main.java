@@ -8,7 +8,7 @@ import excecoes.OpcaoInvalidaException;
  */
 public class Main {
     /**
-     * Linhas de separacao utilizada na apresentação da interface.
+     * Linhas de separacao utilizada na apresentacao da interface.
      */
     private static final String LINHA_DUPLA = "======================================================";
     private static final String LINHA_SIMPLES = "------------------------------------------------------";    
@@ -25,7 +25,7 @@ public class Main {
         
         exibirBoasVindas();
 
-        //Criando a matéria prima, por enquanto temos só 1
+        //Criando a materia prima, por enquanto temos so 1
         MateriaPrima chocolate = new MateriaPrima(
             "Chocolate", 2000, "g", 
             0.05);
@@ -52,10 +52,10 @@ public class Main {
                 case 7: menuManutencao(entrada, fabrica); break;
                 case 0:
                     rodando_programa = false;
-                    System.out.println("Os confeiteiros e a fábrica precisam descansar...");
+                    System.out.println("Os confeiteiros e a fabrica precisam descansar...");
                     break;
                 default:
-                    System.out.println("Entrada Inválida");
+                    System.out.println("Entrada Invalida");
             }
         }
         entrada.close();
@@ -66,11 +66,11 @@ public class Main {
      */
     private static void exibirBoasVindas(){
         System.out.println(LINHA_DUPLA);
-        System.out.println("BEM-VINDO À FANTÁSTICA FÁBRICA DE CHOCOLATE");
+        System.out.println("BEM-VINDO A FANTASTICA FABRICA DE CHOCOLATE");
         System.out.println(LINHA_DUPLA);
 
-        System.out.println("Sejam muito bem-vindos a nossa fábrica de chocolates!");
-        System.out.println("Uma coisa é mais do que certa, a vida nunca foi tão doce!");
+        System.out.println("Sejam muito bem-vindos a nossa fabrica de chocolates!");
+        System.out.println("Uma coisa eh mais do que certa, a vida nunca foi tao doce!");
         System.out.println("Produzimos ovos artesanais, bombons e guarda-chuvas (de chocolate)!");
         System.out.println("Confeiteiros: Alex Lei e Luis Felipe Tagawa Shimamoto");
         System.out.println(LINHA_DUPLA);
@@ -85,9 +85,9 @@ public class Main {
      * @return cenario escolhido
      */
     private static Cenario escolherCenario(Scanner entrada){
-        System.out.println("ESCOLHA O CENÁRIO DA OPERAÇÃO");
+        System.out.println("ESCOLHA O CENARIO DA OPERACaO");
         System.out.println("1 - Ideal (budget farto, poucas falhas, desgaste reduzido)");
-        System.out.println("2 - Apocalíptico (budget limitado, mais falhas, desgaste acelerado)");
+        System.out.println("2 - Apocaliptico (budget limitado, mais falhas, desgaste acelerado)");
         System.out.print("Escolha: ");
 
         while(true){
@@ -96,12 +96,12 @@ public class Main {
                 if(opcao == 1) return Cenario.IDEAL;
                 if(opcao == 2) return Cenario.APOCALIPTICO;
                 
-                throw new OpcaoInvalidaException("Não existe essa opção. Escolha entre 1 ou 2.");
+                throw new OpcaoInvalidaException("Nao existe essa opcao. Escolha entre 1 ou 2.");
 
             } catch (OpcaoInvalidaException e){
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
             } catch (Exception e){
-                System.out.println("[ERRO] A entrada deve ser um número.");
+                System.out.println("[ERRO] A entrada deve ser um numero.");
             }
         }
     }
@@ -115,9 +115,9 @@ public class Main {
     private static void exibirCabecalho(GerenciadorProducao fabrica, Cenario cenario){
         System.out.println();
         System.out.println(LINHA_DUPLA);
-        System.out.println("FANTÁSTICA FÁBRICA DE CHOCOLATE");
-        System.out.println("Estratégia atual: " + fabrica.getEstrategia().getNomeEstrategia());
-        System.out.println("Cenário ativo: " + cenario.getNome());
+        System.out.println("FANTASTICA FABRICA DE CHOCOLATE");
+        System.out.println("Estrategia atual: " + fabrica.getEstrategia().getNomeEstrategia());
+        System.out.println("Cenario ativo: " + cenario.getNome());
         System.out.println(String.format("Budget: R$ %.2f", fabrica.getBudget()));
         System.out.println(LINHA_DUPLA);
     }
@@ -127,12 +127,12 @@ public class Main {
      */
     private static void exibirMenuPrincipal(){
         System.out.println("1 - Demandas");
-        System.out.println("2 - Fabricação");
+        System.out.println("2 - Fabricacao");
         System.out.println("3 - Consultar");
-        System.out.println("4 - Comprar matéria-prima");
-        System.out.println("5 - Gerenciar estratégia");
+        System.out.println("4 - Comprar materia-prima");
+        System.out.println("5 - Gerenciar estrategia");
         System.out.println("6 - Auditoria");
-        System.out.println("7 - Manutenção das Máquinas");
+        System.out.println("7 - Manutencao das Maquinas");
         System.out.println("0 - Sair");
         System.out.println(LINHA_SIMPLES);
         System.out.println("Escolha: ");
@@ -155,7 +155,7 @@ public class Main {
             System.out.println(LINHA_SIMPLES);
             System.out.println("1 - Atualizar demanda de Ovos Artesanais (Alta)");
             System.out.println("2 - Atualizar demanda de Chocotone (Alta)");
-            System.out.println("3 - Atualizar demanda de Bombons Sortidos (Média)");
+            System.out.println("3 - Atualizar demanda de Bombons Sortidos (Media)");
             System.out.println("4 - Atualizar demanda de Guarda-chuvas de Chocolate (Baixa)");
             System.out.println("5 - Listar demandas");
             System.out.println("0 - Voltar");
@@ -165,7 +165,7 @@ public class Main {
                 int opcao = lerInteiro(entrada);
 
                 if (opcao < 0 || opcao > 5){
-                    throw new OpcaoInvalidaException("Essa opção não existe no menu de demandas. Escolha um número entre 0 e 5. \n");
+                    throw new OpcaoInvalidaException("Essa opcao nao existe no menu de demandas. Escolha um numero entre 0 e 5. \n");
                 }
 
                 switch(opcao){
@@ -212,9 +212,9 @@ public class Main {
 
         while(!voltar){
             System.out.println();
-            System.out.println("[FABRICAÇÃO]");
+            System.out.println("[FABRICACaO]");
             System.out.println(LINHA_SIMPLES);
-            System.out.println("1 - Processar próxima demanda (usa estratégia ativa: "
+            System.out.println("1 - Processar proxima demanda (usa estrategia ativa: "
                 + fabrica.getEstrategia().getNomeEstrategia() + ")"
             );
             System.out.println("2 - Fabricar Ovo Artesanal");
@@ -228,7 +228,7 @@ public class Main {
                 int opcao = lerInteiro(entrada);
 
                 if (opcao < 0 || opcao > 5){
-                    throw new OpcaoInvalidaException("Essa opção não existe no menu de fabricação. Escolha um número entre 0 e 5. \n");
+                    throw new OpcaoInvalidaException("Essa opcao nao existe no menu de fabricacao. Escolha um numero entre 0 e 5. \n");
                 }
 
                 switch(opcao){
@@ -252,7 +252,7 @@ public class Main {
      *
      * <p>Permite consultar o armazem de produtos acabados e o estoque de materia-prima</p>
      *
-     * @param entrada scanner utilizado para ler as opções do usuario
+     * @param entrada scanner utilizado para ler as opcoes do usuario
      * @param fabrica gerenciador da fabrica
      */
     private static void menuConsultar(Scanner entrada, GerenciadorProducao fabrica){
@@ -261,8 +261,8 @@ public class Main {
         while(!voltar){
             System.out.println();
             System.out.println("[CONSULTAR]");
-            System.out.println("1 - Ver armazém (produtos acabados)");
-            System.out.println("2 - Ver estoque de matéria-prima");
+            System.out.println("1 - Ver armazem (produtos acabados)");
+            System.out.println("2 - Ver estoque de materia-prima");
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
 
@@ -270,7 +270,7 @@ public class Main {
                 int opcao = lerInteiro(entrada);
 
                 if (opcao < 0 || opcao > 2){
-                    throw new OpcaoInvalidaException("Essa opção não existe no menu de consulta. Escolha um número entre 0 e 2. \n");
+                    throw new OpcaoInvalidaException("Essa opcao nao existe no menu de consulta. Escolha um numero entre 0 e 2. \n");
                 }
 
                 switch(lerInteiro(entrada)){
@@ -295,7 +295,7 @@ public class Main {
      */
     private static void menuComprarMateriaPrima(Scanner entrada, GerenciadorProducao fabrica){
         System.out.println();
-        System.out.println("[COMPRAR MATÉRIA-PRIMA]");
+        System.out.println("[COMPRAR MATERIA-PRIMA]");
         System.out.println(LINHA_SIMPLES);
         System.out.println("Quantos gramas de chocolate quer comprar?");
         float quantidade = lerFloat(entrada);
@@ -312,7 +312,7 @@ public class Main {
      *
      * <p>Permite escolher entre as estrategias disponiveis e atualizar a estrategia ativa do gerenciador</p>
      *
-     * @param entrada scanner utilizado para ler as opções do usuario
+     * @param entrada scanner utilizado para ler as opcoes do usuario
      * @param fabrica gerenciador da fabrica
      */
     private static void menuEstrategia(Scanner entrada, GerenciadorProducao fabrica){
@@ -320,12 +320,12 @@ public class Main {
 
         while(!voltar){
             System.out.println();
-            System.out.println("[GERENCIAR ESTRATÉGIA]");
+            System.out.println("[GERENCIAR ESTRATEGIA]");
             System.out.println(LINHA_SIMPLES);
-            System.out.println("Estratégia atual: " + fabrica.getEstrategia().getNomeEstrategia());
+            System.out.println("Estrategia atual: " + fabrica.getEstrategia().getNomeEstrategia());
             System.out.println("1 - Chocofirst-In, Chocofirst-Out (Ordem de Chegada)");
             System.out.println("2 - ChocoWonka mais Pedido (Maior demanda)");
-            System.out.println("3 - Maior Produção de ChocoWonka (Máximo de Produtos)");
+            System.out.println("3 - Maior Producao de ChocoWonka (Maximo de Produtos)");
             System.out.println("4 - Ceia de Natal (prioriza os chocotones)");
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
@@ -336,7 +336,7 @@ public class Main {
                 int opcao = lerInteiro(entrada);
 
                 if (opcao < 0 || opcao > 4){
-                    throw new OpcaoInvalidaException("Essa opção não existe no menu de estratégia. Escolha um número entre 0 e 4. \n");
+                    throw new OpcaoInvalidaException("Essa opcao nao existe no menu de estrategia. Escolha um numero entre 0 e 4. \n");
                 }
 
                 switch(opcao){
@@ -354,7 +354,7 @@ public class Main {
 
             if(nova != null){
                 fabrica.setEstrategia(nova);
-                System.out.println("[OK] Estratégia alterada para: " + nova.getNomeEstrategia());
+                System.out.println("[OK] Estrategia alterada para: " + nova.getNomeEstrategia());
             }
         }
     }
@@ -374,8 +374,8 @@ public class Main {
             System.out.println();
             System.out.println("[AUDITORIA] (interface Auditavel)");
             System.out.println(LINHA_SIMPLES);
-            System.out.println("1 - Relatório geral (máquinas + produtos)");
-            System.out.println("2 - Detalhar máquinas");
+            System.out.println("1 - Relatorio geral (maquinas + produtos)");
+            System.out.println("2 - Detalhar maquinas");
             System.out.println("3 - Detalhar produtos");
             System.out.println("0 - Voltar");
             System.out.println("Escolha: ");
@@ -384,7 +384,7 @@ public class Main {
                 int opcao = lerInteiro(entrada);
 
                 if (opcao < 0 || opcao > 3){
-                    throw new OpcaoInvalidaException("Essa opção não existe no menu de auditoria. Escolha um número entre 0 e 3. \n");
+                    throw new OpcaoInvalidaException("Essa opcao nao existe no menu de auditoria. Escolha um numero entre 0 e 3. \n");
                 }
 
                 switch(lerInteiro(entrada)){
@@ -403,7 +403,7 @@ public class Main {
     }
 
     /**
-     * Executa o menu de manutenção das maquinas
+     * Executa o menu de manutencao das maquinas
      *
      * <p>Permite reparar uma maquina especifica ou realizar a manutencao geral das maquinas que necessitam de reparo</p>
      *
@@ -415,29 +415,29 @@ public class Main {
 
         while(!voltar){
             System.out.println();
-            System.out.println("[MANUTENÇÃO]");
+            System.out.println("[MANUTENCaO]");
             System.out.println(LINHA_SIMPLES);
             fabrica.exibirMaquinas();
             System.out.println(LINHA_SIMPLES);
-            System.out.println("1 - Reparar uma máquina");
-            System.out.println("2 - Reparar todas que precisam de manutenção (saúde <= 30%)");
+            System.out.println("1 - Reparar uma maquina");
+            System.out.println("2 - Reparar todas que precisam de manutencao (saude <= 30%)");
             System.out.println("0 - Voltar");
             System.out.print("Escolha: ");
             try{
                 int opcao = lerInteiro(entrada);
 
                 if (opcao < 0 || opcao > 2){
-                    throw new OpcaoInvalidaException("Essa opção não existe no menu de auditoria. Escolha um número entre 0 e 2. \n");
+                    throw new OpcaoInvalidaException("Essa opcao nao existe no menu de auditoria. Escolha um numero entre 0 e 2. \n");
                 }
 
                 switch(opcao){
                 case 1:
-                    System.out.print("Número da máquina: ");
+                    System.out.print("Numero da maquina: ");
                     fabrica.realizarManutencao(lerInteiro(entrada));
                     break;
                 case 2: fabrica.realizarManutencaoGeral(); break;
                 case 0: voltar = true; break;
-                default: System.out.println("[ERRO] Opção inválida.");
+                default: System.out.println("[ERRO] Opcao invalida.");
                 }
             } catch (OpcaoInvalidaException e){
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
@@ -459,7 +459,7 @@ public class Main {
             try{
                 return Integer.parseInt(texto);
             }catch (NumberFormatException e){
-                System.out.println("[ERRO] Digite apenas números, por gentileza: ");
+                System.out.println("[ERRO] Digite apenas numeros, por gentileza: ");
             }
         }
     }
@@ -476,7 +476,7 @@ public class Main {
             try{
                 return Float.parseFloat(texto);
             } catch (NumberFormatException e){
-                System.out.println("[ERRO] Digite apenas números, por gentileza: ");
+                System.out.println("[ERRO] Digite apenas numeros, por gentileza: ");
             }
         }
     }

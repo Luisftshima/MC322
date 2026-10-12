@@ -1,11 +1,11 @@
 import java.util.List;
 
 /**
- * Estrategia de producao que prioriza a demanda pendente de maior quantidade dentre aquelas cujo custo estimado cabe no orçamento disponivel
+ * Estrategia de producao que prioriza a demanda pendente de maior quantidade dentre aquelas cujo custo estimado cabe no orcamento disponivel
  */
 public class EstrategiaMaximoProdutos implements EstrategiaProducao {
     /**
-     * Seleciona a demanda pendente de maior quantidade cuja producao completa seja viavel dentro do orçamento disponivel
+     * Seleciona a demanda pendente de maior quantidade cuja producao completa seja viavel dentro do orcamento disponivel
      *
      * @param demandas lista de demandas disponiveis
      * @param orcamentoDisponivel orcamento atualmente disponivel para producao
@@ -35,6 +35,6 @@ public class EstrategiaMaximoProdutos implements EstrategiaProducao {
      * @return nome da estrategia
      */
     public String getNomeEstrategia() {
-        return "Estratégia de Maior Produção de ChocoWonka";
+        return "Estrategia de Maior Producao de ChocoWonka";
     }
 }

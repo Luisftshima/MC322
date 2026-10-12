@@ -172,8 +172,8 @@ public abstract class Maquina implements Auditavel{
      * @return relatorio de diagnostico da maquina
      */
     public String gerarRelatorioDiagnostico(){
-        return  String.format("Máquina: %s | Tipo: %s | Saúde: %d%% | Manutenção necessária: %s",
-        getNome(), getTipo(), saude, precisaManutencao() ? "SIM" : "NÃO");
+        return  String.format("Maquina: %s | Tipo: %s | Saude: %d%% | Manutencao necessaria: %s",
+        getNome(), getTipo(), saude, precisaManutencao() ? "SIM" : "NaO");
     }
 
     /**
@@ -203,7 +203,7 @@ public abstract class Maquina implements Auditavel{
     /**
      * Determina o estado atual da maquina
      *
-     * <p>A prioridade dos estados é: quebrada, em manutencao, desligada e operacional</p>
+     * <p>A prioridade dos estados são: quebrada, em manutencao, desligada e operacional</p>
      *
      * @return status atual da maquina
      */

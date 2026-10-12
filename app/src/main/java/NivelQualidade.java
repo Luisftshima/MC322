@@ -11,7 +11,7 @@ public enum NivelQualidade {
     /**
      * Nivel de media qualidade, com custo unitario de 3.75
      */
-    MEDIA("Média qualidade", 3.75),
+    MEDIA("Media qualidade", 3.75),
     /**
      * Nivel de baixa qualidade, com custo unitario de 3.00
      */

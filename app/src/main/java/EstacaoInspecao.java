@@ -23,27 +23,27 @@ public class EstacaoInspecao extends Maquina{
      *
      * <p>Primeiramente, verifica uma possivel falha do sensor e deteriora a maquina. Caso o sensor falhe, o produto eh rejeitado. Caso contrario, o produto eh rejeitado com base em sua probabilidade acumulada de falha ou aprovado na inspecao</p>
      *
-     * @param produto produto que será inspecionado
+     * @param produto produto que sera inspecionado
      * @return se o produto for aprovado
      */
     @Override 
     public boolean processar(Produto produto){
         if (!this.podeOperar()){
-            System.out.println("Maquina " + this.getNome() + "inválida");
+            System.out.println("Maquina " + this.getNome() + "invalida");
             return false;
         }
 
-        // é a única máquina que pode falhar por conta própria
+        // eh a unica maquina que pode falhar por conta propria
         boolean falhouSensor = verificarFalha();
         this.deteriorarMaquina();
 
         if(falhouSensor){
-            produto.setStatus("Inspeção com defeito no sensor");
+            produto.setStatus("Inspecao com defeito no sensor");
             return false;
         }
 
         if (RANDOM.nextDouble() < produto.getProbabilidadeFalha()){
-            produto.setStatus("Rejeitado na Inspeção.");
+            produto.setStatus("Rejeitado na Inspecao.");
             produto.resetarProbabilidadeFalha();
             return false;
         }
@@ -53,11 +53,11 @@ public class EstacaoInspecao extends Maquina{
     }
 
     /**
-     * Retorna o tipo da máquina.
+     * Retorna o tipo da maquina.
      *
      * @return "Inspecao"
      */
     @Override public String getTipo(){
-        return "Inspeção";
+        return "Inspecao";
     }
 }

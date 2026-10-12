@@ -28,7 +28,7 @@ public class Embaladora extends Maquina{
      */
     @Override public boolean processar(Produto produto){
         if (!this.podeOperar()){
-            System.out.println("Maquina " + this.getNome() + "inválida");
+            System.out.println("Maquina " + this.getNome() + "invalida");
             return false;
         }
 

@@ -36,7 +36,7 @@ public class Demanda {
      *
      * <p>O valor informado pode ser positivo ou negativo. A operacao nao permite que a quantidade resultante fique abaixo de zero</p>
      *
-     * @param quantidade valor a ser somado à quantidade atual
+     * @param quantidade valor a ser somado a quantidade atual
      * @throws RecursoInsuficienteException se a quantidade resultante for negativa
      */
     public void atualizarQuantidade(int quantidade){
@@ -72,7 +72,7 @@ public class Demanda {
      * Verifica se a producao completa da demanda cabe no orcamento disponivel
      *
      * @param orcamentoDisponivel valor atualmente disponivel para producao
-     * @return se o custo estimado eh menor ou igual ao orçamento ou não
+     * @return se o custo estimado eh menor ou igual ao orcamento ou nao
      */
     public boolean isViavel(double orcamentoDisponivel){
         return calcularCustoEstimado() <= orcamentoDisponivel;
@@ -99,7 +99,7 @@ public class Demanda {
      */
     public void atender(){
         if (this.status == StatusDemanda.CANCELADA){
-            throw new IllegalStateException("Não é possível concluir uma demanda ChocoWonka cancelada");
+            throw new IllegalStateException("Nao eh possivel concluir uma demanda ChocoWonka cancelada");
         }
         this.status = StatusDemanda.CONCLUIDA;
     }

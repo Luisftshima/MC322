@@ -7,7 +7,7 @@ public interface Auditavel {
     /**
      * Gera um relatorio textual com informacoes de diagnostico do objeto.
      *
-     * @return texto contendo as informações relevantes para auditoria
+     * @return texto contendo as informacoes relevantes para auditoria
      */
     String gerarRelatorioDiagnostico();
     /**

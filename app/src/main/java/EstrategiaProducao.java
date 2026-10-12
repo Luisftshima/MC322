@@ -5,7 +5,7 @@ import java.util.List;
  */
 public interface EstrategiaProducao {
     /**
-     * Seleciona uma demanda de acordo com a regra da estratégia.
+     * Seleciona uma demanda de acordo com a regra da estrategia.
      *
      * @param demandas lista de demandas disponiveis
      * @param orcamentoDisponivel orcamento atualmente disponivel para producao

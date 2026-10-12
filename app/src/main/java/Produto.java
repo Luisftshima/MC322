@@ -150,7 +150,7 @@ public abstract class Produto implements Auditavel{
     /**
      * Retorna o indice de qualidade do produto
      *
-     * @return índice de qualidade, normalmente entre 0.0 e 1.0
+     * @return indice de qualidade, normalmente entre 0.0 e 1.0
      */
     public double getQualidade(){
         return qualidade;
@@ -187,8 +187,8 @@ public abstract class Produto implements Auditavel{
      * @return relatorio de diagnostico do produto
      */
     public String gerarRelatorioDiagnostico() {
-        return String.format("ID: %d | Lote: #%d | Produto: %s | Tipo: %s | Qualidade: %.0f | Falha acumulada: %.2f%% | Status: %s | Manutenção necessária: %s",
-            id, lote, nome, getTipo(), qualidade, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NÃO");
+        return String.format("ID: %d | Lote: #%d | Produto: %s | Tipo: %s | Qualidade: %.0f | Falha acumulada: %.2f%% | Status: %s | Manutencao necessaria: %s",
+            id, lote, nome, getTipo(), qualidade, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NaO");
     }
 
     /**

@@ -11,7 +11,7 @@ public enum Cenario {
     /**
      * Cenario com orcamento inicial limitado, maior probabilidade de falha e desgaste acelerado das maquinas
      */
-    APOCALIPTICO("Apocalíptico", 1200.0, 2.0, 2, 5);
+    APOCALIPTICO("Apocaliptico", 1200.0, 2.0, 2, 5);
 
     /**
      * Nome exibido para o cenario

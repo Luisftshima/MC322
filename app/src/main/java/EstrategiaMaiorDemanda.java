@@ -7,10 +7,10 @@ public class EstrategiaMaiorDemanda implements EstrategiaProducao{
     /**
      * Seleciona a demanda pendente com maior quantidade de produtos.
      *
-     * <p>Demandas não pendentes ou sem quantidade positiva sao ignoradas. O orçamento disponivel eh recebido pela interface, mas nao eh utilizado por esta estrategia</p>
+     * <p>Demandas nao pendentes ou sem quantidade positiva sao ignoradas. O orcamento disponivel eh recebido pela interface, mas nao eh utilizado por esta estrategia</p>
      *
      * @param demandas lista de demandas disponiveis
-     * @param orcamentoDisponivel orçamento atualmente disponivel para producao
+     * @param orcamentoDisponivel orcamento atualmente disponivel para producao
      * @return demanda pendente com a maior quantidade de produtos, ou NULL caso nenhuma demanda elegivel seja encontrada
      */
     public Demanda selecionarDemanda(List<Demanda> demandas, double orcamentoDisponivel) {
@@ -36,6 +36,6 @@ public class EstrategiaMaiorDemanda implements EstrategiaProducao{
      * @return nome da estrategia
      */
     public String getNomeEstrategia(){
-        return "Estratégia do ChocoWonka mais Pedido";
+        return "Estrategia do ChocoWonka mais Pedido";
     }
 }

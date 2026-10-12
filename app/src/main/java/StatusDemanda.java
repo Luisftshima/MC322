@@ -5,11 +5,11 @@ public enum StatusDemanda {
     /**
      * Demanda cadastrada que ainda possui producao a ser realizada
      */
-    PENDENTE("Demanda cadastrada, mas ainda não iniciada"),
+    PENDENTE("Demanda cadastrada, mas ainda nao iniciada"),
     /**
      * Demanda atualmente selecionada e em processo de fabricacao
      */
-    EM_PRODUCAO("Demanda selecionada e em processo de fabricação. Vamos ter chocolate!"),
+    EM_PRODUCAO("Demanda selecionada e em processo de fabricacao. Vamos ter chocolate!"),
     /**
      * Demanda cuja quantidade foi totalmente atendida com sucesso
      */
@@ -17,7 +17,7 @@ public enum StatusDemanda {
     /**
      * Demanda interrompida por alguma condicao impeditiva, como falta de orcamento ou de materia-prima
      */
-    CANCELADA("Demanda cancelada por falta de orçamento ou chocolate.");
+    CANCELADA("Demanda cancelada por falta de orcamento ou chocolate.");
 
     /**
      * Descricao do status
