@@ -14,3 +14,8 @@ Além disso, criamos mais um tipo de produto de alta qualidade (Chocotone) e cri
 de Natal. Aproveitamos para criar uma tipagem forte (com enum) para a qualidade dos produtos e tipo de produtos.
 Para o futuro, queremos documentar bem cada funcao e organizar os arquivos em pastas separadas, deixando um 
 visual mais limpo e mais fácil de achar cada arquivo.
+
+[Tarefa 4]
+
+Implementamos o gradle, javadoc e tratamento de excecoes, que foram separadas em uma subpasta para maior organizacao.
+A principio o codigo esta com as mesmas funcionalidades da release anterior
