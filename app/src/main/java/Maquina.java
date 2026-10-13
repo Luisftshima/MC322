@@ -274,10 +274,16 @@ public abstract class Maquina implements Auditavel{
      * Reduz a saude da maquina utilizando um valor aleatorio dentro da faixa de desgaste definida pelo cenario
      *
      * <p>O valor sorteado inclui tanto o desgaste minimo quanto o maximo</p>
+     * @throws IllegalArgumentException se o argumento de minimo for maior que o maximo
      */
     public void deteriorarMaquina(){
-         int desgaste = RANDOM.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
-         this.saude = Math.max(0, saude - desgaste);
+        try {
+            int desgaste = RANDOM.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
+            this.saude = Math.max(0, saude - desgaste);
+        } catch (IllegalArgumentException e){
+            throw new IllegalArgumentException(
+                "O desgaste minimo precisa ser menor que o maximo");
+        }  
     }
 
     /**

@@ -177,7 +177,7 @@ public abstract class Produto implements Auditavel{
             case CHOCOTONE: return new Chocotone();
             case BOMBONS_SORTIDOS: return new BombonsSortidos();
             case GUARDA_CHUVA: return new GuardaChuva();
-            default: return null;
+            default throw new IllegalStateException("Nao existe fabrica de chocoWonka para o tipo: " + tipo);
         }
     }
 

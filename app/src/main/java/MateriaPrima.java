@@ -1,3 +1,5 @@
+import excecoes.RecursoInsuficienteException;
+
 /**
  * Representa uma materia-prima armazenada no estoque da fabrica
  *
@@ -46,8 +48,12 @@ public class MateriaPrima {
      * Reduz a quantidade disponivel em estoque
      *
      * @param quant quantidade que sera consumida
+     * @throws RecursoInsuficienteException se a quantidade a ser consumida eh maior do que tem de estoque
      */
     public void consumir(float quant){
+        if (quantidade < quant){
+            throw new RecursoInsuficienteException("A fabrica nao possui a quantidade a ser consumida");
+        }
         quantidade -= quant;
     }
 

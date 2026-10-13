@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 
 import excecoes.DemandaInvalidaException;
-import excecoes.MaquinaIndisponivelException;
+import excecoes.MaquinaInexistenteException;
 import excecoes.RecursoInsuficienteException;
 import excecoes.CompraInvalidaException;
+import excecoes.MaquinaIndisponivelException;
 
 /**
  * Gerencia o funcionamento da fabrica de chocolates
@@ -134,7 +135,6 @@ public class GerenciadorProducao {
 
     /**
      * Executa a fabricacao da demanda informada
-     a
      * <p>O metodo cria produtos individualmente, verifica materia-prima e orcamento disponiveis, executa cada produto por todas as maquinas da linha e armazena somente os produtos aprovados na inspecao. A demanda eh atualizada ao final de acordo com a quantidade efetivamente produzida</p>
      *
      * <p>A fabricacao eh interrompida quando uma maquina esta quebrada, quando faltam ingredientes, quando falta orcamento para operar a linha ou quando nao eh possivel criar o produto correspondente</p>
@@ -272,7 +272,7 @@ public class GerenciadorProducao {
      */
     public void realizarManutencao(int numeroMaquina){
         if(numeroMaquina < 1 || numeroMaquina > maquinas.size()){
-            throw new MaquinaIndisponivelException("O numero da maquina nao existe.");
+            throw new MaquinaInexistenteException("O numero da maquina nao existe.");
         }
         reparar(maquinas.get(numeroMaquina - 1));
     }
@@ -284,16 +284,27 @@ public class GerenciadorProducao {
      */
     public void realizarManutencaoGeral(){
         boolean algumaPrecisava = false;
+        int reparadas = 0;
+        int falhas = 0;
 
         for (Maquina m : maquinas){
             if (m.precisaManutencao()){
                 algumaPrecisava = true;
-                reparar(m);
+                try {
+                    reparar(m);
+                    reparadas++;
+                } catch(RecursoInsuficienteException e){
+                    System.out.println("Nao foi possivel reparar " + m.getNome() + ": " + e.getMessage());
+                    falhas++;
+                }
+
             }
         }
 
         if(!algumaPrecisava){
             System.out.println("[OK] Nenhuma maquina precisa de manutencao urgente.");
+        } else {
+            System.out.println("Foram reparadas " + reparadas + " maquinas e " + falhas + " falharam na reparacao");
         }
     }
 

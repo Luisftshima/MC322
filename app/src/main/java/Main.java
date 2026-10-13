@@ -5,6 +5,8 @@ import excecoes.OpcaoInvalidaException;
 import excecoes.DemandaInvalidaException;
 import excecoes.MaquinaIndisponivelException;
 import excecoes.RecursoInsuficienteException;
+import excecoes.MaquinaInoperanteException;
+import excecoes.MaquinaInexistenteException;
 
 /**
  * Classe principal responsavel por iniciar e executar a interface de console da fabrica de chocolates
@@ -242,7 +244,7 @@ public class Main {
                 case 5: fabrica.fabricarPorTipo(TipoProduto.GUARDA_CHUVA); break;
                 case 0: voltar = true; break;
                 }
-            } catch (OpcaoInvalidaException | DemandaInvalidaException | MaquinaIndisponivelException| RecursoInsuficienteException e){
+            } catch (OpcaoInvalidaException | DemandaInvalidaException | MaquinaIndisponivelException| RecursoInsuficienteException | MaquinaInoperanteException e){
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
             } catch (Exception e){
                 System.out.println("A entrada deve ser um inteiro entre 0 e 5.");
@@ -442,7 +444,7 @@ public class Main {
                 case 0: voltar = true; break;
                 default: System.out.println("[ERRO] Opcao invalida.");
                 }
-            } catch (OpcaoInvalidaException | MaquinaIndisponivelException | RecursoInsuficienteException e){
+            } catch (OpcaoInvalidaException | MaquinaIndisponivelException | RecursoInsuficienteException | MaquinaInexistenteException e){
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
             } catch (Exception e){
                 System.out.println("A entrada deve ser um inteiro entre 0 e 2.");
