@@ -137,7 +137,7 @@ public class GerenciadorProducao {
      * Executa a fabricacao da demanda informada
      * <p>O metodo cria produtos individualmente, verifica materia-prima e orcamento disponiveis, executa cada produto por todas as maquinas da linha e armazena somente os produtos aprovados na inspecao. A demanda eh atualizada ao final de acordo com a quantidade efetivamente produzida</p>
      *
-     * <p>A fabricacao eh interrompida quando uma maquina esta quebrada, quando faltam ingredientes, quando falta orcamento para operar a linha ou quando nao eh possivel criar o produto correspondente</p>
+     * <p>Veririca se uma maquina esta quebrada, se faltam ingredientes, se falta orcamento para operar a linha ou se nao eh possivel criar o produto correspondente antes de fabricar a demanda</p>
      *
      * @param alvo demanda que sera produzida
      * 
@@ -269,6 +269,8 @@ public class GerenciadorProducao {
      * <p>O numero recebido eh tratado como uma posicao iniciada em 1, correspondente a numeracao exibida ao usuario</p>
      *
      * @param numeroMaquina numero da maquina a ser reparada
+     * @throws MaquinaInexistenteException se o id da maquina nao existe
+     * @throws RecursoInsuficienteException nao ha verba o suficiente para manutencao
      */
     public void realizarManutencao(int numeroMaquina){
         if(numeroMaquina < 1 || numeroMaquina > maquinas.size()){

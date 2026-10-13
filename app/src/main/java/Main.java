@@ -5,7 +5,6 @@ import excecoes.OpcaoInvalidaException;
 import excecoes.DemandaInvalidaException;
 import excecoes.MaquinaIndisponivelException;
 import excecoes.RecursoInsuficienteException;
-import excecoes.MaquinaInoperanteException;
 import excecoes.MaquinaInexistenteException;
 
 /**
@@ -244,7 +243,7 @@ public class Main {
                 case 5: fabrica.fabricarPorTipo(TipoProduto.GUARDA_CHUVA); break;
                 case 0: voltar = true; break;
                 }
-            } catch (OpcaoInvalidaException | DemandaInvalidaException | MaquinaIndisponivelException| RecursoInsuficienteException | MaquinaInoperanteException e){
+            } catch (OpcaoInvalidaException | DemandaInvalidaException | MaquinaIndisponivelException| RecursoInsuficienteException e){
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
             } catch (Exception e){
                 System.out.println("A entrada deve ser um inteiro entre 0 e 5.");

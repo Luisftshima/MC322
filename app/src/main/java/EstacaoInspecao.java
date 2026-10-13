@@ -1,4 +1,4 @@
-import excecoes.MaquinaInoperanteException;
+import excecoes.MaquinaIndisponivelException;
 
 /**
  * Representa a estacao responsavel pela inspecao de qualidade dos produtos
@@ -26,13 +26,13 @@ public class EstacaoInspecao extends Maquina{
      * <p>Primeiramente, verifica uma possivel falha do sensor e deteriora a maquina. Caso o sensor falhe, o produto eh rejeitado. Caso contrario, o produto eh rejeitado com base em sua probabilidade acumulada de falha ou aprovado na inspecao</p>
      *
      * @param produto produto que sera inspecionado
-     * @throws MaquinaInoperanteException avisa se a maquina esta inoperante
+     * @throws MaquinaIndisponivelException avisa se a maquina esta inoperante/indisponivel
      * @return se o produto for aprovado
      */
     @Override 
     public boolean processar(Produto produto){
         if (!this.podeOperar()){
-            throw new MaquinaInoperanteException("Maquina " + this.getNome() + " invalida");
+            throw new MaquinaIndisponivelException("Maquina " + this.getNome() + " invalida");
         }
 
         // eh a unica maquina que pode falhar por conta propria

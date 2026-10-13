@@ -1,4 +1,4 @@
-import excecoes.MaquinaInoperanteException;
+import excecoes.MaquinaIndisponivelException;
 
 /**
  * Representa uma maquina responsavel pela etapa de mistura e processamento inicial dos ingredientes
@@ -24,12 +24,12 @@ public class Misturador extends Maquina{
      * <p>Se a maquina puder operar, verifica uma possivel falha, processa o produto, atualiza seu status e deteriora sua saude</p>
      *
      * @param produto produto que sera processado
-     * @throws MaquinaInoperanteException avisa se a maquina esta com defeito
-     * @return se o processamento for executado ou se a maquina nao puder operar
+     * @throws MaquinaIndisponivelException avisa se a maquina esta com defeito
+     * @return true se nao lancar a excecao
      */
     @Override public boolean processar(Produto produto){
         if (!this.podeOperar()){
-            throw new MaquinaInoperanteException("Maquina " + this.getNome() + " invalida");
+            throw new MaquinaIndisponivelException("Maquina " + this.getNome() + " invalida");
             
         }
 

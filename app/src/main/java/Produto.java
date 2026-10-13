@@ -169,7 +169,8 @@ public abstract class Produto implements Auditavel{
      * Cria uma instancia do produto correspondente ao tipo informado
      *
      * @param tipo tipo de produto a ser criado
-     * @return nova instancia do produto correspondente ou NULL se nenhum caso do tipo informado for reconhecido
+     * @return nova instancia do produto correspondente ou IllegalStateException se nenhum caso do tipo informado for reconhecido\
+     * @throws IllegalStateException 
      */
     public static Produto criarPorTipo(TipoProduto tipo){
         switch (tipo){
@@ -177,7 +178,7 @@ public abstract class Produto implements Auditavel{
             case CHOCOTONE: return new Chocotone();
             case BOMBONS_SORTIDOS: return new BombonsSortidos();
             case GUARDA_CHUVA: return new GuardaChuva();
-            default throw new IllegalStateException("Nao existe fabrica de chocoWonka para o tipo: " + tipo);
+            default: throw new IllegalStateException("Nao existe fabrica de chocoWonka para o tipo: " + tipo);
         }
     }
 
