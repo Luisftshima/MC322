@@ -79,16 +79,17 @@ public class ReguladorTemperatura {
     }
 
     /**
-     * o tempo de producao depende da deterioracao e da velocidade do braco
-     * @param temperaturaAlvo temperatura a ser configurada na maquina
+     * devolve a temperatura que o regulador consegue entregar
      * @return a nova temperatura no regulador
      */
-    public float regular(float temperaturaAtual){
-        if(estaQuebrada()){
-            return temperaturaAtual;
-        }
-        float diferenca = (float) (this.temperaturaAlvo - temperaturaAtual);
+    public float regular(){
+        double porcentagemSaude = (double) getSaudeAtual() / getSaudeMaxima();
+        double erro = 1 - porcentagemSaude;
 
-        return (float) (temperaturaAtual + (diferenca * porcentagemSaude));
+        if (erro == 0){
+            return (float) temperaturaAlvo;
+        }
+
+        return (float) (temperaturaAlvo + (1 + Maquina.RANDOM.nextDouble(-erro, erro)));
     }
 }

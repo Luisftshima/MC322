@@ -14,10 +14,12 @@ public class Embaladora extends Maquina{
      * @param probabilidadeFalha probabilidade-base de falha da maquina
      * @param custoOperacao custo de operacao da maquina por unidade produzida
      * @param saude saude inicial da maquina
+     * @param qtdBracos a quantidade de bracos da maquina
+     * @param temperaturaAlvo a temperatura em que a maquina deve entrar em contato com o produto
      * @param cenario cenario operacional associado a maquina
      */
     public Embaladora(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude, Cenario cenario){
-        super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, cenario);
+        super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, 4, 15,cenario);
     }
 
     /**

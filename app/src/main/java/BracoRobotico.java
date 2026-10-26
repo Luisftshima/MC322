@@ -14,7 +14,7 @@ public class BracoRobotico {
             throw new IllegalArgumentException("A velocidade deve ser entre 0.0 e 1.0");
         }
         if (probabilidadeFalha < 0 || probabilidadeFalha > 1.0){
-            throw new IllegalAccessException("A probabilidade deve ser entre 0.0 e 1.0")
+            throw new IllegalArgumentException("A probabilidade deve ser entre 0.0 e 1.0");
         }
         this.saude = new Saude(saudeMaxima);
         this.probabilidadeFalha = probabilidadeFalha;

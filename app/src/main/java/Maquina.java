@@ -78,7 +78,6 @@ public abstract class Maquina implements Auditavel{
         for (int i = 0; i < qtdBracos; i++){
             this.bracos.add(new BracoRobotico(saudeParte, probabilidadeFalha, VELOCIDADE_BRACO));
         }
-        this.saude = new Saude()
     }
 
     /**
