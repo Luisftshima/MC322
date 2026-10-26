@@ -1,4 +1,6 @@
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Classe base para todas as maquinas da linha de producao
@@ -24,17 +26,9 @@ public abstract class Maquina implements Auditavel{
      */
     private float capacidadeMaxima;
     /**
-     * Probabilidade-base de falha da maquina
-     */
-    private double probabilidadeFalha; //numero entre 0.0 e 1.0
-    /**
      * Custo de operacao da maquina por unidade processada
      */
     private double custoOperacao;
-    /**
-     * Saude atual da maquina
-     */
-    private int saude;
     /**
      * Saude maxima que a maquina pode atingir
      */
@@ -48,6 +42,14 @@ public abstract class Maquina implements Auditavel{
      */
     private static final double CUSTO_MANUTENCAO_POR_PONTO = 0.5;
 
+    private final Balanca balanca;
+    private final List<BracoRobotico> bracos;
+    private final ReguladorTemperatura regulador;
+
+    private static final double PRECISAO_BALANCA = 0.95;
+    private static final double VELOCIDADE_BRACO = 0.9;
+    private static final double LIMITE_MANUTENCAO = 0.3;
+
     /**
      * Inicializa uma maquina com os parametros operacionais informados
      *
@@ -57,18 +59,30 @@ public abstract class Maquina implements Auditavel{
      * @param capacidadeMaxima capacidade maxima de processamento
      * @param probabilidadeFalha probabilidade-base de falha
      * @param custoOperacao custo de operacao por unidade processada
-     * @param saude saude inicial da maquina
+     * @param saudeParte saude maxima de cada parte
+     * @param qtdBracos quantidade de bracos roboticos
+     * @param temperaturaAlvo temperatura que o regulador deve manter
      * @param cenario cenario operacional da maquina
+     * @throws IllegalArgumentException se a quantidade de bracos for menor que 1
      */
-    public Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude, Cenario cenario){
+    public Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saudeParte, 
+                    int qtdBracos, double temperaturaAlvo, Cenario cenario){
+        if (qtdBracos < 1){
+            throw new IllegalAccessException("A maquina precisa de pelo menos um braco robotico");
+        }
         this.nome = nome;
         this.capacidadeMaxima = capacidadeMaxima;
-        this.probabilidadeFalha = probabilidadeFalha;
         this.custoOperacao = custoOperacao;
         this.ligada = false;
-        this.saude = saude;
-        this.saudeMaxima = saude;
         this.cenario = cenario;
+
+        this.balanca = new Balanca(saudeParte, probabilidadeFalha, PRECISAO_BALANCA);
+        this.regulador = new ReguladorTemperatura((saudeParte), probabilidadeFalha, temperaturaAlvo);
+        this.bracos = new ArrayList<>(){
+            for (int i = 0; i < qtdBracos; i++){
+                this.bracos.add(new BracoRobotico(saudeParte, probabilidadeFalha, VELOCIDADE_BRACO));
+            }
+        }
     }
 
     /**
@@ -157,13 +171,20 @@ public abstract class Maquina implements Auditavel{
      * @return True se uma falha for sorteada e False se a maquina estiver desligada/quebrada ou se nenhuma falha ocorrer
      */
     protected boolean verificarFalha(){
-        if (saude <= 0 || this.ligada == false) {
+        if (estaQuebrada() || this.ligada !ligada) {
             return false;
         }
 
-        double fatorSaude = 100.0 / saude;
-        double prob = probabilidadeFalha * cenario.getMultiplicadorFalha() * fatorSaude;
-        return RANDOM.nextDouble() < prob;
+        double multiplicador = cenario.getMultiplicadorFalha();
+        if (balanca.falhou(multiplicador) | regulador.falhou(multiplicador)){
+            return true;
+        }
+        for (BracoRobotico braco : bracos){
+            if (braco.falhou(multiplicador)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -184,11 +205,7 @@ public abstract class Maquina implements Auditavel{
      * @return se a saude for menor ou igual a 30
      */
     public boolean precisaManutencao(){
-        if (saude <= 30){
-            return true;
-        }
-        return false;
-        
+        return getSaude() <= LIMITE_MANUTENCAO * getSaudeMaxima();
     }
 
     /**
@@ -197,7 +214,15 @@ public abstract class Maquina implements Auditavel{
      * @return se a saude da maquina for menor ou igual a zero
      */
     public boolean estaQuebrada(){
-        return saude <= 0;
+        if (balanca.estaQuebrada() || regulador.estaQuebrada()){
+            return true;
+        }
+        for (BracoRobotico braco : bracos){
+            if (braco.estaQuebrada()){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -237,7 +262,11 @@ public abstract class Maquina implements Auditavel{
      * @return saude atual
      */
     public int getSaude(){
-        return saude;
+        int total = balanca.getSaudeAtual() + regulador.getSaudeAtual();
+        for (BracoRobotico braco : bracos){
+            total += braco.getSaudeAtual();
+        }
+        return total;
     }
 
     /**
@@ -246,7 +275,11 @@ public abstract class Maquina implements Auditavel{
      * @return saude maxima
      */
     public int getSaudeMaxima(){
-        return saudeMaxima;
+        int total = balanca.getSaudeMaxima() + regulador.getSaudeMaxima();
+        for (BracoRobotico braco : bracos){
+            total += braco.getSaudeMaxima();
+        }
+        return total;
     }
 
     /**
@@ -255,7 +288,7 @@ public abstract class Maquina implements Auditavel{
      * @return se a saude atual for menor que a saude maxima
      */
     public boolean precisaReparo(){
-        return saude < saudeMaxima;
+        return getSaude() < getSaudeMaxima();
     }
 
     /**
@@ -277,13 +310,19 @@ public abstract class Maquina implements Auditavel{
      * @throws IllegalArgumentException se o argumento de minimo for maior que o maximo
      */
     public void deteriorarMaquina(){
+        balanca.deteriorar(sortearDesgaste());
+        regulador.deteriorar(sortearDesgaste());
+        for (BracoRobotico braco : bracos){
+            braco.deteriorar(sortearDesgaste());
+        }
+    }
+
+    private int sortearDesgaste(){
         try {
-            int desgaste = RANDOM.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
-            this.saude = Math.max(0, saude - desgaste);
+            return RANDOM.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
         } catch (IllegalArgumentException e){
-            throw new IllegalArgumentException(
-                "O desgaste minimo precisa ser menor que o maximo");
-        }  
+            throw new IllegalArgumentException("O desgaste minimo precisa ser menor que o maximo");
+        }
     }
 
     /**
@@ -292,13 +331,17 @@ public abstract class Maquina implements Auditavel{
      * @return custo de manutencao da maquina
      */
     public double calcularCustoManutencao(){
-        return (saudeMaxima - saude) * CUSTO_MANUTENCAO_POR_PONTO;
+        return (getSaudeMaxima() - getSaude()) * CUSTO_MANUTENCAO_POR_PONTO;
     }
 
     /**
      * Restaura a saude da maquina ao valor maximo
      */
     public void realizarManutencao(){
-        this.saude = saudeMaxima;
+        balanca.reparar();
+        regulador.reparar();
+        for (BracoRobotico braco : bracos){
+            braco.reparar();
+        }
     }
 }
