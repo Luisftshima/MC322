@@ -217,7 +217,7 @@ public class Main {
 
         while(!voltar){
             System.out.println();
-            System.out.println("[FABRICACaO]");
+            System.out.println("[FABRICACAO]");
             System.out.println(LINHA_SIMPLES);
             System.out.println("1 - Processar proxima demanda (usa estrategia ativa: "
                 + fabrica.getEstrategia().getNomeEstrategia() + ")"
