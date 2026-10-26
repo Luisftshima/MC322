@@ -54,6 +54,7 @@ public class Main {
                 case 5: menuEstrategia(entrada, fabrica); break;
                 case 6: menuAuditoria(entrada, fabrica); break;
                 case 7: menuManutencao(entrada, fabrica); break;
+                case 8: menuCasaDeMaquinas(entrada, fabrica); break;
                 case 0:
                     rodando_programa = false;
                     System.out.println("Os confeiteiros e a fabrica precisam descansar...");
@@ -419,7 +420,7 @@ public class Main {
 
         while(!voltar){
             System.out.println();
-            System.out.println("[MANUTENCaO]");
+            System.out.println("[MANUTENCAO]");
             System.out.println(LINHA_SIMPLES);
             fabrica.exibirMaquinas();
             System.out.println(LINHA_SIMPLES);
@@ -447,6 +448,40 @@ public class Main {
                 System.out.println("\n[ERRO]" + e.getMessage() + "\n");
             } catch (Exception e){
                 System.out.println("A entrada deve ser um inteiro entre 0 e 2.");
+            }
+        }
+    }
+
+    private static void menuCasaDeMaquinas(Scanner entrada, GerenciadorProducao fabrica){
+        boolean voltar = false;
+
+        while(!voltar){
+            System.out.println();
+            System.out.println("[CASA DE MAQUINAS]");
+            System.out.println(LINHA_SIMPLES);
+            fabrica.exibirResumoCasa();
+            System.out.println(LINHA_SIMPLES);
+            System.out.println("1 - Listar maquinas");
+            System.out.println("2 - Auditoria estrutural detalhada (Casa > Maquina > Componentes)");
+            System.out.println("3 - Custo de producao por unidade");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha: ");
+
+            try {
+                int opcao = lerInteiro(entrada);
+
+                if (opcao < 0 || opcao > 3){
+                    throw new OpcaoInvalidaException("Essa opcao nao existe no menu da casa de maquinas. Escolha um numero entre 0 e 3. \n");
+                }
+
+                switch(opcao){
+                case 1: fabrica.exibirMaquinas(); break;
+                case 2: fabrica.gerarRelatorioMaquinas(); break;
+                case 3: fabrica.exibirCustoProducao(); break;
+                case 0: voltar = true; break;
+                }
+            } catch (OpcaoInvalidaException e){
+                System.out.println("\n[ERRO]" + e.getMessage() + "\n");
             }
         }
     }
