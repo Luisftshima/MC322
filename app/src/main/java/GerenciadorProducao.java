@@ -21,9 +21,9 @@ public class GerenciadorProducao {
      */
     private ArrayList<Produto> produtosFabricados = new ArrayList<>();
     /**
-     * Lista de maquinas que compoem a linha de producao
+     * Casa de maquinas da fabrica
      */
-    private ArrayList<Maquina> maquinas = new ArrayList<>();
+    private final CasaDeMaquinasWonka casa = new CasaDeMaquinasWonka("Casa de Maquinas Wonka");
     /**
      * Materia-prima atualmente utilizada pela fabrica
      */
@@ -59,9 +59,9 @@ public class GerenciadorProducao {
         this.budget = cenario.getOrcamentoInicial();
         this.estrategiaAtual = new EstrategiaOrdemChegada();
 
-        maquinas.add(new Misturador("Super Misturador de Ingredientes", 1000, 0.15, 0.25, 100, cenario));
-        maquinas.add(new Embaladora("Embaladora Wonka", 500, 0.1, 1.5, 100, cenario));
-        maquinas.add(new EstacaoInspecao("Sensor de controle de qualidade", 200, 0.05, 0.5, 100, cenario));
+        casa.adicionar(new Misturador("Super Misturador de Ingredientes", 1000, 0.15, 0.25, 100, cenario));
+        casa.adicionar(new Embaladora("Embaladora Wonka", 500, 0.1, 1.5, 100, cenario));
+        casa.adicionar(new EstacaoInspecao("Sensor de controle de qualidade", 200, 0.05, 0.5, 100, cenario));
 
 
         //cadastrando demandas de produtos de diversas qualidades
@@ -150,7 +150,7 @@ public class GerenciadorProducao {
             throw new DemandaInvalidaException("Nao ha demanda para esse chocoWonka."); 
         }
 
-        Maquina quebrada = primeiraMaquinaQuebrada();
+        Maquina quebrada = casa.primeiraMaquinaQuebrada();
         if(quebrada != null){
             throw new MaquinaIndisponivelException(quebrada.getNome() + " esta quebrada. Faça a manutencao antes de produzir.");
         }
@@ -159,7 +159,7 @@ public class GerenciadorProducao {
         int quantidade = alvo.getQuantidadeProdutos();
         float materiaPrimaTotal = modelo.getMateriaPrimaPorUnidade() * quantidade;
 
-        double custoOperacaoLinha = calcularCustoProducao() * quantidade;
+        double custoOperacaoLinha = casa.calcularCustoProducao() * quantidade;
         
         if (budget < custoOperacaoLinha){
             throw new RecursoInsuficienteException("Verba insuficiente para produzir a demanda.");
@@ -176,11 +176,11 @@ public class GerenciadorProducao {
         int produzidos = 0;
         double tempoLote = 0.0;
 
-        double custoUnitario = calcularCustoProducao();
+        double custoUnitario = casa.calcularCustoProducao();
 
         for(int i = 0; i < quantidadeDesejada; i++){
 
-            quebrada = primeiraMaquinaQuebrada();
+            quebrada = casa.primeiraMaquinaQuebrada();
             if(quebrada != null){
                 System.out.println("[ALERTA] " + quebrada.getNome() + " quebrou durante a producao! Lote interrompido. Faca a manutencao.");
                 break;
@@ -194,7 +194,7 @@ public class GerenciadorProducao {
             budget -= custoUnitario;
 
             boolean aprovado = true;
-            for (Maquina m:maquinas){
+            for (Maquina m:casa.getMaquinas()){
                 m.ligar();
                 boolean funcionando = m.processar(p);
                 m.desligar();
@@ -228,39 +228,33 @@ public class GerenciadorProducao {
     }
 
     /**
-     * Procura a primeira maquina da linha que nao esta apta a operar
-     *
-     * @return primeira maquina quebrada encontrada ou NULL se todas estiverem aptas
-     */
-    private Maquina primeiraMaquinaQuebrada(){
-        for (Maquina m : maquinas){
-            if(!m.estaApta()){
-                return m;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Exibe no console o estado atual de todas as maquinas da fabrica, incluindo saude, status e custo de manutencao
+     * exibe as maquinas e seu status, saude e custo de manutencao
      */
     public void exibirMaquinas(){
-        System.out.println("===== MAQUINAS =====");
-        for (int i = 0; i < maquinas.size(); i++){
-            Maquina m = maquinas.get(i);
-            System.out.println(String.format("%d - %s | Saude: %d/%d | Status: %s | Custo do reparo: R$ %.2f",
-                i + 1, m.getNome(), m.getSaude(), m.getSaudeMaxima(),
-                m.getStatusMaquina(), m.calcularCustoManutencao()));
-        }
+        casa.exibirMaquinas();
     }
 
     /**
-     * Retorna a quantidade de maquinas presentes na linha de producao
-     *
-     * @return numero de maquinas cadastradas
+     * Exibe o custo da producao
+     */
+    public void exibirCustoProducao(){
+        System.out.println(String.format("Custo de producao por unidade (soma das %d maquinas): R$ %.2f",
+            casa.getQuantidadeMaquinas(), casa.calcularCustoProducao()));
+    }
+
+    /**
+     * exibe as informacoes gerais da casa e maquinas
+     */
+    public void exibirResumoCasa(){
+        System.out.println(String.format("%s | Maquinas: %d | Alguma precisa de manutencao: %s",
+            casa.getNome(), casa.getQuantidadeMaquinas(), casa.precisaManutencao() ? "SIM" : "NAO"));
+    }
+    /**
+     * Quantidade de maquinas presentes na linha de producao
+     * @return retorna o numero de maquinas cadastrados
      */
     public int getQuantidadeMaquinas(){
-        return maquinas.size();
+        return casa.getQuantidadeMaquinas();
     }
 
     /**
@@ -273,10 +267,7 @@ public class GerenciadorProducao {
      * @throws RecursoInsuficienteException nao ha verba o suficiente para manutencao
      */
     public void realizarManutencao(int numeroMaquina){
-        if(numeroMaquina < 1 || numeroMaquina > maquinas.size()){
-            throw new MaquinaInexistenteException("O numero da maquina nao existe.");
-        }
-        reparar(maquinas.get(numeroMaquina - 1));
+        reparar(casa.buscarPorNumero(numeroMaquina));
     }
 
     /**
@@ -289,7 +280,7 @@ public class GerenciadorProducao {
         int reparadas = 0;
         int falhas = 0;
 
-        for (Maquina m : maquinas){
+        for (Maquina m : casa.getMaquinas()){
             if (m.precisaManutencao()){
                 algumaPrecisava = true;
                 try {
@@ -329,19 +320,6 @@ public class GerenciadorProducao {
         m.realizarManutencao();
         System.out.println("[OBA!] " + m.getNome() + " reparada por R$ " + String.format("%.2f", custo)
             + ". Novo saldo: R$" + String.format("%.2f", budget));
-    }
-
-    /**
-     * Calcula o custo de operacao de todas as maquinas da linha para produzir uma unidade de produto
-     *
-     * @return soma dos custos de operacao das maquinas
-     */
-    private double calcularCustoProducao(){
-        double total = 0;
-        for (Maquina m : maquinas){
-            total += m.getCustoOperacao();
-        }
-        return total;
     }
 
     /**
@@ -473,9 +451,7 @@ public class GerenciadorProducao {
      */
     public void gerarRelatorioMaquinas(){
         System.out.println("===== DIAGNOSTICO DAS MAQUINAS =====");
-        for(Maquina maquina:maquinas){
-            System.out.println(maquina.gerarRelatorioDiagnostico());
-        }
+        System.out.println(casa.gerarRelatorioDiagnostico());
     }
 
     /**
