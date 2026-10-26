@@ -15,7 +15,7 @@ public class Misturador extends Maquina{
      * @param cenario cenario operacional associado a maquina
      */
     public Misturador(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saude, Cenario cenario){
-        super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, cenario);
+        super(nome, capacidadeMaxima, probabilidadeFalha, custoOperacao, saude, cenario, );
     }
 
     /**

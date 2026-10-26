@@ -30,10 +30,6 @@ public abstract class Maquina implements Auditavel{
      */
     private double custoOperacao;
     /**
-     * Saude maxima que a maquina pode atingir
-     */
-    private final int saudeMaxima;
-    /**
      * Cenario operacional utilizado pela maquina
      */
     private Cenario cenario;
@@ -46,9 +42,9 @@ public abstract class Maquina implements Auditavel{
     private final List<BracoRobotico> bracos;
     private final ReguladorTemperatura regulador;
 
-    private static final double PRECISAO_BALANCA = 0.95;
-    private static final double VELOCIDADE_BRACO = 0.9;
-    private static final double LIMITE_MANUTENCAO = 0.3;
+    private static final double PRECISAO_BALANCA = 0.99;
+    private static final double VELOCIDADE_BRACO = 0.99;
+    private static final double LIMITE_MANUTENCAO = 0.25;
 
     /**
      * Inicializa uma maquina com os parametros operacionais informados
@@ -68,7 +64,7 @@ public abstract class Maquina implements Auditavel{
     public Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saudeParte, 
                     int qtdBracos, double temperaturaAlvo, Cenario cenario){
         if (qtdBracos < 1){
-            throw new IllegalAccessException("A maquina precisa de pelo menos um braco robotico");
+            throw new IllegalArgumentException("A maquina precisa de pelo menos um braco robotico");
         }
         this.nome = nome;
         this.capacidadeMaxima = capacidadeMaxima;
@@ -78,10 +74,9 @@ public abstract class Maquina implements Auditavel{
 
         this.balanca = new Balanca(saudeParte, probabilidadeFalha, PRECISAO_BALANCA);
         this.regulador = new ReguladorTemperatura((saudeParte), probabilidadeFalha, temperaturaAlvo);
-        this.bracos = new ArrayList<>(){
-            for (int i = 0; i < qtdBracos; i++){
-                this.bracos.add(new BracoRobotico(saudeParte, probabilidadeFalha, VELOCIDADE_BRACO));
-            }
+        this.bracos = new ArrayList<>();
+        for (int i = 0; i < qtdBracos; i++){
+            this.bracos.add(new BracoRobotico(saudeParte, probabilidadeFalha, VELOCIDADE_BRACO));
         }
     }
 
@@ -171,7 +166,7 @@ public abstract class Maquina implements Auditavel{
      * @return True se uma falha for sorteada e False se a maquina estiver desligada/quebrada ou se nenhuma falha ocorrer
      */
     protected boolean verificarFalha(){
-        if (estaQuebrada() || this.ligada !ligada) {
+        if (estaQuebrada() || !ligada) {
             return false;
         }
 
@@ -185,16 +180,6 @@ public abstract class Maquina implements Auditavel{
             }
         }
         return false;
-    }
-
-    /**
-     * Gera um relatorio textual com nome, tipo, saude e necessidade de manutencao da maquina
-     *
-     * @return relatorio de diagnostico da maquina
-     */
-    public String gerarRelatorioDiagnostico(){
-        return  String.format("Maquina: %s | Tipo: %s | Saude: %d%% | Manutencao necessaria: %s",
-        getNome(), getTipo(), saude, precisaManutencao() ? "SIM" : "NaO");
     }
 
     /**
@@ -317,6 +302,10 @@ public abstract class Maquina implements Auditavel{
         }
     }
 
+    /**
+     * determina aleatoriamente um desgaste para a parte
+     * @return retorna um desgaste entre o desgaste minimo e maximo
+     */
     private int sortearDesgaste(){
         try {
             return RANDOM.nextInt(cenario.getDesgasteMinimo(), cenario.getDesgasteMaximo() + 1);
@@ -343,5 +332,35 @@ public abstract class Maquina implements Auditavel{
         for (BracoRobotico braco : bracos){
             braco.reparar();
         }
+    }
+
+    /**
+     * Gera um relatorio hierarquico: uma linha da maquina e por componente da maquina
+     *
+     * @return relatorio de diagnostico da maquina
+     */
+    public String gerarRelatorioDiagnostico(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Maquina: %s | Tipo: %s | Saude %d%% | Manutencao necessaria: %s",
+            getNome(), getTipo(), getSaude() * 100 / getSaudeMaxima(), precisaManutencao()? "SIM" :"NAO"));
+        sb.append("\n   >").append(linhaComponente("Balanca", balanca.getSaudeAtual(), balanca.getSaudeMaxima(), balanca.estaQuebrada()));
+        for (int i = 0; i < bracos.size(); i++){
+            BracoRobotico braco = bracos.get(i);
+            sb.append("\n   >").append(linhaComponente("Braco " + (i + 1), braco.getSaudeAtual(), braco.getSaudeMaxima(), braco.estaQuebrada()));
+        }
+        sb.append("\n   >").append(linhaComponente("Regulador de temperatura", regulador.getSaudeAtual(), regulador.getSaudeMaxima(), regulador.estaQuebrada()));
+        return sb.toString();
+    }
+
+    /**
+     * Funcao auxiliar para printar o relatorio das maquinas
+     * @param nomeComponente nome do componente da maquina
+     * @param atual saude atual do componente
+     * @param maxima saude maxima do componente
+     * @param quebrada se o componente esta quebrado
+     * @return uma linha de string formatado
+     */
+    private String linhaComponente(String nomeComponente, int atual, int maxima, boolean quebrada){
+        return String.format("%s: %s (%d/%d)", nomeComponente, quebrada? "QUEBRADA" : "OK", atual, maxima);
     }
 }
