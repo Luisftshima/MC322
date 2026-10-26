@@ -12,7 +12,6 @@ public abstract class Produto implements Auditavel{
      * Quantidade total de produtos criados
      */
     private static int totalProdutosFabricados = 0;
-    
     /**
      * Identificador do produto
      */
@@ -43,6 +42,10 @@ public abstract class Produto implements Auditavel{
      * <p>O valor -1 indica que o produto ainda nao possui lote</p>
      */
     private int lote = -1; //nao tem nenhum lote no comeco
+    /**
+     * Tempo real gasto na linha
+     */
+    private double tempoRealProducao = 0.0;
   
     /**
      * Inicializa um produto com os parametros informados
@@ -188,8 +191,8 @@ public abstract class Produto implements Auditavel{
      * @return relatorio de diagnostico do produto
      */
     public String gerarRelatorioDiagnostico() {
-        return String.format("ID: %d | Lote: #%d | Produto: %s | Tipo: %s | Qualidade: %.0f | Falha acumulada: %.2f%% | Status: %s | Manutencao necessaria: %s",
-            id, lote, nome, getTipo(), qualidade, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NaO");
+        return String.format("ID: %d | Lote: #%d | Produto: %s | Tipo: %s | Qualidade: %.2f | Falha acumulada: %.2f%% | Status: %s | Manutencao necessaria: %s",
+            id, lote, nome, getTipo(), qualidade, probabilidadeFalhaAcumulada * 100, status, precisaManutencao() ? "SIM" : "NAO");
     }
 
     /**
@@ -217,5 +220,37 @@ public abstract class Produto implements Auditavel{
      */
     public int getLote(){
         return lote;
+    }
+
+    /**
+     * reduz a qualidade do produto, sem negativar
+     * @param perda o tanto que deve perder de qualidade
+     * @throws IllegalArgumentException se a perda for negativa
+     */
+    public void reduzirQualidade(double perda){
+        if (perda < 0){
+            throw new IllegalArgumentException("A perda de qualidade nao pode ser negativa");
+        }
+        this.qualidade = Math.max(0.0, qualidade - perda);
+    }
+
+    /**
+     * Adiciona tempo gasto em cada etapa da producao
+     * @param tempo o tempo adicionado
+     * @throws IllegalArgumentException se o tempo for negativo
+     */
+    public void adicionarTempo(double tempo){
+        if (tempo < 0){
+            throw new IllegalArgumentException("O tempo nao pode ser negativo");
+        }
+        this.tempoRealProducao += tempo;
+    }
+
+    /**
+     * devolve o tempo gasto ate agora na fabricacao do produto
+     * @return
+     */
+    public double getTempoRealProducao(){
+        return tempoRealProducao;
     }
 }

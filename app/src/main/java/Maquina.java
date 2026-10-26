@@ -37,6 +37,8 @@ public abstract class Maquina implements Auditavel{
      * Custo de manutencao por ponto de saude perdido
      */
     private static final double CUSTO_MANUTENCAO_POR_PONTO = 0.5;
+    private static final double FATOR_PERDA_PESO = 0.5;
+    private static final double FATOR_PERDA_TEMPERATURA = 0.5;
 
     private final Balanca balanca;
     private final List<BracoRobotico> bracos;
@@ -332,6 +334,35 @@ public abstract class Maquina implements Auditavel{
         for (BracoRobotico braco : bracos){
             braco.reparar();
         }
+    }
+    /**
+     * o braco mais lento define o tempo
+     * @param tempoBase tempo que o produto leva para ser produzido
+     * @return tempo de cada etapa
+     */
+    private double calcularTempoEtapa(double tempoBase){
+        float maisLento = 0f;
+        for (BracoRobotico braco:bracos){
+            maisLento= Math.max(maisLento, braco.calcular_tempo((float) tempoBase));
+        }
+        return maisLento;
+    }
+
+    protected void aplicarEfeitosDasPartes(Produto produto){
+        //balanca
+        float real = produto.getMateriaPrimaPorUnidade();
+        float medido = balanca.medir(real);
+        produto.reduzirQualidade(Math.abs(medido-real) / real * FATOR_PERDA_PESO);
+
+        //regulador de temperatura
+        double alvo = regulador.getTemperaturaAlvo();
+        if (alvo != 0){
+            double desvio = Math.abs(regulador.regular() - alvo) / Math.abs(alvo);
+            produto.reduzirQualidade((desvio * FATOR_PERDA_TEMPERATURA));
+        }
+
+        //bracos roboticos
+        produto.adicionarTempo(calcularTempoEtapa(produto.calcularTempoProducao()));
     }
 
     /**

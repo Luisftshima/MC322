@@ -147,7 +147,7 @@ public class GerenciadorProducao {
      */
     public void fabricarDemanda(Demanda alvo){
         if(alvo == null || alvo.getQuantidadeProdutos() <= 0){
-        throw new DemandaInvalidaException("Nao ha demanda para esse chocoWonka."); 
+            throw new DemandaInvalidaException("Nao ha demanda para esse chocoWonka."); 
         }
 
         Maquina quebrada = primeiraMaquinaQuebrada();
@@ -155,10 +155,10 @@ public class GerenciadorProducao {
             throw new MaquinaIndisponivelException(quebrada.getNome() + " esta quebrada. Faça a manutencao antes de produzir.");
         }
 
-        Produto p = Produto.criarPorTipo(alvo.getTipoProduto());
+        Produto modelo = Produto.criarPorTipo(alvo.getTipoProduto());
         int quantidade = alvo.getQuantidadeProdutos();
+        float materiaPrimaTotal = modelo.getMateriaPrimaPorUnidade() * quantidade;
 
-        float materiaPrimaTotal = p.getMateriaPrimaPorUnidade() * quantidade;
         double custoOperacaoLinha = calcularCustoProducao() * quantidade;
         
         if (budget < custoOperacaoLinha){
@@ -174,6 +174,7 @@ public class GerenciadorProducao {
         int loteAtual = proximoLote++;
         int quantidadeDesejada = alvo.getQuantidadeProdutos();
         int produzidos = 0;
+        double tempoLote = 0.0;
 
         double custoUnitario = calcularCustoProducao();
 
@@ -185,10 +186,7 @@ public class GerenciadorProducao {
                 break;
             }
 
-            if (p == null){
-                break;
-            }
-
+            Produto p = (i==0) ? modelo : Produto.criarPorTipo(alvo.getTipoProduto());
             p.setLote(loteAtual);
 
             //consumindo materia prima e dinheiro
@@ -205,6 +203,8 @@ public class GerenciadorProducao {
                     break;
                 }
             }
+
+            tempoLote += p.getTempoRealProducao();
 
             if(aprovado){
                 produtosFabricados.add(p);
@@ -223,7 +223,7 @@ public class GerenciadorProducao {
                 alvo.pendente();
             }
         }
-
+        System.out.println(String.format("[TEMPO] Lote #%d: tempo total de fabricacao = %.1f", loteAtual, tempoLote));
         System.out.println("[YUMMY] Producao de chocolates finalizada: " + produzidos + "/" + quantidadeDesejada + " unidades aprovadas.");
     }
 

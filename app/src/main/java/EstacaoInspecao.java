@@ -39,6 +39,7 @@ public class EstacaoInspecao extends Maquina{
 
         // eh a unica maquina que pode falhar por conta propria
         boolean falhouSensor = verificarFalha();
+        aplicarEfeitosDasPartes(produto);
         this.deteriorarMaquina();
 
         if(falhouSensor){

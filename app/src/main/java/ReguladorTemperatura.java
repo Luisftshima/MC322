@@ -92,4 +92,11 @@ public class ReguladorTemperatura {
 
         return (float) (temperaturaAlvo + (1 + Maquina.RANDOM.nextDouble(-erro, erro)));
     }
+
+    /**
+     * temperatura que o regulador deve manter
+     */
+    public double getTemperaturaAlvo(){
+        return temperaturaAlvo;
+    }
 }
