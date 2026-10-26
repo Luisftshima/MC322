@@ -32,7 +32,7 @@ public abstract class Maquina implements Auditavel{
     /**
      * Saude maxima que a maquina pode atingir
      */
-    private final int saudeMaxima;
+    private final Saude saude;
     /**
      * Cenario operacional utilizado pela maquina
      */
@@ -78,11 +78,11 @@ public abstract class Maquina implements Auditavel{
 
         this.balanca = new Balanca(saudeParte, probabilidadeFalha, PRECISAO_BALANCA);
         this.regulador = new ReguladorTemperatura((saudeParte), probabilidadeFalha, temperaturaAlvo);
-        this.bracos = new ArrayList<>(){
-            for (int i = 0; i < qtdBracos; i++){
-                this.bracos.add(new BracoRobotico(saudeParte, probabilidadeFalha, VELOCIDADE_BRACO));
-            }
+        this.bracos = new ArrayList<BracoRobotico>();
+        for (int i = 0; i < qtdBracos; i++){
+            this.bracos.add(new BracoRobotico(saudeParte, probabilidadeFalha, VELOCIDADE_BRACO));
         }
+        this.saude = new Saude()
     }
 
     /**
