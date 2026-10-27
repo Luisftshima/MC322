@@ -138,6 +138,7 @@ public class Main {
         System.out.println("5 - Gerenciar estrategia");
         System.out.println("6 - Auditoria");
         System.out.println("7 - Manutencao das Maquinas");
+        System.out.println("8 - Casa de Maquinas");
         System.out.println("0 - Sair");
         System.out.println(LINHA_SIMPLES);
         System.out.println("Escolha: ");
