@@ -19,3 +19,9 @@ visual mais limpo e mais fácil de achar cada arquivo.
 
 Implementamos o gradle, javadoc e tratamento de excecoes, que foram separadas em uma subpasta para maior organizacao.
 A principio o codigo esta com as mesmas funcionalidades da release anterior
+
+[Tarefa 5]
+
+Reorganizamos a estrutura das máquinas utilizando composição com seus componentes, que influenciam seu funcionamento, e criamos a classe CasaDeMaquinasWonka para gerenciar as máquinas
+Também implementamos a auditoria em cascata para facilitar a identificação de falhas e necessidades de manutenção
+Além disso, atualizamos o diagrama UML para representar a estrutura do projeto
