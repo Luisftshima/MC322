@@ -374,12 +374,12 @@ public abstract class Maquina implements Auditavel{
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Maquina: %s | Tipo: %s | Saude %d%% | Manutencao necessaria: %s",
             getNome(), getTipo(), getSaude() * 100 / getSaudeMaxima(), precisaManutencao()? "SIM" :"NAO"));
-        sb.append("\n   >").append(linhaComponente("Balanca", balanca.getSaudeAtual(), balanca.getSaudeMaxima(), balanca.estaQuebrada()));
+        sb.append("\n   >").append(linhaComponente("Balanca", balanca.getSaudeAtual(), balanca.getSaudeMaxima(), balanca.getEstado()));
         for (int i = 0; i < bracos.size(); i++){
             BracoRobotico braco = bracos.get(i);
-            sb.append("\n   >").append(linhaComponente("Braco " + (i + 1), braco.getSaudeAtual(), braco.getSaudeMaxima(), braco.estaQuebrada()));
+            sb.append("\n   >").append(linhaComponente("Braco " + (i + 1), braco.getSaudeAtual(), braco.getSaudeMaxima(), braco.getEstado()));
         }
-        sb.append("\n   >").append(linhaComponente("Regulador de temperatura", regulador.getSaudeAtual(), regulador.getSaudeMaxima(), regulador.estaQuebrada()));
+        sb.append("\n   >").append(linhaComponente("Regulador de temperatura", regulador.getSaudeAtual(), regulador.getSaudeMaxima(), regulador.getEstado()));
         return sb.toString();
     }
 
@@ -391,7 +391,7 @@ public abstract class Maquina implements Auditavel{
      * @param quebrada se o componente esta quebrado
      * @return uma linha de string formatado
      */
-    private String linhaComponente(String nomeComponente, int atual, int maxima, boolean quebrada){
-        return String.format("%s: %s (%d/%d)", nomeComponente, quebrada? "QUEBRADA" : "OK", atual, maxima);
+    private String linhaComponente(String nomeComponente, int atual, int maxima, String estado){
+        return String.format("%s: %s (%d/%d)", nomeComponente, estado, atual, maxima);
     }
 }

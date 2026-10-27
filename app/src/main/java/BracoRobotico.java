@@ -61,6 +61,20 @@ public class BracoRobotico {
     }
 
     /**
+     * Retorna o estado do braco para o relatorio
+     * @return Em string se precisa de manutencao, esta quebrada ou esta ok
+     */
+    public String getEstado(){
+        if (getSaudeAtual() > 0.30 * getSaudeAtual()){
+            return "OK";
+        }else if (estaQuebrada()){
+            return "QUEBRADA";
+        }else{
+            return "MANUTENCAO";
+        }
+    }
+
+    /**
      * Verifica se o braco robotico vai falhar ou se ja falhou
      * @param multiplicadorFalha 
      * @return true se falhar/falhou
