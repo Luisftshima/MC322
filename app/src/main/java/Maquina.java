@@ -46,7 +46,7 @@ public abstract class Maquina implements Auditavel{
 
     private static final double PRECISAO_BALANCA = 0.99;
     private static final double VELOCIDADE_BRACO = 0.99;
-    private static final double LIMITE_MANUTENCAO = 0.25;
+    private static final double LIMITE_MANUTENCAO = 0.30;
 
     /**
      * Inicializa uma maquina com os parametros operacionais informados
