@@ -58,7 +58,7 @@ public class Balanca {
      * @return Em string se precisa de manutencao, esta quebrada ou esta ok
      */
     public String getEstado(){
-        if (getSaudeAtual() > 0.30 * getSaudeAtual()){
+        if (getSaudeAtual() > 0.30 * getSaudeMaxima()){
             return "OK";
         }else if (estaQuebrada()){
             return "QUEBRADA";
