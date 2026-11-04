@@ -37,6 +37,18 @@ public class MateriaPrima {
      * @param custoPorUnidade custo por unidade da materia-prima
      */
     public MateriaPrima(String nome, float quantidade, String unidade, double custoPorUnidade){
+    if (nome == null || nome.isBlank()){
+        throw new IllegalArgumentException("O nome da materia-prima nao pode ser vazio");
+    }
+    if (unidade == null || unidade.isBlank()){
+        throw new IllegalArgumentException("A unidade da materia-prima nao pode ser vazia");
+    }
+    if (Float.isNaN(quantidade) || Float.isInfinite(quantidade) || quantidade < 0){
+        throw new IllegalArgumentException("A quantidade da materia-prima nao pode ser negativa");
+    }
+    if (Double.isNaN(custoPorUnidade) || Double.isInfinite(custoPorUnidade) || custoPorUnidade < 0){
+        throw new IllegalArgumentException("O custo da materia-prima nao pode ser negativa");
+    }
         this.id = proximoId++;
         this.nome = nome;
         this.quantidade = quantidade;

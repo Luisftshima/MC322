@@ -20,16 +20,27 @@ public class Demanda {
      */
     private StatusDemanda status = StatusDemanda.CONCLUIDA; 
 
-    /**
-     * Cria uma nova demanda para um tipo de produto
-     *
-     * @param tipoProduto tipo de produto solicitado
-     * @param quantidade quantidade inicial de unidades solicitadas
-     */
+
     public Demanda(TipoProduto tipoProduto, int quantidade){
+        this(tipoProduto, quantidade, StatusDemanda.CONCLUIDA);
+    }
+
+    public Demanda(TipoProduto tipoProduto, int quantidade, StatusDemanda status){
+        if (tipoProduto == null){
+            throw new IllegalArgumentException("O tipo de produto da demanda nao pode ser nulo");
+        }
+        if (status == null){
+            throw new IllegalArgumentException("O status da demanda nao pode ser nulo");
+        }
+        if (quantidade < 0){
+            throw new IllegalArgumentException("A quantidade da demanda nao pode ser negativa");
+        }
         this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidade;
+        this.status = status;
     }
+
+
 
     /**
      * Atualiza a quantidade de produtos da demanda
