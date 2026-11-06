@@ -34,7 +34,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "Main"
+    mainClass = "br.unicamp.ic.mc322.Main"
 }
 
 tasks.named<Test>("test") {
