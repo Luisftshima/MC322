@@ -3,7 +3,7 @@ package br.unicamp.ic.mc322.persistence;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import javax.swing.text.Document;
+import org.w3c.dom.Document;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -40,7 +40,7 @@ public class ConversorPlantaXml {
 
     @FunctionalInterface 
     private interface FabricaMaquina{
-        Maquina criar(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacaom, int saudeParte, Cenario cenario);
+        Maquina criar(String nome, int capacidadeMaxima, double probabilidadeFalha, double custoOperacao, int saudeParte, Cenario cenario);
     }
 
     private static final Map<String, FabricaMaquina> FABRICAS_MAQUINA = Map.of(
@@ -149,7 +149,7 @@ public class ConversorPlantaXml {
         }
         String versao = raiz.getAttribute("versao");
         if (!VERSAO.equals(versao)){
-            throw new ArquivoCorrompidoException("Versao do arquivo nao suportada: '" + versao + "' (esperada: )" + VERSAO + ")");
+            throw new ArquivoCorrompidoException("Versao do arquivo nao suportada: '" + versao + "' (esperada: " + VERSAO + ")");
         }
         try{
             Cenario cenario = enumerado(Cenario.class, texto(raiz, "cenario"), "cenario");
@@ -199,7 +199,7 @@ public class ConversorPlantaXml {
         String nome = texto(elemento, "nome");
         int capacidade = inteiro(texto(elemento, "capacidadeMaxima"), "capacidadeMaxima");
         double custo = decimal(texto(elemento, "custoOperacao"), "custoOperacao");
-        double probabilidade = decimal(texto(elemento, "probabilidaeFalha"), "probabilidadeFalha");
+        double probabilidade = decimal(texto(elemento, "probabilidadeFalha"), "probabilidadeFalha");
         boolean ligada = booleano(texto(elemento, "ligada"), "ligada");
 
         exigir(!nome.isEmpty(), "O nome da maquina nao pode ser vazio");
@@ -216,10 +216,10 @@ public class ConversorPlantaXml {
 
         //maquina eh criada com uma unica saude maxima, compartilhada pelos componentes
         int saudeMaxima = balanca[1];
-        exigir(regulador[1] == saudeMaxima, "Todos os componentes da maquina '" + nome + "devem ter a mesma saude maxima");
+        exigir(regulador[1] == saudeMaxima, "Todos os componentes da maquina '" + nome + "' devem ter a mesma saude maxima");
         List<Integer> saudeBracos = new ArrayList<>();
         for(int[] braco : bracos){
-            exigir(braco[1] == saudeMaxima, "Todos os componentes da maquina '" + nome + "devem ter a mesma saude maxima");
+            exigir(braco[1] == saudeMaxima, "Todos os componentes da maquina '" + nome + "' devem ter a mesma saude maxima");
             saudeBracos.add(braco[0]);
         }
 
@@ -231,7 +231,7 @@ public class ConversorPlantaXml {
         return maquina;
     }
 
-    private int[] lerCmoponente(Element elemento){
+    private int[] lerComponente(Element elemento){
         int atual = inteiro(atributo(elemento, "saudeAtual"), "saudeAtual");
         int maxima = inteiro(atributo(elemento, "saudeMaxima"), "saudeMaxima");
         return new int[]{atual, maxima};
@@ -240,7 +240,7 @@ public class ConversorPlantaXml {
     private List<Demanda> lerDemandas(Element raiz){
         List<Demanda> demandas = new ArrayList<>();
         for(Element elemento : filhos(filhoUnico(raiz, "demandas"), "demanda")){
-            TipoProduto tipo = enumerado(TipoProduto.classm atributo(elemento, "tipo"), "tipo");
+            TipoProduto tipo = enumerado(TipoProduto.class, atributo(elemento, "tipo"), "tipo");
             int quantidade  = inteiro(texto(elemento, "quantidade"), "quantidade");
             StatusDemanda status = enumerado(StatusDemanda.class, texto(elemento, "status"), "status");
             demandas.add(new Demanda(tipo, quantidade, status));
@@ -283,7 +283,7 @@ public class ConversorPlantaXml {
 
     private String atributo(Element elemento, String nome){
         if(!elemento.hasAttribute(nome)){
-            throw new ArquivoCorrompidoException("O elemento <" + elemento.getTagName() + "> nao possi o atributo '" + nome + "'");
+            throw new ArquivoCorrompidoException("O elemento <" + elemento.getTagName() + "> nao possui o atributo '" + nome + "'");
         }
         return elemento.getAttribute(nome).trim();
     }
@@ -306,7 +306,7 @@ public class ConversorPlantaXml {
 
     private float decimalSimples(String valor, String campo){
         try{
-            Float.parseFloat(valor);
+            return Float.parseFloat(valor);
         }catch(NumberFormatException e){
             throw new ArquivoCorrompidoException("O campo '" + campo + "' deve ser um numero, mas contem '" + valor + "'", e);
         }

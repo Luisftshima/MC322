@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import org.w3c.dom.Document;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -31,7 +32,7 @@ import br.unicamp.ic.mc322.service.GerenciadorProducao;
 
 public class PersistenciaPlanta {
     private final Path arquivo;
-    private final ConversorPlantaXml conversor = new ConversorPlantaXml;
+    private final ConversorPlantaXml conversor = new ConversorPlantaXml();
 
     public PersistenciaPlanta(Path arquivo){
         if (arquivo == null){
@@ -131,7 +132,7 @@ public class PersistenciaPlanta {
             construtor.setErrorHandler(new ErrorHandler() {
                 @Override public void warning(SAXParseException e){ }
                 @Override public void error(SAXParseException e) throws SAXException{throw e;}
-                @Override public void fatalError(SAXException e) throws SAXException{throw e;}
+                @Override public void fatalError(SAXParseException e) throws SAXException{throw e;}
             });
             return construtor.parse(new ByteArrayInputStream(bytes));
         } catch (SAXException | IOException e){

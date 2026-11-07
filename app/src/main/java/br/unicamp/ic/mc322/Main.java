@@ -54,7 +54,7 @@ public class Main {
 
         while (rodando_programa){
 
-            exibirCabecalho(fabrica, cenario.getCenario());
+            exibirCabecalho(fabrica, fabrica.getCenario());
 
             exibirMenuPrincipal();
 
@@ -506,10 +506,10 @@ public class Main {
     private static GerenciadorProducao inicializarFabrica(Scanner entrada, PersistenciaPlanta persistencia){
         if (persistencia.existeArquivo()){
             System.out.println("Foi encontrado um estado salvo da fabrica.");
-            System.out.println("1 - Contnuar de onde parei");
+            System.out.println("1 - Continuar de onde parei");
             System.out.println("2 - Comecar uma nova fabrica");
             System.out.print("Escolha: ");
-            while(True){
+            while(true){
                 int opcao = lerInteiro(entrada);
                 if(opcao == 1){
                     try{
@@ -557,7 +557,7 @@ public class Main {
             return carregada;
         } catch (PersistenciaException e){
             System.out.println("\n[ERRO] " + e.getMessage());
-            System.out.println("A fabrica atual foi mantida sem alteracoes.");1
+            System.out.println("A fabrica atual foi mantida sem alteracoes.");
             return atual;
         }
     }

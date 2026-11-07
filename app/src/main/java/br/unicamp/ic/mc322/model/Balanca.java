@@ -16,6 +16,13 @@ public class Balanca {
     }
 
     /**
+     * @return retorna a probabilidade de falha da balanca
+     */
+    public double getProbabilidadeFalha(){
+        return probabilidadeFalha;
+    }
+
+    /**
      * Desgaste a ser feito na balanca
      * @param desgaste numero que sera desgastado
      */

@@ -91,13 +91,13 @@ public class GerenciadorProducao {
 
     }
 
-    public GerenciadorProducao(MateriaPrimaMateriaPrima, Cenario cenario, double budget, int proximoLote,
-                                EstrategiaProducao estrategia, List<Maquna> maquinas, List<Demanda> demandas){
+    public GerenciadorProducao(MateriaPrima materiaPrima, Cenario cenario, double budget, int proximoLote,
+                                EstrategiaProducao estrategia, List<Maquina> maquinas, List<Demanda> demandas){
         if (materiaPrima == null || cenario == null || estrategia == null || maquinas == null || demandas == null){
             throw new IllegalArgumentException("Nenhum dos dados da fabrica pode ser nulo");
         }
         if (Double.isNaN(budget) || Double.isInfinite(budget) || budget < 0){
-            throw new IllegalArgumentException("O orcamento nao pode ser vazio.");
+            throw new IllegalArgumentException("O orcamento nao pode ser negativo.");
         }
         if (proximoLote < 1){
             throw new IllegalArgumentException("O numero do proximo lote precisa ser positivo");
@@ -105,7 +105,7 @@ public class GerenciadorProducao {
         Set<TipoProduto> tipos = EnumSet.noneOf(TipoProduto.class);
         for (Demanda demanda : demandas){
             if (!tipos.add(demanda.getTipoProduto())){
-                throw new IllegalArgumentException("Existe mais de uma demanda parao tipo " + demanda.getTipoProduto());
+                throw new IllegalArgumentException("Existe mais de uma demanda para o tipo " + demanda.getTipoProduto());
             }
         }
         this.materiaPrima = materiaPrima;

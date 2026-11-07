@@ -5,7 +5,7 @@ package br.unicamp.ic.mc322.exception;
  * 
  * Tratamento de erro relacionado as persistencias
  */
-public abstract class PersistenciaException extends RuntimeException{
+public class PersistenciaException extends RuntimeException{
     public PersistenciaException(String mensagem){
         super(mensagem);
     }
