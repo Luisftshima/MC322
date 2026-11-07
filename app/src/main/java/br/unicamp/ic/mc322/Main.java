@@ -1,6 +1,7 @@
 package br.unicamp.ic.mc322;
 
 import java.util.Scanner;
+import java.nio.file.Path;
 
 import br.unicamp.ic.mc322.exception.CompraInvalidaException;
 import br.unicamp.ic.mc322.exception.OpcaoInvalidaException;
@@ -8,11 +9,12 @@ import br.unicamp.ic.mc322.exception.DemandaInvalidaException;
 import br.unicamp.ic.mc322.exception.MaquinaIndisponivelException;
 import br.unicamp.ic.mc322.exception.RecursoInsuficienteException;
 import br.unicamp.ic.mc322.exception.MaquinaInexistenteException;
+import br.unicamp.ic.mc322.exception.PersistenciaException;
 
 import br.unicamp.ic.mc322.model.MateriaPrima;
 import br.unicamp.ic.mc322.model.Cenario;
 import br.unicamp.ic.mc322.model.TipoProduto;
-
+import br.unicamp.ic.mc322.persistence.PersistenciaPlanta;
 import br.unicamp.ic.mc322.service.GerenciadorProducao;
 
 import br.unicamp.ic.mc322.strategy.EstrategiaProducao;
@@ -29,7 +31,8 @@ public class Main {
      * Linhas de separacao utilizada na apresentacao da interface.
      */
     private static final String LINHA_DUPLA = "======================================================";
-    private static final String LINHA_SIMPLES = "------------------------------------------------------";    
+    private static final String LINHA_SIMPLES = "------------------------------------------------------";
+    private static final Path ARQUIVO_FABRICA = Path.of("dados", "planta.xml");
     /**
      * Inicia o programa da fabrica e executa o menu principal interativo
      *
@@ -43,20 +46,15 @@ public class Main {
         
         exibirBoasVindas();
 
-        //Criando a materia prima, por enquanto temos so 1
-        MateriaPrima chocolate = new MateriaPrima(
-            "Chocolate", 2000, "g", 
-            0.05);
-        
-        Cenario cenario = escolherCenario(entrada);
+        PersistenciaPlanta persistencia = new PersistenciaPlanta(ARQUIVO_FABRICA);
 
-        GerenciadorProducao fabrica = new GerenciadorProducao(chocolate, cenario);
+        GerenciadorProducao fabrica = inicializarFabrica(entrada, persistencia);
         
         boolean rodando_programa = true;
 
         while (rodando_programa){
 
-            exibirCabecalho(fabrica, cenario);
+            exibirCabecalho(fabrica, cenario.getCenario());
 
             exibirMenuPrincipal();
 
@@ -69,6 +67,8 @@ public class Main {
                 case 6: menuAuditoria(entrada, fabrica); break;
                 case 7: menuManutencao(entrada, fabrica); break;
                 case 8: menuCasaDeMaquinas(entrada, fabrica); break;
+                case 9: salvarEstado(fabrica, persistencia); break;
+                case 10: fabrica = carregarEstado(fabrica, persistencia); break;
                 case 0:
                     rodando_programa = false;
                     System.out.println("Os confeiteiros e a fabrica precisam descansar...");
@@ -153,6 +153,8 @@ public class Main {
         System.out.println("6 - Auditoria");
         System.out.println("7 - Manutencao das Maquinas");
         System.out.println("8 - Casa de Maquinas");
+        System.out.println("9 - Salvar estado da fabrica");
+        System.out.println("10 - Carregar estado da fabrica");
         System.out.println("0 - Sair");
         System.out.println(LINHA_SIMPLES);
         System.out.println("Escolha: ");
@@ -501,6 +503,64 @@ public class Main {
         }
     }
 
+    private static GerenciadorProducao inicializarFabrica(Scanner entrada, PersistenciaPlanta persistencia){
+        if (persistencia.existeArquivo()){
+            System.out.println("Foi encontrado um estado salvo da fabrica.");
+            System.out.println("1 - Contnuar de onde parei");
+            System.out.println("2 - Comecar uma nova fabrica");
+            System.out.print("Escolha: ");
+            while(True){
+                int opcao = lerInteiro(entrada);
+                if(opcao == 1){
+                    try{
+                        GerenciadorProducao carregada = persistencia.carregar();
+                        System.out.println("\n[OBA] Estado da fabrica carregado de " + persistencia.getArquivo());
+                        return carregada;
+                    }catch (PersistenciaException e){
+                        System.out.println("[ERRO] " + e.getMessage());
+                        System.out.println("Iniciado uma fabrica nova. O arquivo existente so sera substituido se voce salvar. \n");
+                        break;
+                    }
+                }
+                if (opcao == 2){
+                    break;
+                }
+                System.out.println("[ERRO] Escolha 1 ou 2: ");
+            }
+        }
+        return criarFabricaNova(entrada);
+    }
+
+    private static GerenciadorProducao criarFabricaNova(Scanner entrada){
+        MateriaPrima chocolate = new MateriaPrima(
+        "Chocolate", 2000, "g", 
+        0.05);
+
+        Cenario cenario = escolherCenario(entrada);
+        return new GerenciadorProducao(chocolate, cenario);
+    }
+
+    private static void salvarEstado(GerenciadorProducao fabrica, PersistenciaPlanta persistencia){
+        try{
+            persistencia.salvar(fabrica);
+            System.out.println("\n[OBA] Estado da fabrica salvo em " + persistencia.getArquivo());
+        } catch (PersistenciaException e){
+            System.out.println("\n[ERRO] " + e.getMessage());
+            System.out.println("O arquivo salvo anteriormente, se existir, foi mantido");
+        }
+    }
+
+    private static GerenciadorProducao carregarEstado(GerenciadorProducao atual, PersistenciaPlanta persistencia){
+        try{
+            GerenciadorProducao carregada = persistencia.carregar();
+            System.out.println("\n[OBA] Estado da fabrica carregado de " + persistencia.getArquivo());
+            return carregada;
+        } catch (PersistenciaException e){
+            System.out.println("\n[ERRO] " + e.getMessage());
+            System.out.println("A fabrica atual foi mantida sem alteracoes.");1
+            return atual;
+        }
+    }
     /**
      * Le um numero inteiro do usuario, repetindo a leitura ate obter uma entrada valida
      *

@@ -1,6 +1,9 @@
 package br.unicamp.ic.mc322.service;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 import br.unicamp.ic.mc322.exception.DemandaInvalidaException;
 import br.unicamp.ic.mc322.exception.MaquinaInexistenteException;
@@ -86,6 +89,62 @@ public class GerenciadorProducao {
         registrarDemanda(TipoProduto.GUARDA_CHUVA, 0);
         registrarDemanda(TipoProduto.CHOCOTONE, 0);
 
+    }
+
+    public GerenciadorProducao(MateriaPrimaMateriaPrima, Cenario cenario, double budget, int proximoLote,
+                                EstrategiaProducao estrategia, List<Maquna> maquinas, List<Demanda> demandas){
+        if (materiaPrima == null || cenario == null || estrategia == null || maquinas == null || demandas == null){
+            throw new IllegalArgumentException("Nenhum dos dados da fabrica pode ser nulo");
+        }
+        if (Double.isNaN(budget) || Double.isInfinite(budget) || budget < 0){
+            throw new IllegalArgumentException("O orcamento nao pode ser vazio.");
+        }
+        if (proximoLote < 1){
+            throw new IllegalArgumentException("O numero do proximo lote precisa ser positivo");
+        }
+        Set<TipoProduto> tipos = EnumSet.noneOf(TipoProduto.class);
+        for (Demanda demanda : demandas){
+            if (!tipos.add(demanda.getTipoProduto())){
+                throw new IllegalArgumentException("Existe mais de uma demanda parao tipo " + demanda.getTipoProduto());
+            }
+        }
+        this.materiaPrima = materiaPrima;
+        this.cenario = cenario;
+        this.budget = budget;
+        this.proximoLote = proximoLote;
+        this.estrategiaAtual = estrategia;
+        for (Maquina maquina : maquinas){
+            casa.adicionar(maquina);
+        }
+        this.demandas.addAll(demandas);
+    }
+
+    /**
+     * @return retorna a materia prima
+     */
+    public MateriaPrima getMateriaPrima(){
+        return materiaPrima;
+    }
+
+    /**
+     * @return retorna uma lista imutavel das demandas
+     */
+    public List<Demanda> getDemandas(){
+        return java.util.Collections.unmodifiableList(demandas);
+    }
+
+    /**
+     * @return retorna uma lista imutavel das maquinas
+     */
+    public List<Maquina> getMaquinas(){
+        return casa.getMaquinas();
+    }
+    
+    /**
+     * @return retorna o inteiro do proximo lote
+     */
+    public int getProximoLote(){
+        return proximoLote;
     }
     
     /**

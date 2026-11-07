@@ -70,6 +70,15 @@ public abstract class Maquina implements Auditavel{
         if (qtdBracos < 1){
             throw new IllegalArgumentException("A maquina precisa de pelo menos um braco robotico");
         }
+
+        if (capacidadeMaxima <= 0){
+            throw new IllegalArgumentException("A capacidade maxima da maquina precisa ser positiva.");
+        }
+
+        if (Double.isNaN(custoOperacao) || Double.isInfinite(custoOperacao) || custoOperacao < 0){
+            throw new IllegalArgumentException("O custo de operacao da maquina nao pode ser negativo");
+        }
+
         this.nome = nome;
         this.capacidadeMaxima = capacidadeMaxima;
         this.custoOperacao = custoOperacao;
@@ -395,5 +404,88 @@ public abstract class Maquina implements Auditavel{
      */
     private String linhaComponente(String nomeComponente, int atual, int maxima, String estado){
         return String.format("%s: %s (%d/%d)", nomeComponente, estado, atual, maxima);
+    }
+
+    /**
+     * @return retorna a probabilidade de falha da balanca
+     */
+    public double getProbabilidadeFalha(){
+        return balanca.getProbabilidadeFalha();
+    }
+
+    /**
+     * @return retorna a saude maxima das partes
+     */
+    public int getSaudeMaximaPorParte(){
+        return balanca.getSaudeMaxima();
+    }
+
+    /**
+     * @return retorna a quantidade de bracos da maquina
+     */
+    public int getQuantidadeBracos(){
+        return bracos.size();
+    }
+
+    /**
+     * @return retorna a saude atual da balanca
+     */
+    public int getSaudeBalanca(){
+        return balanca.getSaudeAtual();
+    }
+
+    /**
+     * @return retorna a saude atual do regulador de temperatura
+     */
+    public int getSaudeRegulador(){
+        return regulador.getSaudeAtual();
+    }
+
+    /**
+     * @return retorna uma lista da saude atual de cada braco
+     */
+    public List<Integer> getSaudeBracos(){
+        List<Integer> saudes = new ArrayList<>();
+        for (BracoRobotico braco : bracos){
+            saudes.add(braco.getSaudeAtual());
+        }
+        return saudes;
+    }
+
+    /**
+     * A funcao valida tudo antes de alterar qualquer coisa
+     * @param ligada se a maquina esta ligada ou nao
+     * @param saudeBalanca saude atual da balanca
+     * @param saudeBracos saude atual dos bracos
+     * @param saudeRegulador saude atual do regulador
+     * @throws IllegalArgumentException se a quantidade de bracos informada nao estiver de acordo
+     */
+    public void restaurarEstado(boolean ligada, int saudeBalanca, List<Integer> saudeBracos, int saudeRegulador){
+        if (saudeBracos == null || saudeBracos.size() != bracos.size()){
+            throw new IllegalArgumentException("A quantidade de bracos informada eh incompativel com a maquina " + nome);
+        }
+        validarSaude("balanca", saudeBalanca, balanca.getSaudeMaxima());
+        for (int i = 0; i < bracos.size(); i++){
+            validarSaude("braco " + (i + 1), saudeBracos.get(i), bracos.get(i).getSaudeMaxima());
+        }
+        validarSaude("regulador de temperatura", saudeRegulador, regulador.getSaudeMaxima());
+
+        balanca.reparar();
+        balanca.deteriorar(balanca.getSaudeMaxima() - saudeBalanca);
+        for (int i = 0; i < bracos.size(); i++){
+            bracos.get(i).reparar();
+            bracos.get(i).deteriorar(bracos.get(i).getSaudeMaxima() - saudeBracos.get(i));
+        }
+        regulador.reparar();
+        regulador.deteriorar(regulador.getSaudeMaxima() - saudeRegulador);
+        this.ligada = ligada;
+    }
+
+    private void validarSaude(String componente, int atual, int maxima){
+        if (atual < 0 || atual > maxima){
+            throw new IllegalArgumentException("Saude invalida para " + componente + " da maquina " + nome
+                + ": " + atual + " (esperado entre 0 e " + maxima + ")"
+            );
+        }
     }
 }
